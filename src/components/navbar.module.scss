@@ -1,0 +1,30 @@
+.navbar {
+  width: 50%;
+  border-radius: 25px;
+  position: fixed;
+  left: 25%;
+  top: 20px;
+
+  background: rgba(171, 186, 171, 0.1); /* Fallback color for older browsers */
+  background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(171, 186, 171, 0.5)); /* Webkit browsers */
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(171, 186, 171, 0.5)); /* Modern browsers */
+  backdrop-filter: blur(10px); /* Glass effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+
+
+
+  @media screen and (max-width: 600px) {
+    width: 80%;
+  }
+
+  border: 1px solid black;
+
+  ul {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    justify-content: center;
+    gap: 50px;
+  }
+}
