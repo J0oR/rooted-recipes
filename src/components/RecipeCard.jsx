@@ -14,10 +14,15 @@ function RecipeCard({ recipe }) {
 
     return (
         <div className={style.card} onClick={handleClick}>
-            <h2>{recipe.title}</h2>
             <img src={recipe.image} alt={recipe.title} />
-            <p>ID: {recipe.id}</p>
-            {recipe.firebaseDocID && <p>Firebase Doc ID: {recipe.firebaseDocID}</p>}
+            <span className={style.title}>{recipe.title}</span>
+            <div className={style.info}>
+                <span>{recipe.ingredientsNames.length} ingredients</span>
+                <span>•</span>
+                <span>{recipe.readyInMinutes} minutes</span>
+            </div>
+            {/* <p>ID: {recipe.id}</p>
+            {recipe.firebaseDocID && <p>Firebase Doc ID: {recipe.firebaseDocID}</p>} */}
         </div>
     );
 }

@@ -44,7 +44,7 @@ const Recipe = () => {
       <div style={{ border: "1px solid black" }}>
         <h2>Ingredients</h2>
         <ul>
-          {data.ingredients?.map((ingredient, index) => (
+          {data.ingredientsQuantity?.map((ingredient, index) => (
             <li key={index}>{ingredient}</li>
           ))}
         </ul>

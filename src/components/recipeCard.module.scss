@@ -1,8 +1,32 @@
 .card {
-    border: 1px solid black;
+  border: 1px solid gray;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 300px;
+  overflow: hidden;
+  gap: 10px;
+  padding: 20px;
+
+  .title {
+    font-size: 1rem;
+    font-weight: 500;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  img {
+    object-fit: contain;
+    border-radius: 15px;
+  }
+
+  .info {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    width: 300px;
+    gap: 5px;
+    color: gray;
+    font-size: 0.8rem;
+  }
 }

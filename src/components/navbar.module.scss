@@ -1,9 +1,13 @@
 .navbar {
   width: 50%;
+  height: 50px;
   border-radius: 25px;
   position: fixed;
   left: 25%;
   top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   background: rgba(171, 186, 171, 0.1); /* Fallback color for older browsers */
   background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(171, 186, 171, 0.5)); /* Webkit browsers */
@@ -17,10 +21,10 @@
     width: 80%;
   }
 
-  border: 1px solid black;
+  //border: 1px solid black;
 
   ul {
-    border: 1px solid black;
+    //border: 1px solid black;
     display: flex;
     flex-direction: row;
     list-style: none;

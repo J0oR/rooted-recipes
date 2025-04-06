@@ -8,12 +8,14 @@
 }
 
 .cardsContainer{
-  background-color: aliceblue;
-  margin: 50px auto;
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
+  margin-top: 150px;
+  overflow-y: scroll;
+  height: calc(100vh - 220px);
 }
 
 .debugContainer{
@@ -28,6 +30,7 @@
 
 .loader {
   margin: auto;
+  margin-top: 150px;
   width: 48px;
   height: 48px;
   border: 5px solid #823939;
@@ -48,4 +51,47 @@
   } 
 
 
+  /* input */
+
+  .searchContainer{
+    top: 100px;
+    position: fixed;
+    display: flex;
+  }
+
+  .searchInput{
+    
+    height: 50px;
+    border-radius: 25px;
+    outline: none;
+    border: 1px solid black;
+    width: 300px;
+    text-align: center;
+  }
+
+
+  .searchInput {
+    padding: 8px;
+    width: 100%;
+  }
+  
+  .tagsContainer {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .tag {
+    background-color: #ddd;
+    margin: 5px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  .removeTag {
+    margin-left: 5px;
+    color: red;
+    font-weight: bold;
+  }
   
