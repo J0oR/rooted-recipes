@@ -3,6 +3,33 @@ import { db } from "./config/firebase";
 import { doc, setDoc, writeBatch } from "firebase/firestore";
 
 
+const saveIngredientsToFirebase = async (recipes) => {
+
+  try {
+    const batch = writeBatch(db);
+    
+    recipes.forEach((recipe) => {
+      
+      recipe.extendedIngredients?.map((ing) => {
+        
+        const ingredientsRef = doc(db, "ingredients", ing.id.toString());
+        const ingredient = {
+          id: ing.id,
+          name: ing.name,
+          nameClean: ing.nameClean
+        }
+        batch.set(ingredientsRef, ingredient, { merge: true });
+        console.log(ingredient);
+      });
+    });
+
+    await batch.commit();
+  } catch (error) {
+    console.error("Error saving ingredients to Firebase:", error);
+  }
+};
+
+
 const saveRecipesToFirebase = async (recipes) => {
   console.log("BUU");
   try {
@@ -27,23 +54,22 @@ const saveRecipesToFirebase = async (recipes) => {
         image: recipe.image || "No image",
         readyInMinutes: recipe.readyInMinutes || 0,
         servings: recipe.servings || 0,
-        ingredientsNames: recipe.extendedIngredients?.map((ing) => ing.nameClean) || [],
+        ingredientsNames: recipe.extendedIngredients?.map((ing) => ing.nameClean.toLowerCase()) || [],
         ingredientsQuantity: recipe.extendedIngredients?.map((ing) => ing.original) || [],
-          dishTypes: recipe.dishTypes?.map((type) => type) || [],
-          steps: recipe.analyzedInstructions?.flatMap((steps) => ({
-            step: steps.name || '',
-            instructions: steps.steps.map((step) => (
-              step.step
-            ))
+        dishTypes: recipe.dishTypes?.map((type) => type) || [],
+        steps: recipe.analyzedInstructions?.flatMap((steps) => ({
+          step: steps.name || '',
+          instructions: steps.steps.map((step) => (
+            step.step
+          ))
 
-          })) || [],
+        })) || [],
       };
       batch.set(recipeRef, recipeData, { merge: true });
-      console.log(recipeData);
+      //console.log(recipeData);
     });
 
     await batch.commit();
-
   }
   catch (error) {
     console.error("Error saving to Firebase:", error);
@@ -5593,4 +5619,4 @@ const data = [
   }
 ]
 
-export { saveRecipesToFirebase, data };
+export { saveRecipesToFirebase, saveIngredientsToFirebase, data };
