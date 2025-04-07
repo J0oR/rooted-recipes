@@ -1,1 +1,1 @@
-.cardsContainer{margin:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:30px;margin-top:200px;overflow-y:scroll;height:calc(100vh - 220px);border-top:2px solid #823939;width:100vw}
+.cardsContainer{margin:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:30px;margin-top:200px;overflow-y:scroll;height:calc(100vh - 220px);border-top:2px solid #823939;width:100vw;padding:50px}

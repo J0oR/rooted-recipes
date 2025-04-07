@@ -5,6 +5,7 @@ import { query, collection, getDocs } from "firebase/firestore";
 import style from "./home.module.scss";
 import CardsContainer from "../components/home/CardsContainer";
 import IngredientInput from "../components/home/ingredientInput";
+import { saveRecipesToFirebase, saveIngredientsToFirebase } from "../utils";
 
 // Import the use-debounce hook
 //import IngredientSearch from "../components/IngredientSearch";
@@ -38,23 +39,22 @@ function Home() {
   const fetchData = async () => {
     try {
       const url = `${baseURL}?apiKey=${apiKey}&instructionsRequired=true&number=100&diet=vegetarian&sort=random&fillIngredients=true&addRecipeInformation=true&addRecipeInstructions=true`;
-      /* const response = await axios.get(url);
-            const data = response.data.results;
-    
-            setData(data);
-            if (data.length === 0) {
-              return;
-            }
-    
-            saveRecipesToFirebase(data); */
-      saveRecipesToFirebase(utilsData);
-      saveIngredientsToFirebase(utilsData);
+      const response = await axios.get(url);
+      const results = response.data.results;
+
+      saveRecipesToFirebase(results);
+      saveIngredientsToFirebase(results);
+      /* saveRecipesToFirebase(utilsData);
+      saveIngredientsToFirebase(utilsData); 
+      */
+      console.log(results);
 
       setLoading(false);
       setError(null);
     } catch (error) {
       setError(error);
       setLoading(false);
+      console.error("Error fetching data: ", error);
       //fetchFirebaseData();
     } finally {
       setLoading(false);
@@ -63,30 +63,26 @@ function Home() {
 
   const fetchIngredients = async () => {
     console.log("fetching ingredients in the Home page");
-      try {
-        const ingredientsCollection = collection(db, "ingredients");
-        const q = query(ingredientsCollection);
-        const querySnapshot = await getDocs(q);
-        const ingredients = querySnapshot.docs.map((doc) => ({
-          id: doc.id, // Optionally include the doc ID if you need it
-          ...doc.data(), // Extract the data from the document
-        }));
-        setIngredients(ingredients);
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching ingredients: ", error);
-      }
-    };
+    try {
+      const ingredientsCollection = collection(db, "ingredients");
+      const q = query(ingredientsCollection);
+      const querySnapshot = await getDocs(q);
+      const ingredients = querySnapshot.docs.map((doc) => ({
+        id: doc.id, // Optionally include the doc ID if you need it
+        ...doc.data(), // Extract the data from the document
+      }));
+      setIngredients(ingredients);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching ingredients: ", error);
+    }
+  };
 
-  /* 
-  useEffect(() => {
-    fetchData();
-  }, []); 
-  */
-
+  
   // fetch ingredients once, only when the component mounts
   useEffect(() => {
-    fetchIngredients();
+    /* fetchData(); */
+    fetchIngredients(); 
   }, []);
 
   //if (error) return <p>Error: {error.message}</p>;

@@ -3,6 +3,7 @@ import { db } from "../../config/firebase";
 import { query, getDocs, collection, limit, where } from "firebase/firestore";
 import { saveRecipesToFirebase, saveIngredientsToFirebase, data as utilsData } from "../../utils";
 import style from "./ingredientInput.module.scss";
+import { FiSearch } from "react-icons/fi";
 
 const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,10 +20,7 @@ const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
       let q;
       if (searchTerm) {
         console.log("fetchData filtered");
-        q = query(
-          collection(db, "recipes"),
-          where("ingredientsNames", "array-contains", clickedSearchTerm.toLowerCase())
-        );
+        q = query(collection(db, "recipes"), where("ingredientsNames", "array-contains", clickedSearchTerm.toLowerCase()));
       } else {
         console.log("fetchData");
         q = query(collection(db, "recipes"), limit(50));
@@ -56,6 +54,7 @@ const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
       const matches = ingredients.filter((ing) => ing.nameClean.toLowerCase().includes(value.toLowerCase()));
 
       setSuggestions(matches.slice(0, 10)); // limit to 10 suggestions
+      console.log(suggestions);
     } else {
       setSuggestions([]);
     }
@@ -83,8 +82,11 @@ const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
 
   return (
     <div className={style.searchContainer}>
-      
-      <input type="text" placeholder="search for a recipe" value={searchTerm} onChange={(e) => handleInputChange(e)} className={style.searchInput} />
+
+      <div className={style.inputWrapper}>
+        <input type="text" placeholder="search for a recipe" value={searchTerm} onChange={(e) => handleInputChange(e)} className={style.searchInput} />
+        <FiSearch className={style.icon} />
+      </div>
 
       {suggestions.length > 0 && (
         <ul className={style.suggestionsList}>
@@ -97,11 +99,11 @@ const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
       )}
 
       <div className={style.dishTypesContainer}>
-          {dishTypes.map((type) => (
-            <div className={`${style.dishTypeCard} ${dishType === type ? style.selected : ""}`} key={type} onClick={() => setDishType(type)}>
-              {type}
-            </div>
-          ))}
+        {dishTypes.map((type) => (
+          <div className={`${style.dishTypeTag} ${dishType === type ? style.selected : ""}`} key={type} onClick={() => setDishType(type)}>
+            {type}
+          </div>
+        ))}
       </div>
     </div>
   );
