@@ -4,6 +4,9 @@
     top: 100px;
     position: fixed;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
 
     .searchInput{
     
@@ -14,7 +17,8 @@
       width: 300px;
       text-align: center;
       padding: 8px;
-      width: 100%;
+      width: 300px;
+      margin: auto;
     }
     
     .tagsContainer {
@@ -63,3 +67,30 @@
   }
 
   
+
+  /* dishes */
+
+  .dishTypesContainer{
+
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+
+    .dishTypeCard{
+      border: 1px solid black;
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin: 5px;
+
+      &:hover{
+        cursor: pointer;
+        outline: 2px solid #823939;
+      }
+
+      &.selected{
+        background-color: #823939;
+        color: white;
+        outline: none;
+      }
+    }
+  }
