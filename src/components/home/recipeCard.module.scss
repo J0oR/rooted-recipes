@@ -26,8 +26,16 @@
 
   .info {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     gap: 5px;
     color: gray;
     font-size: 0.8rem;
+
+    .icon{
+      font-size: 15px;
+      height: 100%;
+    }
   }
 }

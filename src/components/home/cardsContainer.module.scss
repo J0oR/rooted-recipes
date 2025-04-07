@@ -1,0 +1,10 @@
+.cardsContainer{
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 150px;
+    overflow-y: scroll;
+    height: calc(100vh - 220px);
+  }
