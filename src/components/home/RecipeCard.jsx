@@ -15,15 +15,11 @@ function RecipeCard({ recipe }) {
       <img src={recipe.image} alt={recipe.title} />
       <span className={style.title}>{recipe.title}</span>
       <div className={style.info}>
-        <span>
-          <MdFormatListNumbered className={style.icon} />
-          {recipe.ingredientsNames.length}
-          ingredients
-        </span>
+        <MdFormatListNumbered className={style.icon} />
+        <span>{recipe.ingredientsNames.length} ingredients</span>
         <span>•</span>
-        <span>
-          <FaClock className={style.icon} /> {recipe.readyInMinutes} minutes
-        </span>
+        <FaClock className={style.icon} />
+        <span>{recipe.readyInMinutes} minutes</span>
       </div>
       {/* <p>ID: {recipe.id}</p>
             {recipe.firebaseDocID && <p>Firebase Doc ID: {recipe.firebaseDocID}</p>} */}
