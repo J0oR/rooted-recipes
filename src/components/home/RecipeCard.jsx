@@ -16,7 +16,7 @@ function RecipeCard({ recipe }) {
       <span className={style.title}>{recipe.title}</span>
       <div className={style.info}>
         <MdFormatListNumbered className={style.icon} />
-        <span>{recipe.ingredientsNames.length} ingredients</span>
+        {/* <span>{recipe.ingredientsNames.length} ingredients</span> */}
         <span>•</span>
         <FaClock className={style.icon} />
         <span>{recipe.readyInMinutes} minutes</span>

@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { db } from "../../config/firebase";
 import { query, getDocs, collection, limit, where } from "firebase/firestore";
-import { saveRecipesToFirebase, saveIngredientsToFirebase, data as utilsData } from "../../utils";
 import style from "./ingredientInput.module.scss";
 import { FiSearch } from "react-icons/fi";
+import { useDebounce } from "use-debounce";
 
-const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
+const IngredientInput = ({ingredients, setLoading, setData, setError }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [clickedSearchTerm, setClickedSearchTerm] = useState("");
-
+  
   const [suggestions, setSuggestions] = useState([]);
   const dishTypes = ["breakfast", "appetizer", "main course", "side dish", "dessert", "drink"];
   /* const dishTypes = ["main course", "side dish", "dessert", "appetizer", "salad", "bread", "breakfast", "soup", "beverage", "sauce", "marinade", "fingerfood", "snack", "drink"]; */
@@ -18,18 +18,30 @@ const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
     try {
       setLoading(true);
       let q;
-      if (searchTerm) {
+      if (clickedSearchTerm) {
         console.log("fetchData filtered");
         q = query(collection(db, "recipes"), where("ingredientsNames", "array-contains", clickedSearchTerm.toLowerCase()));
-      } else {
-        console.log("fetchData");
-        q = query(collection(db, "recipes"), limit(50));
       }
+      else if (!clickedSearchTerm)
+      {
+        if (dishType)
+        {
+          console.log("dish type filtered")
+          q = query(collection(db, "recipes"), where("dishTypes", "array-contains", dishType), limit(30))
+        }
+        else
+        {
+          console.log("fetchData");
+          q = query(collection(db, "recipes"), limit(50));
+        }
+      } 
+
       const querySnapshot = await getDocs(q);
       let recipes = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+
 
       // in-memory filtering
       if (clickedSearchTerm && dishType) {
@@ -50,11 +62,11 @@ const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
     setSearchTerm(value);
     setLoading(true);
 
+
     if (value.length > 0) {
-      const matches = ingredients.filter((ing) => ing.nameClean.toLowerCase().includes(value.toLowerCase()));
+      const matches = ingredients.filter((ing) => ing.nameClean && ing.nameClean.toLowerCase().includes(value.toLowerCase()));
 
       setSuggestions(matches.slice(0, 10)); // limit to 10 suggestions
-      console.log(suggestions);
     } else {
       setSuggestions([]);
     }
@@ -66,18 +78,8 @@ const IngredientInput = ({ ingredients, setLoading, setData, setError }) => {
     setSuggestions([]);
   };
 
-  // fetch data when landing or when searchTerm resets
   useEffect(() => {
-    if (searchTerm === "") {
       fetchData();
-    }
-  }, [searchTerm]);
-
-  // Fetch filtered data when a suggestion is clicked
-  useEffect(() => {
-    if (clickedSearchTerm !== "" || dishType !== "") {
-      fetchData();
-    }
   }, [clickedSearchTerm, dishType]);
 
   return (
