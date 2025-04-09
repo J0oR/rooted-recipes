@@ -14,7 +14,7 @@ import Suggestions from "./Suggestions";
 const IngredientInput = () => {
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const dispatch = useDispatch();
-  const { searchTerm, clickedSearchTerm, suggestions, dishType } = useSelector((state) => state.recipes);
+  const { searchTerm, clickedSearchTerm, dishType } = useSelector((state) => state.recipes);
 
   useEffect(() => {
     dispatch(fetchRecipes({ clickedSearchTerm, dishType }));

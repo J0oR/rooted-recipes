@@ -4,25 +4,27 @@ import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { db } from "../config/firebase";
 import axios from "axios";
 //import { saveRecipeToFirebase } from "../utils";
-//import style from "./recipe.module.scss";
+import style from "./recipe.module.scss";
+import Tabs from "../components/recipe/Tabs";
+import Ingredients from "../components/recipe/Ingredients";
+import Instructions from "../components/recipe/Instructions";
 
 const Recipe = () => {
-  const { id } = useParams(); // Access the 'id' parameter from the URL
+  const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedTab, setSelectedTab] = useState("ingredients");
 
   const fetchFirebaseData = async () => {
     try {
-      const recipeDocRef = doc(db, "recipes", id);
-      const recipeDoc = await getDoc(recipeDocRef);
-
-      // Fetch the document
+      const recipeDoc = await getDoc(doc(db, "recipes", id));
 
       if (recipeDoc.exists()) {
         setData(recipeDoc.data());
         setLoading(false);
         setError(null);
+        console.log(recipeDoc.data());
       } else {
         setError("No such document!");
       }
@@ -37,42 +39,15 @@ const Recipe = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", margin: "50px auto", alignItems: "center", width: "50%" }}>
+    <div className={style.recipeContainer}>
       <h1>{data.title}</h1>
-      <img src={data.image} style={{}} />
+      <img src={data.image} />
 
-      <div style={{ border: "1px solid black" }}>
-        <h2>Ingredients</h2>
-        <ul>
-          {data.ingredientsQuantity?.map((ingredient, index) => (
-            <li key={index}>{ingredient}</li>
-          ))}
-        </ul>
-      </div>
+      <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-      <div style={{ border: "1px solid black" }}>
-        <h2>Instructions</h2>
-        {data.steps?.map((step, index) => (
-          <div key={index}>
-            {data.steps.length > 1 && (
-              <h3>
-                Step {index + 1} {step.step && `- ${step.step}`}
-              </h3>
-            )}
-            <ul>
-              {step.instructions.map((inst, index) => {
-                // Split the instruction by period and trim spaces
-                const sentences = inst
-                  .split(".")
-                  .map((sentence) => sentence.trim())
-                  .filter(Boolean);
+      {selectedTab === "ingredients" && <Ingredients ingredientsQuantity={data.ingredientsQuantity} />}
 
-                return sentences.map((sentence, sentenceIndex) => <li key={`${index}-${sentenceIndex}`}>{sentence}</li>);
-              })}
-            </ul>
-          </div>
-        ))}
-      </div>
+      {selectedTab === "recipe" && <Instructions steps={data.steps} />}
     </div>
   );
 };

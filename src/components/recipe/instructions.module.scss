@@ -1,0 +1,23 @@
+.list{
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    .intructionRow{
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px;
+
+        .index{
+            border-radius: 100%;
+            border: 1px solid #C1933F;
+            padding: 10px;
+        }
+
+        .instruction{
+            color: red;
+        }
+    }
+}

@@ -26,7 +26,11 @@ const saveRecipesToFirebase = async (recipes) => {
           readyInMinutes: recipe.readyInMinutes || 0,
           servings: recipe.servings || 0,
           ingredientsNames: recipe.extendedIngredients?.map((ing) => ing.nameClean.toLowerCase()) || [],
-          ingredientsQuantity: recipe.extendedIngredients?.map((ing) => ing.original) || [],
+          ingredients: recipe.extendedIngredients?.map((ing) => ({
+            nameClean: ing.nameClean.toLowerCase(),
+            amount: ing.amount, 
+            unit: ing.unit
+          })) || [],
           dishTypes: recipe.dishTypes?.map((type) => type) || [],
           steps: recipe.analyzedInstructions?.flatMap((steps) => ({
             step: steps.name || '',
