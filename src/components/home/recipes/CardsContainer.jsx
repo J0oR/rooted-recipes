@@ -1,8 +1,12 @@
 import React from "react";
 import style from "./cardsContainer.module.scss";
 import RecipeCard from "./RecipeCard";
+import { useSelector } from "react-redux";
 
-function CardsContainer({ loading, data }) {
+function CardsContainer() {
+
+  const {data, loading} = useSelector((state) => state.recipes);
+
   return (
     <div>
       {loading ? (

@@ -30,5 +30,15 @@
     list-style: none;
     justify-content: center;
     gap: 50px;
+
+    a{
+      text-decoration: none;
+      color: black;
+      font-size: 1.1rem;
+    }
+
+    .active {
+      color: #e91e63;
+    }
   }
 }

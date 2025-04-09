@@ -1,0 +1,1 @@
+.dishTypesContainer{display:flex;flex-wrap:wrap;margin:auto}.dishTypesContainer .dishTypeTag{border-radius:10px;padding:10px 15px;margin:5px;background-color:#f3f3f3}.dishTypesContainer .dishTypeTag:hover{cursor:pointer;outline:1px solid #43927c}.dishTypesContainer .dishTypeTag.selected{background-color:#eaede6;color:#fff;outline:none;color:#43927c;font-weight:500}

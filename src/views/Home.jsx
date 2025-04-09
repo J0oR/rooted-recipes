@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import style from "./home.module.scss";
-import CardsContainer from "../components/home/CardsContainer";
-import IngredientInput from "../components/home/ingredientInput";
+import CardsContainer from "../components/home/recipes/CardsContainer";
+import IngredientInput from "../components/home/search/IngredientInput";
 import { saveRecipesToFirebase } from "../utils/saveRecipesToFirebase";
 import { saveIngredientsToFirebase } from "../utils/saveIngredientsToFirebase";
 import localData from "../assets/localData";
@@ -16,7 +16,6 @@ function Home() {
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
   const fetched = useSelector((state) => state.ingredients.fetched);
 
   const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -33,6 +32,7 @@ function Home() {
       setData(recipes); 
       */
       setData(localData);
+      console.log(localData);
       setLoading(false);
       setError(null);
     } catch (error) {
@@ -50,15 +50,15 @@ function Home() {
   }, []);
 
   // only fetch once
-useEffect(() => {
-  if (!fetched) dispatch(fetchIngredients());
-}, [fetched, dispatch]);
+  useEffect(() => {
+    if (!fetched) dispatch(fetchIngredients());
+  }, [fetched, dispatch]);
 
   //if (error) return <p>Error: {error.message}</p>;
   return (
     <div className={style.container}>
-      <IngredientInput ingredients={ingredients} setLoading={setLoading} setData={setData} setError={setError} />
-      <CardsContainer loading={loading} data={data} />
+      <IngredientInput setLoading={setLoading} data={data} setData={setData} setError={setError} />
+      <CardsContainer/>
     </div>
   );
 }
