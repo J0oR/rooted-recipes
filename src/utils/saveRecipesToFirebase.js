@@ -46,6 +46,7 @@ const saveRecipesToFirebase = async (recipes) => {
       await batch.commit();
     }
     catch (error) {
+      console.log(error);
       console.error("Error saving to Firebase:", error);
     }
   };

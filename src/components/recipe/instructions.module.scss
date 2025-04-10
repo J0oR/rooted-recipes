@@ -1,23 +1,43 @@
-.list{
-    list-style-type: none;
+.container{
+    width: 100%;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+
+        width: 50%;
+        margin: auto;
+
+}
+
+.stepsList{
     display: flex;
     flex-direction: column;
+   
+    list-style: none;
     gap: 20px;
-    width: 100%;
-
-    .intructionRow{
-        display: flex;
-        justify-content: flex-start;
-        gap: 20px;
-
-        .index{
-            border-radius: 100%;
-            border: 1px solid #C1933F;
-            padding: 10px;
-        }
-
-        .instruction{
-            color: red;
-        }
-    }
+    width: 50%;
+    margin: auto;
 }
+
+.instructionRow{
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+
+.listIndex span{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    border: 1px solid #C1933F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

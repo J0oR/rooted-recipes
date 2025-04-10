@@ -45,7 +45,7 @@ const Recipe = () => {
 
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-      {selectedTab === "ingredients" && <Ingredients ingredientsQuantity={data.ingredientsQuantity} />}
+      {selectedTab === "ingredients" && <Ingredients ingredients={data.ingredients} />}
 
       {selectedTab === "recipe" && <Instructions steps={data.steps} />}
     </div>

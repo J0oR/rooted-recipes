@@ -32,6 +32,8 @@ function Home() {
       setData(recipes); 
       */
       setData(localData);
+      saveIngredientsToFirebase(localData);
+      saveRecipesToFirebase(localData);
       console.log(localData);
       setLoading(false);
       setError(null);

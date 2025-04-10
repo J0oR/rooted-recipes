@@ -1,20 +1,20 @@
 import style from "./ingredients.module.scss";
 
-function Ingredients({ ingredientsQuantity }) {
-  const ingredients = Array.isArray(ingredientsQuantity) ? ingredientsQuantity : [];
+function Ingredients({ ingredients }) {
+  
 
   return (
     <div className={style.container}>
       <div className={style.header}>
         <h2 className={style.title}>Ingredients</h2>
         <span>
-          {ingredients.length} item{ingredients.length !== 1 ? "s" : ""}
+          {ingredients?.length} item{ingredients?.length !== 1 ? "s" : ""}
         </span>
       </div>
       <ul className={style.list}>
-        {ingredientsQuantity?.map((ingredient, index) => (
+        {ingredients?.map((ingredient, index) => (
           <li key={index} className={style.ingredientRow}>
-            <span>{ingredient.name}</span>
+            <span>{ingredient.nameClean}</span>
             <div className={style.amount}>
               <span >{ingredient.amount} </span>
               <span>{ingredient.unit}</span>

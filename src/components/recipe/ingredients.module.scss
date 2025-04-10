@@ -9,14 +9,17 @@
     align-items: center;
     padding: 20px 0;
 
+        width: 50%;
+        margin: auto;
 }
 
 .list {
-    list-style-type: none;
     display: flex;
     flex-direction: column;
+    list-style: none;
     gap: 20px;
-    width: 100%;
+    width: 50%;
+    margin: auto;
 
     .ingredientRow{
         display: flex;

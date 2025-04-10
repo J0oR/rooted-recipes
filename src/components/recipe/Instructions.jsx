@@ -2,13 +2,15 @@ import { useEffect } from "react";
 import style from "./instructions.module.scss";
 
 function Instructions({ steps }) {
-
-    /* useEffect(() =>{
+  /* useEffect(() =>{
         console.log(steps);
     }, []) */
 
   return (
-    <div>
+    <div className={style.container}>
+      <div className={style.header}>
+        <h2 className={style.title}>Instructions</h2>
+      </div>
       {steps?.map((step, indexStep) => (
         <div key={indexStep}>
           {steps.length > 1 && (
@@ -17,25 +19,14 @@ function Instructions({ steps }) {
             </h3>
           )}
 
-          <ul className={style.list}>
+          <ul className={style.stepsList}>
             {step.instructions.map((inst, index) => (
-                <li key={index} className={style.instructionRow}>
-                    <span className={style.index}>{index}</span>
-                    <span className={style.instruction}>{inst}</span>
-                </li>
-              /* // Split the instruction by period and trim spaces
-              const sentences = inst
-                .split(".")
-                .map((sentence) => sentence.trim())
-                .filter(Boolean);
-
-              return sentences.map((sentence, sentenceIndex) => (
-                <li key={`${index}-${sentenceIndex}`}>
+              <li key={index} className={style.instructionRow}>
+                <div className={style.listIndex}>
                   <span>{index}</span>
-                  <span></span>
-                  {sentence}
-                </li>
-              )); */
+                </div>
+                <span className={style.listInstruction}>{inst}</span>
+              </li>
             ))}
           </ul>
         </div>
