@@ -2,12 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import style from "./home.module.scss";
 import CardsContainer from "../components/home/recipes/CardsContainer";
-import IngredientInput from "../components/home/search/IngredientInput";
+import FilteringContainer from "../components/home/search/FilteringContainer";
 import { saveRecipesToFirebase } from "../utils/saveRecipesToFirebase";
 import { saveIngredientsToFirebase } from "../utils/saveIngredientsToFirebase";
 import localData from "../assets/localData";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../store/ingredientsSlice";
+import { fetchTitles } from "../store/titlesSlice";
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -16,28 +17,33 @@ function Home() {
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-  const fetched = useSelector((state) => state.ingredients.fetched);
 
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const apiKey = import.meta.env.VITE_API_KEY;
 
-  const fetchData = async () => {
+  const fetchAndSaveData = async () => {
     try {
-      const url = `${baseURL}?apiKey=${apiKey}&instructionsRequired=true&number=100&diet=vegetarian&sort=random&fillIngredients=true&addRecipeInformation=true&addRecipeInstructions=true`;
+      const url = `${baseURL}?apiKey=${apiKey}&instructionsRequired=true&number=30&diet=vegetarian&sort=random&fillIngredients=true&addRecipeInformation=true&addRecipeInstructions=true`;
       /*  
-      const response = await axios.get(url);
-      const recipes = response.data.results; 
-      saveRecipesToFirebase(recipes);
-      saveIngredientsToFirebase(recipes);
-      setData(recipes); 
       */
+     const response = await axios.get(url);
+     if (response.status === 200) {
+       const recipes = response.data.results; 
+       saveRecipesToFirebase(recipes);
+       saveIngredientsToFirebase(recipes);
+       setData(recipes); 
+     }
+  
+      /* 
       setData(localData);
       saveIngredientsToFirebase(localData);
-      saveRecipesToFirebase(localData);
-      console.log(localData);
+      saveRecipesToFirebase(localData); 
+      */
+
       setLoading(false);
       setError(null);
     } catch (error) {
+      console.error("Error fetching data from API:", error);
       setError(error);
       setLoading(false);
     } finally {
@@ -47,19 +53,15 @@ function Home() {
 
   // fetch ingredients once, only when the component mounts
   useEffect(() => {
-    fetchData();
-    //fetchIngredients();
+    //fetchAndSaveData();
+    dispatch(fetchTitles());
+    dispatch(fetchIngredients());
   }, []);
-
-  // only fetch once
-  useEffect(() => {
-    if (!fetched) dispatch(fetchIngredients());
-  }, [fetched, dispatch]);
 
   //if (error) return <p>Error: {error.message}</p>;
   return (
     <div className={style.container}>
-      <IngredientInput setLoading={setLoading} data={data} setData={setData} setError={setError} />
+      <FilteringContainer/>
       <CardsContainer/>
     </div>
   );

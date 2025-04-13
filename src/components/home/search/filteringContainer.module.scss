@@ -1,0 +1,32 @@
+/* input */
+
+.searchContainer {
+  top: 100px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+
+  .inputSwitchContainer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    .inputWrapper {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+
+      .icon {
+        position: absolute;
+        top: 50%;
+        left: 8px;
+        transform: translateY(-50%);
+        color: #666;
+        pointer-events: none;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

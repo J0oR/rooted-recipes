@@ -11,19 +11,21 @@ function RecipeCard({ recipe }) {
   };
 
   return (
-    <div className={style.card} onClick={handleClick}>
-      <img src={recipe.image} alt={recipe.title} />
-      <span className={style.title}>{recipe.title}</span>
-      <div className={style.info}>
-        <MdFormatListNumbered className={style.icon} />
-        <span>{recipe.ingredientsNames.length} ingredients</span>
-        <span>•</span>
-        <FaClock className={style.icon} />
-        <span>{recipe.readyInMinutes} minutes</span>
-      </div>
-      {/* <p>ID: {recipe.id}</p>
-            {recipe.firebaseDocID && <p>Firebase Doc ID: {recipe.firebaseDocID}</p>} */}
-    </div>
+    <>
+      {recipe && (
+        <div className={style.card} onClick={handleClick}>
+          <img src={recipe.image} alt={recipe.title} />
+          <span className={style.title}>{recipe.title}</span>
+          <div className={style.info}>
+            <MdFormatListNumbered className={style.icon} />
+            {recipe.ingredientsNames && <span>{recipe.ingredientsNames.length} ingredients</span>}
+            <span>•</span>
+            <FaClock className={style.icon} />
+            <span>{recipe.readyInMinutes} minutes</span>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

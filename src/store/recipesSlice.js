@@ -1,29 +1,49 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../config/firebase";
-import { query, getDocs, collection, limit, where } from "firebase/firestore";
-import { act } from "react";
+import { doc, getDoc, query, getDocs, collection, limit, where } from "firebase/firestore";
 
-export const fetchRecipes = createAsyncThunk("recipes/fetchRecipes" ,
-  async ({ clickedSearchTerm, dishType }, { rejectWithValue }) => {
+
+export const fetchRecipes = createAsyncThunk(
+  "recipes/fetchRecipes",
+  async ({ clickedSuggestion, dishType, debouncedSearchTerm, titles }, { rejectWithValue }) => {
     try {
+      const baseQuery = collection(db, "recipes");
       let q;
-      if (clickedSearchTerm && dishType) {
-        q = query(collection(db, "recipes"), where("ingredientsNames", "array-contains", clickedSearchTerm.toLowerCase()));
-      } else if (!clickedSearchTerm && dishType) {
-        q = query(collection(db, "recipes"), where("dishTypes", "array-contains", dishType), limit(30));
-      } else if (!clickedSearchTerm && !dishType){
-        q = query(collection(db, "recipes"), limit(30));
+
+      // 1. Filter by ingredient suggestion
+      if (clickedSuggestion) {
+        q = query(baseQuery, where("ingredientsNames", "array-contains", clickedSuggestion.toLowerCase()));
+      }
+      // 2. Filter by debounced search term
+      else if (debouncedSearchTerm) {
+        const matchingIds = titles.filter((item) => item.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())).slice(0, 10).map((m) => m.id);
+
+        if (!matchingIds.length) return []; // No matches = early return
+
+        q = query(baseQuery, where("__name__", "in", matchingIds));
+      }
+      // 3. Filter by dish type only
+      else if (dishType) {
+        q = query(baseQuery, where("dishTypes", "array-contains", dishType.toLowerCase()), limit(30));
+      }
+      // 4. Default fallback (no filters)
+      else {
+        q = query(baseQuery, limit(30));
       }
 
-      const querySnapshot = await getDocs(q);
-      let recipes = querySnapshot.docs.map((doc) => ({
+      const snapshot = await getDocs(q);
+      let recipes = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      if (clickedSearchTerm && dishType) {
-        recipes = recipes.filter((r) => r.dishTypes.includes(dishType.toLowerCase()));
+      // 5. In-memory filtering for combinations
+      if ((clickedSuggestion || debouncedSearchTerm) && dishType) {
+        recipes = recipes.filter((r) =>
+          r.dishTypes.includes(dishType.toLowerCase())
+        );
       }
+
       return recipes;
     } catch (err) {
       return rejectWithValue(err.message);
@@ -31,22 +51,19 @@ export const fetchRecipes = createAsyncThunk("recipes/fetchRecipes" ,
   }
 );
 
+
 const recipeSlice = createSlice({
   name: "recipes",
   initialState: {
-    searchTerm: "",
-    clickedSearchTerm: "",
-    dishType: "",
-    suggestions: [],
     data: [],
     loading: false,
     error: null,
   },
   reducers: {
-    setSearchTerm: (state, action) => {
+    /* setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
     },
-    setClickedSearchTerm: (state, action) => {
+    setClickedSuggestion: (state, action) => {
       state.clickedSearchTerm = action.payload;
     },
     setDishType: (state, action) => {
@@ -58,7 +75,7 @@ const recipeSlice = createSlice({
     },
     clearSuggestions: (state) => {
       state.suggestions = [];
-    },
+    }, */
   },
   extraReducers: (builder) => {
     builder
@@ -77,12 +94,5 @@ const recipeSlice = createSlice({
   },
 });
 
-export const {
-  setSearchTerm,
-  setClickedSearchTerm,
-  setDishType,
-  setSuggestions,
-  clearSuggestions,
-} = recipeSlice.actions;
 
 export default recipeSlice.reducer;

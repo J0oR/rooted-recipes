@@ -1,8 +1,13 @@
 import { db } from "../config/firebase";
 import { doc, writeBatch } from "firebase/firestore";
 
+function cleanRecipeData(recipe) {
+  return Object.fromEntries(
+    Object.entries(recipe).filter(([_, value]) => value !== undefined)
+  );
+}
+
 const saveRecipesToFirebase = async (recipes) => {
-    console.log("YO", recipes)
     try {
   
       if (!Array.isArray(recipes) || recipes.length === 0) {
@@ -25,9 +30,9 @@ const saveRecipesToFirebase = async (recipes) => {
           image: recipe.image || "No image",
           readyInMinutes: recipe.readyInMinutes || 0,
           servings: recipe.servings || 0,
-          ingredientsNames: recipe.extendedIngredients?.map((ing) => ing.nameClean.toLowerCase()) || [],
+          ingredientsNames: recipe.extendedIngredients?.map((ing) => ing.nameClean?.toLowerCase()) || [],
           ingredients: recipe.extendedIngredients?.map((ing) => ({
-            nameClean: ing.nameClean.toLowerCase(),
+            nameClean: ing.nameClean?.toLowerCase() || '',
             amount: ing.amount, 
             unit: ing.unit
           })) || [],
@@ -40,7 +45,9 @@ const saveRecipesToFirebase = async (recipes) => {
   
           })) || [],
         };
-        batch.set(recipeRef, recipeData, { merge: true });
+          const cleaned = cleanRecipeData(recipe);
+
+        batch.set(recipeRef, cleaned, { merge: true });
       });
   
       await batch.commit();

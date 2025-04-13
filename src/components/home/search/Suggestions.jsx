@@ -1,15 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, setClickedSearchTerm, clearSuggestions } from "../../../store/recipesSlice";
+import { setSearchTerm, setClickedSuggestion, setSuggestions } from "../../../store/searchSlice";
 import style from "./suggestions.module.scss";
 
 function Suggestions() {
   const dispatch = useDispatch();
-  const { suggestions} = useSelector((state) => state.recipes);
+  const { suggestions} = useSelector((state) => state.search);
 
   const handleSuggestionClick = (name) => {
     dispatch(setSearchTerm(name));
-    dispatch(setClickedSearchTerm(name));
-    dispatch(clearSuggestions());
+    dispatch(setClickedSuggestion(name));
+    dispatch(setSuggestions([]));
   };
 
   return (

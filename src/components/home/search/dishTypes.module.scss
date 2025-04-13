@@ -6,22 +6,21 @@
     margin: auto;
   
     .dishTypeTag {
-      border-radius: 10px;
       padding: 10px 15px;
       margin: 5px;
-      background-color: #f3f3f3;
+      text-transform: uppercase;
+      transition: all 0.3s ease-in-out;
   
       &:hover {
         cursor: pointer;
-        outline: 1px solid #43927C;
+        transform: scale(1.1);
       }
   
       &.selected {
-        background-color: #eaede6;
-        color: white;
         outline: none;
         color: #43927C;
         font-weight: 500;
+        border-bottom: 2px solid ;
       }
     }
   }
