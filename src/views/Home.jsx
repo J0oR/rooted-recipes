@@ -9,15 +9,19 @@ import localData from "../assets/localData";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../store/ingredientsSlice";
 import { fetchTitles } from "../store/titlesSlice";
+import { db, auth } from "../config/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { fetchFavourites } from "../store/favouriteSlice";
 
 function Home() {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  //const [data, setData] = useState([]);
   //const [ingredients, setIngredients] = useState([]);
+  const {data, loading} = useSelector((state) => state.recipes);
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
 
+  const [user] = useAuthState(auth);
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -31,7 +35,6 @@ function Home() {
        const recipes = response.data.results; 
        saveRecipesToFirebase(recipes);
        saveIngredientsToFirebase(recipes);
-       setData(recipes); 
      }
   
       /* 
@@ -40,29 +43,28 @@ function Home() {
       saveRecipesToFirebase(localData); 
       */
 
-      setLoading(false);
       setError(null);
     } catch (error) {
       console.error("Error fetching data from API:", error);
       setError(error);
-      setLoading(false);
-    } finally {
-      setLoading(false);
     }
   };
 
   // fetch ingredients once, only when the component mounts
   useEffect(() => {
-    //fetchAndSaveData();
+    if (user) {
+      dispatch(fetchFavourites(user.uid));
+    }
+    fetchAndSaveData();
     dispatch(fetchTitles());
     dispatch(fetchIngredients());
-  }, []);
+  }, [user, dispatch]);
 
   //if (error) return <p>Error: {error.message}</p>;
   return (
     <div className={style.container}>
       <FilteringContainer/>
-      <CardsContainer/>
+      <CardsContainer recipes={data} loading={loading}/>
     </div>
   );
 }

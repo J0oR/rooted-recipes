@@ -4,12 +4,14 @@ import ingredientsReducer from "./ingredientsSlice";
 import recipesReducer from "./recipesSlice";
 import titlesReducer from "./titlesSlice";
 import searchReducer from "./searchSlice";
+import favouritesReducer from "./favouriteSlice";
 
 export const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
     titles: titlesReducer,
     recipes: recipesReducer,
-    search: searchReducer
+    search: searchReducer,
+    favourites: favouritesReducer
   },
 });

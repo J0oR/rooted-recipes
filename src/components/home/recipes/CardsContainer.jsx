@@ -3,9 +3,9 @@ import style from "./cardsContainer.module.scss";
 import RecipeCard from "./RecipeCard";
 import { useSelector } from "react-redux";
 
-function CardsContainer() {
+function CardsContainer({recipes, loading}) {
 
-  const {data, loading} = useSelector((state) => state.recipes);
+
 
   return (
     <div>
@@ -13,7 +13,7 @@ function CardsContainer() {
         <span className={style.loader}></span>
       ) : (
         <div className={style.cardsContainer}>
-          {data.map((recipe) => (
+          {recipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}
         </div>

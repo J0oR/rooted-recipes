@@ -6,21 +6,26 @@ import { FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useEffect } from "react";
 import { auth, provider } from "../config/firebase"; // Adjust the path as needed
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Navbar = () => {
+  const [user] = useAuthState(auth);
 
-    const handleGoogleLogin = async () => {
-      try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        console.log("User logged in: ", user);
-        // Additional logic to handle the authenticated user
-        
-      } catch (error) {
-        console.error("Login error:", error.message);
-      }
-    };
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log("User logged in: ", result);
+      // Additional logic to handle the authenticated user
+    } catch (error) {
+      console.error("Login error:", error.message);
+    }
+  };
+
+  const logOut = async () => {
+    await signOut(auth);
+  };
 
   return (
     <nav className={style.navbar}>
@@ -30,21 +35,22 @@ const Navbar = () => {
             <FaHome />
           </NavLink>
         </li>
+        {user && (
+          <li>
+            <NavLink to="/favourites" className={({ isActive }) => (isActive ? style.active : undefined)}>
+              <FaHeart />
+            </NavLink>
+          </li>
+        )}
         <li>
-          <NavLink to="/favourites" className={({ isActive }) => (isActive ? style.active : undefined)}>
-            <FaHeart />
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/user" className={({ isActive }) => (isActive ? style.active : undefined)}>
-            <FaUser />
-          </NavLink>
-        </li>
-        <li>
-          <button id="google-login-btn" onClick={handleGoogleLogin}>
-            <FcGoogle size={20} />
-            Accedi con Google 
-          </button>
+          {user ? (
+              <button onClick={logOut}>Log out</button>
+          ) : (
+            <button id="google-login-btn" onClick={handleGoogleLogin} className={style.googleBtn}>
+              <span>Accedi con</span>
+              <span className={style.googleSpan}><FcGoogle size={20} /><span>oogle</span></span>
+            </button>
+          )}
         </li>
       </ul>
     </nav>

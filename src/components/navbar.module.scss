@@ -27,18 +27,41 @@
     //border: 1px solid black;
     display: flex;
     flex-direction: row;
+    align-items: center;
     list-style: none;
     justify-content: center;
     gap: 50px;
 
-    a{
+    li {
+      display: flex;
+      align-items: center;
+      
       text-decoration: none;
       color: black;
       font-size: 1.1rem;
+      
+      
+      &.active {
+        color: #e91e63;
+      }
+      
+      .googleBtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        padding: 10px 20px;
+        font-size: 1rem;
+
+        .googleSpan{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+  
+      }
     }
 
-    .active {
-      color: #e91e63;
-    }
+
   }
 }
