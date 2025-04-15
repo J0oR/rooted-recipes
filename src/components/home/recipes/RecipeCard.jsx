@@ -26,8 +26,6 @@ function RecipeCard({ recipe }) {
     const newSavedState = !isSaved;
     setIsSaved(newSavedState);
 
-   
-
     if (newSavedState) {
       setDoc(recipeRef, {
         uid: user.uid,
@@ -43,29 +41,36 @@ function RecipeCard({ recipe }) {
       setIsSaved(recipes.some((r) => r.id === recipe.id));
     }
   }, [recipes, recipe.id]);
-  
 
   return (
     <>
       {recipe && (
         <div className={style.card} onClick={handleClick}>
           <img src={recipe.image} alt={recipe.title} />
-          <span className={style.title}>{recipe.title}</span>
-          <div className={style.info}>
-            <MdFormatListNumbered className={style.icon} />
-            {recipe.ingredientsNames && <span>{recipe.ingredientsNames.length} ingredients</span>}
-            <span>•</span>
-            <FaClock className={style.icon} />
-            <span>{recipe.readyInMinutes} minutes</span>
+          <div className={style.details}>
+            <span className={style.title}>{recipe.title}</span>
+            <div className={style.info}>
+              <span>
+
+              <MdFormatListNumbered className={style.icon} />
+              {recipe.ingredientsNames && <span>{recipe.ingredientsNames.length} ingredients</span>}
+              </span>
+              {/* <span>•</span> */}
+              <span>
+              <FaClock className={style.icon} />
+              <span>{recipe.readyInMinutes} minutes</span>
+              </span>
+              
+            </div>
+            {user && (
+              <button
+                onClick={(e) => {
+                  toggleSave(e);
+                }}>
+                {isSaved ? <AiFillHeart size={24} color="red" /> : <AiOutlineHeart size={24} color="gray" />}
+              </button>
+            )}
           </div>
-          {user && (
-            <button
-              onClick={(e) => {
-                toggleSave(e);
-              }}>
-              {isSaved ? <AiFillHeart size={24} color="red" /> : <AiOutlineHeart size={24} color="gray" />}
-            </button>
-          )}
         </div>
       )}
     </>

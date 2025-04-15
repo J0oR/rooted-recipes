@@ -45,7 +45,7 @@ const saveRecipesToFirebase = async (recipes) => {
   
           })) || [],
         };
-          const cleaned = cleanRecipeData(recipe);
+          const cleaned = cleanRecipeData(recipeData);
 
         batch.set(recipeRef, cleaned, { merge: true });
       });

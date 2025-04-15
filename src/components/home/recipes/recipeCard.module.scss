@@ -1,21 +1,29 @@
 .card {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  //width: 300px;
+  gap: 20px;
   height: fit-content;
-  overflow: hidden;
-  gap: 10px;
-  padding: 20px;
-  border-radius: 15px;
-  background-color: #FFF2E2;
-  width: 300px;
+  border-radius: 75px;
+  background-color: #C6D5C0;
+  color: #090500;
+  width: 400px;
+  height: 140px;
+  position: relative;
+
+  .details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 15px;
+    margin-left: 160px;  
+  }
 
   .title {
     font-size: 1.2rem;
     font-weight: 500;
-    max-width: 250px;
+    max-width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -23,22 +31,29 @@
   }
 
   img {
-    width: 200px;
-    height: 200px;
+    width: 160px;
+    height: 160px;
     object-fit: cover;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     filter: brightness(80%) contrast(1);
-    border-radius: 15px;
     border-radius: 100%;
+    position: absolute;
+    left: -20px;
     
   }
 
   .info {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
+    align-items: space-between;
     font-size: 0.8rem;
-    gap: 5px;
+    gap: 10px;
+
+    span{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
 
     .icon{

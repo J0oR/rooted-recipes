@@ -8,6 +8,7 @@ import style from "./recipe.module.scss";
 import Tabs from "../components/recipe/Tabs";
 import Ingredients from "../components/recipe/Ingredients";
 import Instructions from "../components/recipe/Instructions";
+import SummaryStyled from "../components/recipe/summary.styled";
 
 const Recipe = () => {
   const { id } = useParams();
@@ -48,6 +49,8 @@ const Recipe = () => {
       {selectedTab === "ingredients" && <Ingredients ingredients={data.ingredients} />}
 
       {selectedTab === "recipe" && <Instructions steps={data.steps} />}
+
+      {selectedTab === "summary" && <SummaryStyled summary={data.summary} />}
     </div>
   );
 };

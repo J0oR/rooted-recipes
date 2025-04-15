@@ -18,7 +18,6 @@ const BasicButton = styled.button`
 `;
 
 function Button({ className, onClick, children }) {
-    console.log("dioporco");
   
     return (
       <BasicButton className={className} onClick={onClick}>

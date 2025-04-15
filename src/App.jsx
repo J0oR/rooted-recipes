@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./views/Home";
 import Favourites from "./views/Favourites";
-import Navbar from "./components/NavBar";
+import Navbar from "./components/navbar/NavBar";
 import Recipe from "./views/Recipe";
 import User from "./views/User";
 
