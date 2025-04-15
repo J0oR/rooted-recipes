@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDebounce } from "use-debounce";
 import { fetchRecipes } from "../../../store/recipesSlice"; 
-import style from "./input.module.scss";
 import { setSearchTerm, setSuggestions } from "../../../store/searchSlice";
+import Input from "../../common/Input";
 
 const NameSearchInput = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const NameSearchInput = () => {
 
   return (
     <>
-      <input type="text" placeholder={`Search recipes by name`} value={searchTerm} className={style.searchInput} onChange={handleInputChange} />
+      <Input type="text" placeholder={`Search recipes by name`} value={searchTerm} onChange={handleInputChange} />
     </>
   );
 };

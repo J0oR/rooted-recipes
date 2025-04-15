@@ -1,6 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
-import style from "./dishTypes.module.scss";
 import { setDishType } from "../../../store/searchSlice";
+import styled from "styled-components";
+
+import Tag  from "../../common/Tag.styled";
+
+const BasicContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: auto;
+  width: 100%;
+`;
 
 function DishTypes() {
   const dispatch = useDispatch();
@@ -14,21 +26,14 @@ function DishTypes() {
       type = "";
     }
     dispatch(setDishType(type));
-  }
+  };
 
   return (
-    <div className={style.dishTypesContainer}>
+    <BasicContainer>
       {dishTypes.map((type) => (
-        <div 
-        key={type} 
-        className={`${style.dishTypeTag} ${dishType === (type === "all" ? "" : type) ? style.selected : ""}`}
- 
-        
-        onClick={() => handleClick(type)}>
-          {type}
-        </div>
+        <Tag key={type} className={`${dishType === (type === "all" ? "" : type) ? "selected" : ""}`} onClick={() => handleClick(type)} children={type} />
       ))}
-    </div>
+    </BasicContainer>
   );
 }
 

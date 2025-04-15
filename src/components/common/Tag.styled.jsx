@@ -1,12 +1,6 @@
-/* dishes */
+import styled from "styled-components"
 
-.dishTypesContainer {
-    display: flex;
-    flex-wrap: wrap;
-    margin: auto;
-  
-    .dishTypeTag {
-      padding: 10px 15px;
+const BasicTag = styled.div`padding: 10px 15px;
       margin: 5px;
       text-transform: uppercase;
       transition: all 0.3s ease-in-out;
@@ -22,5 +16,10 @@
         font-weight: 500;
         border-bottom: 2px solid ;
       }
-    }
-  }
+      `
+
+function Tag({onClick, className, children}) {
+    return <BasicTag className={className} onClick={onClick}>{children}</BasicTag>
+}
+
+export default Tag;

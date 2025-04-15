@@ -1,17 +1,14 @@
-import style from "./searchMode.module.scss";
+import Container from "../../common/Container.styled";
+import Button from "../../common/Button";
+import Suggestions from "./Suggestions";
 
 const SearchMode = ({ searchType, setSearchType }) => {
   return (
-    <div className={style.container}>
-      <button onClick={() => setSearchType("name")} className={`${style.btn} ${searchType === "name" ? style.active : ""}`}
-      >
-        by name
-      </button>
-      <button onClick={() => setSearchType("ingredient")} className={`${style.btn} ${searchType === "ingredient" ? style.active : ""}`}
-      >
-        by ingredient
-      </button>
-    </div>
+    <Container>
+      <Button onClick={() => setSearchType("name")} className={searchType === "name" ? "active" : ""} children={"by name"} />
+
+      <Button onClick={() => setSearchType("ingredient")} className={searchType === "ingredient" ? "active" : ""} children={"by ingredient"} />
+    </Container>
   );
 };
 

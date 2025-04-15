@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSearchTerm, setSuggestions, setClickedSuggestion } from "../../../store/searchSlice";
 import { fetchRecipes } from "../../../store/recipesSlice";
-import style from "./input.module.scss";
+import Input from "../../common/Input";
 
 const IngredientSearchInput = () => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const IngredientSearchInput = () => {
 
   return (
     <>
-      <input type="text" placeholder={`Search recipes by ingredient`} value={searchTerm} onChange={handleInputChange} className={style.searchInput} />
+      <Input type="text" placeholder={`Search recipes by ingredient`} value={searchTerm} onChange={handleInputChange} />
     </>
   );
 };

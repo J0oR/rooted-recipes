@@ -1,10 +1,32 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setSearchTerm, setClickedSuggestion, setSuggestions } from "../../../store/searchSlice";
-import style from "./suggestions.module.scss";
+import styled from "styled-components";
+
+const SuggestionsList = styled.ul`
+  list-style: none;
+  padding: 0;
+  background: #eaede6;
+  border-radius: 15px;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  position: absolute;
+  top: 50px;
+`;
+
+const SuggestionItem = styled.li`
+  padding: 8px 12px;
+  cursor: pointer;
+
+  &:hover {
+    background: #43927c;
+  }
+`;
 
 function Suggestions() {
   const dispatch = useDispatch();
-  const { suggestions} = useSelector((state) => state.search);
+  const { suggestions } = useSelector((state) => state.search);
 
   const handleSuggestionClick = (name) => {
     dispatch(setSearchTerm(name));
@@ -15,13 +37,13 @@ function Suggestions() {
   return (
     <>
       {suggestions.length > 0 && (
-        <ul className={style.suggestionsList}>
+        <SuggestionsList>
           {suggestions.map((s) => (
-            <li key={s.id} className={style.suggestionItem} onClick={() => handleSuggestionClick(s.nameClean)}>
+            <SuggestionItem key={s.id} onClick={() => handleSuggestionClick(s.nameClean)}>
               {s.nameClean}
-            </li>
+            </SuggestionItem>
           ))}
-        </ul>
+        </SuggestionsList>
       )}
     </>
   );

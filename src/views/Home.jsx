@@ -55,7 +55,7 @@ function Home() {
     if (user) {
       dispatch(fetchFavourites(user.uid));
     }
-    fetchAndSaveData();
+    //fetchAndSaveData();
     dispatch(fetchTitles());
     dispatch(fetchIngredients());
   }, [user, dispatch]);
