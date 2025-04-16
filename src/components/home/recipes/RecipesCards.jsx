@@ -23,8 +23,10 @@ const CardsContainer = styled.div`
   gap: 50px;
   margin-top: 20px;
   overflow-y: scroll;
-  height: calc(100vh - 220px);
+  height: calc(100vh - 250px);
   width: 100vw;
-  padding: 50px;
-  background-color: #fbf5ec;
+  padding: 50px 10vw;
+  background-color: #FFFAF5;
+  position: absolute;
+  bottom: 0;
 `;

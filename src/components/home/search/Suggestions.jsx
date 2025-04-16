@@ -1,6 +1,47 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setSearchTerm, setClickedSuggestion, setSuggestions } from "../../../store/searchSlice";
 import styled from "styled-components";
+import { useEffect } from "react";
+
+export default function Suggestions({displayTerm, setDisplayTerm}) {
+
+  const dispatch = useDispatch();
+  const { suggestions } = useSelector((state) => state.search);
+  const { ingredients } = useSelector((state) => state.ingredients);
+
+  const handleSuggestionClick = (name) => {
+    dispatch(setSearchTerm(""));
+    setDisplayTerm(name);
+    dispatch(setClickedSuggestion(name));
+    dispatch(setSuggestions([]));
+  };
+
+  useEffect(() => {
+    if (displayTerm) {
+      const matches = ingredients.filter((ing) => ing.nameClean && ing.nameClean.toLowerCase().includes(displayTerm.toLowerCase()));
+      dispatch(setSuggestions(matches.slice(0, 10)));
+    } else {
+      dispatch(setClickedSuggestion(""));
+      dispatch(setSuggestions([]));
+    }
+  }, [displayTerm]);
+
+  if (suggestions.length === 0) return null;
+
+  return (
+    <>
+      <SuggestionsList>
+        {suggestions.map((s) => (
+          <SuggestionItem key={s.id} onClick={() => handleSuggestionClick(s.nameClean)}>
+            {s.nameClean}
+          </SuggestionItem>
+        ))}
+      </SuggestionsList>
+    </>
+  );
+}
+
+
 
 const SuggestionsList = styled.ul`
   list-style: none;
@@ -23,30 +64,3 @@ const SuggestionItem = styled.li`
     background: #43927c;
   }
 `;
-
-function Suggestions() {
-  const dispatch = useDispatch();
-  const { suggestions } = useSelector((state) => state.search);
-
-  const handleSuggestionClick = (name) => {
-    dispatch(setSearchTerm(name));
-    dispatch(setClickedSuggestion(name));
-    dispatch(setSuggestions([]));
-  };
-
-  if (suggestions.length === 0) return null;
-
-  return (
-    <>
-      <SuggestionsList>
-        {suggestions.map((s) => (
-          <SuggestionItem key={s.id} onClick={() => handleSuggestionClick(s.nameClean)}>
-            {s.nameClean}
-          </SuggestionItem>
-        ))}
-      </SuggestionsList>
-    </>
-  );
-}
-
-export default Suggestions;

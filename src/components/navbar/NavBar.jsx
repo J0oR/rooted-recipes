@@ -32,7 +32,7 @@ export default function Navbar() {
         )}
       </div>
 
-      <AuthButton />
+      {!user && <AuthButton />}
     </NavBarContainer>
   );
 }

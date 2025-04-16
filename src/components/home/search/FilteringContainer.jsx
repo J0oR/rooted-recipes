@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import DishTypes from "./DishTypes";
-import Suggestions from "./Suggestions";
+
 /* import NameSearchInput from "./NameSearchInput";
 import IngredientSearchInput from "./IngredientSearchInput";
 import SearchMode from "./searchMode"; */
@@ -24,7 +24,6 @@ const FilteringContainer = () => {
   return (
     <BasicContainer>
       <SearchInput />
-      <Suggestions />
       <DishTypes />
     </BasicContainer>
   );

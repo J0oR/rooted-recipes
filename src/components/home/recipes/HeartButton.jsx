@@ -58,8 +58,8 @@ const StyledButton = styled.button`
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
   position: absolute;
-  left: 37px;
-  bottom: 7px;
+  left: 20px;
+  bottom: 27px;
   background: rgba(255, 255, 255, 0.48); /* or darker if needed */
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(10px); /* for Safari support */

@@ -15,7 +15,7 @@ const AuthStateButton = styled.button`
   border: none;
   padding: ${({ $logout }) => ($logout ? "10px 20px" : "10px 2px 10px 10px")};
   height: 30px;
-  background-color: #FBF5EC;
+  background-color: #fbf5ec;
   color: #090500;
 `;
 
@@ -39,16 +39,11 @@ function AuthButton() {
     }
   };
 
-  const logOut = async () => {
-    await signOut(auth);
-  };
 
-  return user ? (
-    <AuthStateButton $logout onClick={logOut}>Log out</AuthStateButton>
-  ) : (
+  return (
     <AuthStateButton id="google-login-btn" onClick={handleGoogleLogin}>
       <span>Sign in with </span>
-      <GoogleIcon   />
+      <GoogleIcon />
     </AuthStateButton>
   );
 }

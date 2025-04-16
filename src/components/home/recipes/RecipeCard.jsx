@@ -48,13 +48,13 @@ const Card = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
-  height: fit-content;
-  border-radius: 75px;
-  background-color: #c6d5c0;
+  height: 200px;
+  border-radius: 25px;
+  background-color: #FFFFFF;
   color: #090500;
   width: 400px;
-  height: 140px;
   position: relative;
+  border: 2px solid #d9d9d9;
 
   .details {
     display: flex;
@@ -110,7 +110,7 @@ const Card = styled.div`
     filter: brightness(80%) contrast(1);
     border-radius: 100%;
     position: absolute;
-    left: -20px;
+    left: -35px;
   }
 `;
 
