@@ -1,0 +1,80 @@
+import styled from "styled-components";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { db, auth } from "../../../config/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { setDoc, deleteDoc, doc } from "firebase/firestore"; // aggiungi questo in cima
+import { useSelector } from "react-redux";
+import { useMemo } from "react";
+
+export default function HeartButton({ recipeId }) {
+  const [isSaved, setIsSaved] = useState(false);
+  const [user] = useAuthState(auth);
+  const { recipes } = useSelector((state) => state.favourites);
+  const recipeRef = useMemo(() => doc(db, "heartedRecipes", recipeId.toString()), [recipeId]);
+
+  const toggleSave = async (event) => {
+    event.stopPropagation();
+    if (!user) return;
+
+    const newSavedState = !isSaved;
+    setIsSaved(newSavedState);
+
+    try {
+      if (newSavedState) {
+        setDoc(recipeRef, {
+          uid: user.uid,
+          recipeId: recipeId,
+        });
+      } else {
+        deleteDoc(recipeRef);
+      }
+    } catch (error) {
+      console.error("Firestore error:", error);
+      setIsSaved(!newSavedState);
+    }
+  };
+
+  useEffect(() => {
+    if (recipes.length > 0) {
+      setIsSaved(recipes.some((r) => r.id === recipeId));
+    }
+  }, [recipes, recipeId]);
+
+  if (!user) return null;
+
+  return (
+    <StyledButton onClick={toggleSave}>
+      {isSaved ? <AiFillHeart size={25} color="#E91D63" className="icon" /> : <AiOutlineHeart size={25} color="#ffffff" className="icon" />}
+    </StyledButton>
+  );
+}
+
+const StyledButton = styled.button`
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  position: absolute;
+  left: 37px;
+  bottom: 7px;
+  background: rgba(255, 255, 255, 0.48); /* or darker if needed */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(10px); /* for Safari support */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: none;
+  width: 50px;
+  height: 30px;
+  border-radius: 25px;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  .icon {
+    border-radius: 100%;
+    font-weight: 800px;
+  }
+`;

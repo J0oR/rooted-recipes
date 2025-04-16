@@ -1,51 +1,60 @@
-import { FaHeart } from "react-icons/fa";
+import { AiOutlineHeart } from "react-icons/ai";
 import { FaHome } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
 import { auth } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
 import NavLinkStyled from "./NavLink.styled";
 import AuthButton from "./AuthButton.styled";
 
-const NavBarContainer = styled.nav`
-  width: 50%;
-  height: 50px;
-  border-radius: 25px;
-  position: fixed;
-  left: 25%;
-  top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-  z-index: 10;
-
-  background: rgba(171, 186, 171, 0.1); /* Fallback color for older browsers */
-  background: -webkit-linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(171, 186, 171, 0.5)); /* Webkit browsers */
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(171, 186, 171, 0.5)); /* Modern browsers */
-  backdrop-filter: blur(10px); /* Glass effect */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
-
-  @media screen and (max-width: 600px) {
-    width: 80%;
-  }
-`;
-
-const Navbar = () => {
+export default function Navbar() {
   const [user] = useAuthState(auth);
 
   return (
     <NavBarContainer>
-      <NavLinkStyled to="/" className={({ isActive }) => (isActive ? "active" : undefined)}>
-        <FaHome className="icon" />
-      </NavLinkStyled>
-      {user && (
-        <NavLinkStyled to="/favourites" className={({ isActive }) => (isActive ? "active" : undefined)}>
-          <FaHeart className="icon" />
+      <span className="Logo">Rooted Recipes</span>
+      <div className="LinksContainer">
+        <NavLinkStyled to="/" className={({ isActive }) => (isActive ? "active" : undefined)}>
+          <FaHome className="icon" />
+          <span>Home</span>
         </NavLinkStyled>
-      )}
+        {user && (
+          <NavLinkStyled to="/favourites" className={({ isActive }) => (isActive ? "active" : undefined)}>
+            <AiOutlineHeart className="icon" />
+            <span>Saved</span>
+          </NavLinkStyled>
+        )}
+        {user && (
+          <NavLinkStyled to="/user" className={({ isActive }) => (isActive ? "active" : undefined)}>
+            <AiOutlineUser className="icon"></AiOutlineUser>
+            <span>Profile</span>
+          </NavLinkStyled>
+        )}
+      </div>
+
       <AuthButton />
     </NavBarContainer>
   );
-};
+}
 
-export default Navbar;
+const NavBarContainer = styled.nav`
+  height: 50px;
+  border-radius: 25px;
+  top: 20px;
+  display: flex;
+  left: 50%;
+  justify-content: space-around;
+  align-items: center;
+  gap: 50px;
+  z-index: 10;
+  padding: 50px 100px 0px 100px;
+
+  .LinksContainer{
+    display: flex;
+    gap: 50px;
+  }
+
+  .Logo{
+    font-size: 1rem;
+  }
+`;

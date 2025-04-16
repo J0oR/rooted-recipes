@@ -1,80 +1,117 @@
-import style from "./recipeCard.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FaClock } from "react-icons/fa";
 import { MdFormatListNumbered } from "react-icons/md"; // List for amounts/ingredients
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useEffect, useState } from "react";
-import { db, auth } from "../../../config/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { setDoc, deleteDoc, doc } from "firebase/firestore"; // aggiungi questo in cima
-import { useSelector } from "react-redux";
+import styled from "styled-components";
+import HeartButton from "./HeartButton";
 
 function RecipeCard({ recipe }) {
   const navigate = useNavigate();
-  const [isSaved, setIsSaved] = useState(false);
-  const [user] = useAuthState(auth);
-  const { recipes } = useSelector((state) => state.favourites);
-  const recipeRef = doc(db, "heartedRecipes", recipe.id.toString());
+  
 
   const handleClick = () => {
     navigate(`/recipe/${recipe.id}`);
   };
 
-  const toggleSave = (event) => {
-    event.stopPropagation();
+  
 
-    const newSavedState = !isSaved;
-    setIsSaved(newSavedState);
-
-    if (newSavedState) {
-      setDoc(recipeRef, {
-        uid: user.uid,
-        recipeId: recipe.id,
-      });
-    } else {
-      deleteDoc(recipeRef);
-    }
-  };
-
-  useEffect(() => {
-    if (recipes.length > 0) {
-      setIsSaved(recipes.some((r) => r.id === recipe.id));
-    }
-  }, [recipes, recipe.id]);
+  if (!recipe) return null;
 
   return (
     <>
-      {recipe && (
-        <div className={style.card} onClick={handleClick}>
-          <img src={recipe.image} alt={recipe.title} />
-          <div className={style.details}>
-            <span className={style.title}>{recipe.title}</span>
-            <div className={style.info}>
+      <Card onClick={handleClick}>
+        <img src={recipe.image} alt={recipe.title} />
+        <div className="details">
+          <span className="title">{recipe.title}</span>
+          <div className="second-row">
+            <div className="info">
               <span>
-
-              <MdFormatListNumbered className={style.icon} />
-              {recipe.ingredientsNames && <span>{recipe.ingredientsNames.length} ingredients</span>}
+                <MdFormatListNumbered className="icon" />
+                {recipe.ingredientsNames?.length || 0} ingredients
               </span>
-              {/* <span>•</span> */}
               <span>
-              <FaClock className={style.icon} />
-              <span>{recipe.readyInMinutes} minutes</span>
+                <FaClock className="icon" />
+                {recipe.readyInMinutes} minutes
               </span>
-              
             </div>
-            {user && (
-              <button
-                onClick={(e) => {
-                  toggleSave(e);
-                }}>
-                {isSaved ? <AiFillHeart size={24} color="red" /> : <AiOutlineHeart size={24} color="gray" />}
-              </button>
-            )}
+            <HeartButton recipeId={recipe.id} />
           </div>
         </div>
-      )}
+      </Card>
     </>
   );
 }
 
 export default RecipeCard;
+
+const Card = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  height: fit-content;
+  border-radius: 75px;
+  background-color: #c6d5c0;
+  color: #090500;
+  width: 400px;
+  height: 140px;
+  position: relative;
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 15px;
+    margin-left: 160px;
+    width: 50%;
+
+    .second-row {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: space-between;
+      font-size: 0.8rem;
+      gap: 10px;
+
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+
+      .icon {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    filter: brightness(80%) contrast(1);
+    border-radius: 100%;
+    position: absolute;
+    left: -20px;
+  }
+`;
+
+

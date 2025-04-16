@@ -7,12 +7,12 @@ const SuggestionsList = styled.ul`
   padding: 0;
   background: #eaede6;
   border-radius: 15px;
-  width: 100%;
+  width: 300px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
   position: absolute;
-  top: 50px;
+  top: 150px;
 `;
 
 const SuggestionItem = styled.li`
@@ -34,17 +34,17 @@ function Suggestions() {
     dispatch(setSuggestions([]));
   };
 
+  if (suggestions.length === 0) return null;
+
   return (
     <>
-      {suggestions.length > 0 && (
-        <SuggestionsList>
-          {suggestions.map((s) => (
-            <SuggestionItem key={s.id} onClick={() => handleSuggestionClick(s.nameClean)}>
-              {s.nameClean}
-            </SuggestionItem>
-          ))}
-        </SuggestionsList>
-      )}
+      <SuggestionsList>
+        {suggestions.map((s) => (
+          <SuggestionItem key={s.id} onClick={() => handleSuggestionClick(s.nameClean)}>
+            {s.nameClean}
+          </SuggestionItem>
+        ))}
+      </SuggestionsList>
     </>
   );
 }

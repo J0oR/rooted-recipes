@@ -3,19 +3,20 @@ import { NavLink } from "react-router-dom";
 
 const StyledNavLink = styled(NavLink)`
   display: flex;
-      align-items: center;
-      
-      text-decoration: none;
-      color: black;
-      font-size: 1.1rem;
-      
-      
-      &.active {
-        color: #e91e63;
-      }
+  gap: 20px;
+  align-items: center;
+  text-decoration: none;
+  color: #71716c;
+  font-size: 1.1rem;
 
-      .icon{
-        font-size: 1.5rem;}
+  &.active {
+    color: #da604e;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+  
 `;
 
 function NavLinkStyled({ to, children }) {

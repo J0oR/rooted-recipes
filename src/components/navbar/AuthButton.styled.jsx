@@ -9,22 +9,21 @@ import styled from "styled-components";
 const AuthStateButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  border: 1px solid #823939;
+  gap: 5px;
+  font-size: 0.9rem;
   border-radius: 25px;
-  padding: ${({ logout }) => (logout ? "10px 20px" : "#2px 10px 2px 2px")};
+  border: none;
+  padding: ${({ $logout }) => ($logout ? "10px 20px" : "10px 2px 10px 10px")};
   height: 30px;
-  background-color: #202125;
-  color: #FFFFFF;
+  background-color: #FBF5EC;
+  color: #090500;
 `;
 
 const GoogleIcon = styled(FcGoogle)`
   border-radius: 100%;
-  background-color: #FFFFFF;
   font-size: 1.5rem;
-  height: 26px;
-  width: 26px;
+  height: 24px;
+  width: 24px;
 `;
 
 function AuthButton() {
@@ -45,11 +44,11 @@ function AuthButton() {
   };
 
   return user ? (
-    <AuthStateButton logout onClick={logOut}>Log out</AuthStateButton>
+    <AuthStateButton $logout onClick={logOut}>Log out</AuthStateButton>
   ) : (
     <AuthStateButton id="google-login-btn" onClick={handleGoogleLogin}>
+      <span>Sign in with </span>
       <GoogleIcon   />
-      <span>Sign in with Google</span>
     </AuthStateButton>
   );
 }

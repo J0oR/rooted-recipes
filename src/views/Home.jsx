@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import style from "./home.module.scss";
-import CardsContainer from "../components/home/recipes/CardsContainer";
+import RecipesCards from "../components/home/recipes/RecipesCards";
 import FilteringContainer from "../components/home/search/FilteringContainer";
 import { saveRecipesToFirebase } from "../utils/saveRecipesToFirebase";
 import { saveIngredientsToFirebase } from "../utils/saveIngredientsToFirebase";
@@ -64,7 +64,7 @@ function Home() {
   return (
     <div className={style.container}>
       <FilteringContainer/>
-      <CardsContainer recipes={data} loading={loading}/>
+      <RecipesCards recipes={data} loading={loading}/>
     </div>
   );
 }
