@@ -1,41 +1,40 @@
 import { useNavigate } from "react-router-dom";
-import { FaClock } from "react-icons/fa";
-import { MdFormatListNumbered } from "react-icons/md"; // List for amounts/ingredients
+import { PiTimerBold } from "react-icons/pi";
+
+
+
+import { TiThList } from "react-icons/ti";
+
 import styled from "styled-components";
 import HeartButton from "./HeartButton";
 
 function RecipeCard({ recipe }) {
   const navigate = useNavigate();
-  
 
   const handleClick = () => {
     navigate(`/recipe/${recipe.id}`);
   };
-
-  
 
   if (!recipe) return null;
 
   return (
     <>
       <Card onClick={handleClick}>
-        <img src={recipe.image} alt={recipe.title} />
-        <div className="details">
-          <span className="title">{recipe.title}</span>
-          <div className="second-row">
-            <div className="info">
-              <span>
-                <MdFormatListNumbered className="icon" />
-                {recipe.ingredientsNames?.length || 0} ingredients
-              </span>
-              <span>
-                <FaClock className="icon" />
-                {recipe.readyInMinutes} minutes
-              </span>
-            </div>
-            <HeartButton recipeId={recipe.id} />
-          </div>
+        <div className="image-container">
+          <img src={recipe.image} alt={recipe.title} />
         </div>
+        <div className="details">
+          <div className="title">{recipe.title}</div>
+          <span className="detail-row">
+            <TiThList className="icon" />
+            {recipe.ingredientsNames?.length || 0} ingredients
+          </span>
+          <span className="detail-row">
+            <PiTimerBold className="icon" />
+            {recipe.readyInMinutes} minutes
+          </span>
+        </div>
+        <HeartButton recipeId={recipe.id} />
       </Card>
     </>
   );
@@ -48,70 +47,78 @@ const Card = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
-  height: 200px;
-  border-radius: 25px;
-  background-color: #FFFFFF;
-  color: #090500;
+  height: 150px;
   width: 400px;
+  border-radius: 150px;
+  background-color: #ffffff;
+  color: #090500;
   position: relative;
-  border: 2px solid #d9d9d9;
+  background-color: #41424a;
+
+  &:hover {
+    cursor: pointer;
+
+    .image-container img {
+      transform: scale(1.1);
+    }
+  }
+
+  .image-container {
+    width: 170px;
+    height: 170px;
+    border-radius: 100%;
+    overflow: hidden;
+    position: absolute;
+    left: -20px;
+    box-shadow: 10px 5px 15px 4px rgba(0, 0, 0, 0.3);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(80%) contrast(1);
+      transition: transform 0.3s ease-in-out;
+      position: relative;
+      left: 0;
+    }
+  }
 
   .details {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    gap: 15px;
-    margin-left: 160px;
-    width: 50%;
-
-    .second-row {
-      width: 100%;
-      display: flex;
-      align-items: flex-end;
-      gap: 20px;
-      justify-content: space-between;
-    }
+    gap: 10px;
+    margin-left: 180px;
+    width: 40%;
+    color: #ffffff;
 
     .title {
-      font-size: 1.2rem;
-      font-weight: 500;
-      max-width: 200px;
-      white-space: nowrap;
+      white-space: normal; /* Allow text to wrap to a new line */
+      word-wrap: break-word; /* Ensure words break correctly if necessary */
       overflow: hidden;
       text-overflow: ellipsis;
+      text-transform: uppercase;
+
+      display: -webkit-box; /* Enable multi-line truncation */
+      -webkit-line-clamp: 2; /* Limit to 2 lines (you can adjust this as needed) */
+      -webkit-box-orient: vertical; /* Needed for the -webkit-line-clamp to work */
+      font-size: 1rem;
+      font-weight: 500;
     }
 
-    .info {
+    .detail-row {
       display: flex;
-      flex-direction: column;
-      align-items: space-between;
-      font-size: 0.8rem;
+      align-items: center;
+      justify-content: space;
       gap: 10px;
-
-      span {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 10px;
-      }
-
-      .icon {
-        font-size: 1rem;
-      }
+      font-size: 0.8rem;
+      color: #c9c9c9;
+      width: 100%;
     }
-  }
 
-  img {
-    width: 160px;
-    height: 160px;
-    object-fit: cover;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    filter: brightness(80%) contrast(1);
-    border-radius: 100%;
-    position: absolute;
-    left: -35px;
+    .icon {
+      font-size: 1.2rem;
+    }
   }
 `;
-
-

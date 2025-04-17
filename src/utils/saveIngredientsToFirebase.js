@@ -13,7 +13,7 @@ const saveIngredientsToFirebase = async (recipes) => {
                 const ingredientsRef = doc(db, "ingredients", ing.id.toString());
                 const ingredient = {
                     id: ing.id,
-                    name: ing.name,
+                    /* name: ing.name, */
                     nameClean: ing.nameClean
                 }
                 batch.set(ingredientsRef, ingredient, { merge: true });

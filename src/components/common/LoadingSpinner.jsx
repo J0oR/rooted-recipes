@@ -9,14 +9,12 @@ export default function LoadingSpinner(){
 
 
 const Spinner = styled.div`
-    margin: auto;
-    margin-top: 150px;
+    margin: 150px auto;
     width: 48px;
     height: 48px;
     border: 5px solid #823939;
     border-bottom-color: transparent;
     border-radius: 50%;
-    display: inline-block;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
 

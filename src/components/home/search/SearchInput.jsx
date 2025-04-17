@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, setSuggestions, setClickedSuggestion } from "../../../store/searchSlice";
+import { setSearchTerm, setSuggestions } from "../../../store/searchSlice";
 import { useDebounce } from "use-debounce";
 import { fetchRecipes } from "../../../store/recipesSlice";
 import styled from "styled-components";
@@ -10,43 +10,49 @@ import Suggestions from "./Suggestions";
 function SearchInput() {
   const dispatch = useDispatch();
   const [displayTerm, setDisplayTerm] = useState("");
-  
+
   const { searchTerm, dishType, clickedSuggestion } = useSelector((state) => state.search);
   const { titles } = useSelector((state) => state.titles);
-  const [debouncedSearchTerm] = useDebounce(displayTerm, 500);
+  const { suggestions } = useSelector((state) => state.search);
 
   const handleInputChange = (e) => {
-    setDisplayTerm(e.target.value);
-    dispatch(setSearchTerm(debouncedSearchTerm));
-
-    
+    const value = e.target.value;
+    setDisplayTerm(value);
+    dispatch(setSearchTerm(value));
   };
 
   const handleClick = () => {
+      dispatch(setSearchTerm(searchTerm));
+      dispatch(fetchRecipes({ searchTerm, titles, suggestions }));
+      dispatch(setSuggestions([]));
 
-    if (clickedSuggestion) {
+    /* if (clickedSuggestion) {
       dispatch(fetchRecipes({ clickedSuggestion, dishType}));
     }
     else if (debouncedSearchTerm) {
-      dispatch(setSearchTerm(debouncedSearchTerm));
+      
       dispatch(fetchRecipes({ debouncedSearchTerm, dishType, titles}));
     }
     else {
       dispatch(fetchRecipes({dishType}));
-    }
+    } */
   };
 
-  
-
+  useEffect(() => {
+    if(!searchTerm)
+    {
+      dispatch(fetchRecipes({searchTerm, titles, suggestions}));
+    }
+  }, [searchTerm]);
 
   return (
     <>
-    <InputWrapper>
-      <StyledIcon></StyledIcon>
-      <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} />
-      <StyledButton onClick={handleClick}>Search</StyledButton>
-    </InputWrapper>
-    <Suggestions  displayTerm={displayTerm} setDisplayTerm={setDisplayTerm}/>
+      <InputWrapper>
+        <StyledIcon></StyledIcon>
+        <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} />
+        <StyledButton onClick={handleClick}>Search</StyledButton>
+      </InputWrapper>
+      <Suggestions displayTerm={displayTerm} setDisplayTerm={setDisplayTerm} />
     </>
   );
 }
@@ -81,7 +87,7 @@ const StyledInput = styled.input`
   text-align: center;
   padding: 8px;
   margin: auto;
-  outline: 1px solid #7f7e72;
+  outline: 2px solid #EFF2EF;
 
   &:active {
   }
@@ -95,8 +101,8 @@ const StyledButton = styled.button`
   border-radius: 25px;
   border: none;
   cursor: pointer;
-  width: 100px;       
-  background-color: #89B919;
+  width: 100px;
+  background-color: #89b919;
   color: #f3f3f3;
   font-size: 1rem;
 `;

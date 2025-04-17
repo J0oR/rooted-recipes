@@ -6,7 +6,6 @@ const searchSlice = createSlice({
   initialState: {
     searchTerm: "",
     suggestions: [],
-    clickedSuggestion: "",
     dishType: "",
     loading: false,
     error: null,
@@ -15,9 +14,6 @@ const searchSlice = createSlice({
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
     },
-    setClickedSuggestion: (state, action) => {
-      state.clickedSuggestion = action.payload;
-    },
     setDishType: (state, action) => {
       state.dishType = action.payload;
       console.log(action);
@@ -25,15 +21,11 @@ const searchSlice = createSlice({
     setSuggestions: (state, action) => {
       state.suggestions = action.payload;
     },
-   /*  clearSuggestions: (state) => {
-      state.suggestions = [];
-    }, */
   }
 });
 
 export const {
   setSearchTerm,
-  setClickedSuggestion,
   setDishType,
   setSuggestions,
   clearSuggestions,

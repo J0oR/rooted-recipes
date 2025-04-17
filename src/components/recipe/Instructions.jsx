@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import style from "./instructions.module.scss";
+import styled from "styled-components";
 
 function Instructions({ steps }) {
   /* useEffect(() =>{
@@ -21,12 +22,10 @@ function Instructions({ steps }) {
 
           <ul className={style.stepsList}>
             {step.instructions.map((inst, index) => (
-              <li key={index} className={style.instructionRow}>
-                <div className={style.listIndex}>
-                  <span>{index}</span>
-                </div>
+              <Step key={index}>
+                <StepIndex>{index}</StepIndex>
                 <span className={style.listInstruction}>{inst}</span>
-              </li>
+              </Step>
             ))}
           </ul>
         </div>
@@ -36,3 +35,23 @@ function Instructions({ steps }) {
 }
 
 export default Instructions;
+
+const Step = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  background-color: #fbf5ec;
+  padding: 20px;
+  border-radius: 15px;
+`;
+
+const StepIndex = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 1px solid #c1933f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+`;

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, setClickedSuggestion, setSuggestions } from "../../../store/searchSlice";
+import { setSearchTerm, setSuggestions } from "../../../store/searchSlice";
 import styled from "styled-components";
 import { useEffect } from "react";
 
@@ -10,9 +10,8 @@ export default function Suggestions({displayTerm, setDisplayTerm}) {
   const { ingredients } = useSelector((state) => state.ingredients);
 
   const handleSuggestionClick = (name) => {
-    dispatch(setSearchTerm(""));
+    dispatch(setSearchTerm(name));
     setDisplayTerm(name);
-    dispatch(setClickedSuggestion(name));
     dispatch(setSuggestions([]));
   };
 
@@ -21,7 +20,6 @@ export default function Suggestions({displayTerm, setDisplayTerm}) {
       const matches = ingredients.filter((ing) => ing.nameClean && ing.nameClean.toLowerCase().includes(displayTerm.toLowerCase()));
       dispatch(setSuggestions(matches.slice(0, 10)));
     } else {
-      dispatch(setClickedSuggestion(""));
       dispatch(setSuggestions([]));
     }
   }, [displayTerm]);

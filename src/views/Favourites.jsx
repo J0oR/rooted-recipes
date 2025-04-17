@@ -24,7 +24,7 @@ function Favourites() {
   }, [user, dispatch, navigate]);
 
   return (
-    <div style={{marginTop: "100px"}}>
+    <div>
       <RecipesCards recipes={recipes} loading={loading} />
     </div>
   );

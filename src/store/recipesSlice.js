@@ -5,38 +5,39 @@ import { doc, getDoc, query, getDocs, collection, limit, where } from "firebase/
 
 export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
-  async ({ clickedSuggestion, dishType, debouncedSearchTerm, titles }, { rejectWithValue }) => {
+  async ({ searchTerm, titles, suggestions }, { rejectWithValue }) => {
     try {
       const baseQuery = collection(db, "recipes");
       let q;
 
-      // 1. Filter by ingredient suggestion
-      if (clickedSuggestion) {
-        console.log("a");
-        q = query(baseQuery, where("ingredientsNames", "array-contains", clickedSuggestion.toLowerCase()));
-      }
-      // 2. Filter by debounced search term
-      else if (debouncedSearchTerm) {
-        console.log("b");
-        const matchingIds = titles.filter((item) => item.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())).slice(0, 10).map((m) => m.id);
+      if (searchTerm) {
+        const matchingIds = titles.filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 10).map((m) => m.id);
 
-        if (!matchingIds.length) return []; // No matches = early return
-        if (matchingIds.length > 10) {
-          matchingIds.length = 10; // Truncate to 10 max
+
+        console.log(matchingIds.length, suggestions.length);
+        if (!matchingIds.length && !suggestions.length) return []; // No matches = early return
+
+        if (matchingIds.length) {
+          if (matchingIds.length > 10) matchingIds.length = 10;
+          q = query(baseQuery, where("__name__", "in", matchingIds), limit(10));
         }
-
-        q = query(baseQuery, where("__name__", "in", matchingIds));
+        else if (suggestions.length) {
+          q = query(baseQuery, where("ingredientsNames", "array-contains", searchTerm.toLowerCase()), limit(10));
+        }
+      }
+      else {
+        q = query(baseQuery, limit(10));
       }
       // 3. Filter by dish type only
-      else if (dishType) {
+      /* else if (dishType) {
         console.log("c");
         q = query(baseQuery, where("dishTypes", "array-contains", dishType.toLowerCase()), limit(30));
-      }
+      } */
       // 4. Default fallback (no filters)
-      else {
+      /* else {
         console.log("d");
         q = query(baseQuery, limit(30));
-      }
+      } */
 
       const snapshot = await getDocs(q);
       let recipes = snapshot.docs.map((doc) => ({
@@ -44,12 +45,7 @@ export const fetchRecipes = createAsyncThunk(
         ...doc.data(),
       }));
 
-      // 5. In-memory filtering for combinations
-      if ((clickedSuggestion || debouncedSearchTerm) && dishType) {
-        recipes = recipes.filter((r) =>
-          r.dishTypes.includes(dishType.toLowerCase())
-        );
-      }
+      
 
       return recipes;
     } catch (err) {
@@ -64,10 +60,24 @@ const recipeSlice = createSlice({
   name: "recipes",
   initialState: {
     data: [],
+    backupData: [],
     loading: false,
     error: null,
   },
   reducers: {
+    filterDataByDishType: (state, action) => {
+      if (action.payload !== "all"){
+        state.data = state.backupData.filter((r) =>
+          r.dishTypes.includes(action.payload.toLowerCase())
+        );
+      }
+      else
+      {
+        console.log("resetting");
+        state.data = state.backupData;
+      }
+      
+    }
     /* setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
     },
@@ -93,6 +103,7 @@ const recipeSlice = createSlice({
       })
       .addCase(fetchRecipes.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.backupData = action.payload;
         state.loading = false;
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
@@ -102,5 +113,6 @@ const recipeSlice = createSlice({
   },
 });
 
+export const {filterDataByDishType} = recipeSlice.actions;
 
 export default recipeSlice.reducer;

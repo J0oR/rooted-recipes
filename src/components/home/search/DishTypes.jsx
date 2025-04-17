@@ -1,8 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setDishType } from "../../../store/searchSlice";
+import { setDishType} from "../../../store/searchSlice";
+import { filterDataByDishType } from "../../../store/recipesSlice";
 import styled from "styled-components";
 
 import Tag  from "../../common/Tag.styled";
+import { useEffect } from "react";
 
 const BasicContainer = styled.div`
   display: flex;
@@ -22,16 +24,22 @@ function DishTypes() {
   const { dishType } = useSelector((state) => state.search);
 
   const handleClick = (type) => {
-    if (type === "all") {
-      type = "";
-    }
+    
     dispatch(setDishType(type));
+    if (type)
+    {
+      dispatch(filterDataByDishType(type));
+    }
   };
+
+  useEffect(() => {
+    setDishType("all");
+  }, []);
 
   return (
     <BasicContainer>
       {dishTypes.map((type) => (
-        <Tag key={type} className={`${dishType === (type === "all" ? "" : type) ? "selected" : ""}`} onClick={() => handleClick(type)} children={type} />
+        <Tag key={type} className={`${dishType === type ? "selected" : ""}`} onClick={() => handleClick(type)} children={type} />
       ))}
     </BasicContainer>
   );

@@ -29,8 +29,10 @@ const saveRecipesToFirebase = async (recipes) => {
           title: recipe.title || "No title",
           image: recipe.image || "No image",
           readyInMinutes: recipe.readyInMinutes || 0,
+          summary: recipe.summary || "No summary",
+          spoonacularScore: recipe.spoonacularScore || 0,
           servings: recipe.servings || 0,
-          ingredientsNames: recipe.extendedIngredients?.map((ing) => ing.nameClean?.toLowerCase()) || [],
+          ingredientsNames: recipe.extendedIngredients?.map((ing) => ing.nameClean?.toLowerCase()).filter(Boolean) || [],
           ingredients: recipe.extendedIngredients?.map((ing) => ({
             nameClean: ing.nameClean?.toLowerCase() || '',
             amount: ing.amount, 
@@ -42,7 +44,6 @@ const saveRecipesToFirebase = async (recipes) => {
             instructions: steps.steps.map((step) => (
               step.step
             ))
-  
           })) || [],
         };
           const cleaned = cleanRecipeData(recipeData);
@@ -53,7 +54,6 @@ const saveRecipesToFirebase = async (recipes) => {
       await batch.commit();
     }
     catch (error) {
-      console.log(error);
       console.error("Error saving to Firebase:", error);
     }
   };

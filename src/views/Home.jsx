@@ -1,72 +1,68 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import style from "./home.module.scss";
 import RecipesCards from "../components/home/recipes/RecipesCards";
-import FilteringContainer from "../components/home/search/FilteringContainer";
-import { saveRecipesToFirebase } from "../utils/saveRecipesToFirebase";
-import { saveIngredientsToFirebase } from "../utils/saveIngredientsToFirebase";
-import localData from "../assets/localData";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../store/ingredientsSlice";
 import { fetchTitles } from "../store/titlesSlice";
 import { db, auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fetchFavourites } from "../store/favouriteSlice";
+import { apiFetchDbSave } from "../utils/apiFetchDbSave";
+import DishTypes from "../components/home/search/DishTypes";
+import styled from "styled-components";
+import SearchInput from "../components/home/search/SearchInput";
 
-function Home() {
-  //const [data, setData] = useState([]);
-  //const [ingredients, setIngredients] = useState([]);
-  const {data, loading} = useSelector((state) => state.recipes);
-  const [error, setError] = useState(null);
 
+
+export default function Home() {
+  const { data, loading } = useSelector((state) => state.recipes);
   const dispatch = useDispatch();
-
   const [user] = useAuthState(auth);
-  const baseURL = import.meta.env.VITE_API_BASE_URL;
-  const apiKey = import.meta.env.VITE_API_KEY;
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+  const titles = useSelector((state) => state.titles.titles);
+  const favourites = useSelector((state) => state.favourites.recipes);
 
-  const fetchAndSaveData = async () => {
-    try {
-      const url = `${baseURL}?apiKey=${apiKey}&instructionsRequired=true&number=30&diet=vegetarian&sort=random&fillIngredients=true&addRecipeInformation=true&addRecipeInstructions=true`;
-      /*  
-      */
-     const response = await axios.get(url);
-     if (response.status === 200) {
-       const recipes = response.data.results; 
-       saveRecipesToFirebase(recipes);
-       saveIngredientsToFirebase(recipes);
-     }
-  
-      /* 
-      setData(localData);
-      saveIngredientsToFirebase(localData);
-      saveRecipesToFirebase(localData); 
-      */
-
-      setError(null);
-    } catch (error) {
-      console.error("Error fetching data from API:", error);
-      setError(error);
-    }
-  };
-
-  // fetch ingredients once, only when the component mounts
   useEffect(() => {
-    if (user) {
+    //apiFetchDbSave();
+    //clearDB();
+    
+    if (!ingredients.length) {
+      console.log("fetching ingredients once");
+      dispatch(fetchIngredients());
+    }
+    if (!titles.length) {
+      console.log("fetching titles once");
+      dispatch(fetchTitles());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user && !favourites.length) {
+      console.log("fetching favourites once");
       dispatch(fetchFavourites(user.uid));
     }
-    //fetchAndSaveData();
-    dispatch(fetchTitles());
-    dispatch(fetchIngredients());
   }, [user, dispatch]);
 
   //if (error) return <p>Error: {error.message}</p>;
   return (
-    <div className={style.container}>
-      <FilteringContainer/>
-      <RecipesCards recipes={data} loading={loading}/>
-    </div>
+    <>
+      <FilteringContainer>
+        <SearchInput />
+        <DishTypes />
+      </FilteringContainer>
+      <RecipesCards recipes={data} loading={loading} />
+    </>
   );
 }
 
-export default Home;
+
+
+const FilteringContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding-bottom: 0;
+  margin-top: 50px;
+`;

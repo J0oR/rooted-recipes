@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { initializeFirestore, persistentLocalCache, persistentSingleTabManager} from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -22,5 +23,11 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: "select_account"
 });
-const db = getFirestore(app);
+
+//const db = getFirestore(app);
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentSingleTabManager()
+  })
+});
 export { auth, provider, db };

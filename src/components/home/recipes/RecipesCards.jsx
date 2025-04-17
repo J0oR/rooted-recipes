@@ -20,13 +20,10 @@ const CardsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 50px;
-  margin-top: 20px;
   overflow-y: scroll;
-  height: calc(100vh - 250px);
+  height: 100vh;
   width: 100vw;
-  padding: 50px 10vw;
-  background-color: #FFFAF5;
-  position: absolute;
+  padding: 75px 10vw;
   bottom: 0;
+  gap: 50px;
 `;
