@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import RecipesCards from "../components/home/recipes/RecipesCards";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../store/ingredientsSlice";
@@ -10,57 +10,12 @@ import { apiFetchDbSave } from "../utils/apiFetchDbSave";
 import DishTypes from "../components/home/search/DishTypes";
 import styled from "styled-components";
 import SearchInput from "../components/home/search/SearchInput";
-import Button from "../components/common/Button";
 import { fetchRecipes } from "../store/recipesSlice";
-
-import {
-  collection,
-  getDocs,
-  deleteDoc,
-  doc,
-  query,
-  limit,
-  startAfter,
-} from "firebase/firestore";
-
-async function clearDB() {
-  const recipesRef = collection(db, "recipes");
-  let lastDoc = null;
-  let deletedCount = 0;
-  let keepGoing = true;
-
-  while (keepGoing) {
-    let q = query(recipesRef, limit(100));
-    if (lastDoc) {
-      q = query(recipesRef, startAfter(lastDoc), limit(100));
-    }
-
-    const snapshot = await getDocs(q);
-    if (snapshot.empty) break;
-
-    const deletions = [];
-    snapshot.docs.forEach((docSnap) => {
-      const data = docSnap.data();
-      if (!data.summary || data.summary.trim() === "") {
-        deletions.push(deleteDoc(doc(db, "recipes", docSnap.id)));
-        console.log(`Scheduled delete: ${docSnap.id}`);
-      }
-    });
-
-    await Promise.all(deletions);
-    deletedCount += deletions.length;
-    console.log(`Deleted ${deletedCount} recipes so far...`);
-
-    lastDoc = snapshot.docs[snapshot.docs.length - 1];
-    keepGoing = snapshot.size === 100;
-  }
-
-  console.log(`✅ Cleanup finished. Total deleted: ${deletedCount}`);
-}
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 
 export default function Home() {
-  const { data, loading, lastDocId } = useSelector((state) => state.recipes);
+  const { data, loading, lastDocId, hasMore } = useSelector((state) => state.recipes);
   const {searchTerm, suggestions} = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
@@ -102,23 +57,45 @@ export default function Home() {
     console.log("loading more recipes");
     // Fetch altre ricette se c'è un lastDoc disponibile
     if (lastDocId) {
-      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }));
+      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }))
     }
   };
+
+  // Aggiungi un ref per il bottone di "Load More"
+const loadMoreButtonRef = useRef();
+
+useEffect(() => {
+  // Scrolla giù quando nuove ricette vengono caricate
+  if (data.length > 0 && loadMoreButtonRef.current) {
+    loadMoreButtonRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}, [data]); 
  
   //if (error) return <p>Error: {error.message}</p>;
   return (
-    <>
+    <HomeContainer>
       <FilteringContainer>
         <SearchInput />
         <DishTypes />
       </FilteringContainer>
-      <RecipesCards recipes={data} loading={loading} />
-      <button onClick={loadMoreRecipes} disabled={loading}>Load more...</button>
-    </>
+      {!data && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
+      {data && data.length > 0 && <RecipesCards recipes={data} loading={loading} />}
+      {loading && <LoadingSpinner />}
+      {!loading && hasMore && <LoadMore   ref={loadMoreButtonRef} onClick={loadMoreRecipes} disabled={loading}>Load more...</LoadMore>}
+    </HomeContainer>
   );
 }
 
+const HomeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding-bottom: 0;
+  margin-top: 50px;
+`;
 
 
 const FilteringContainer = styled.div`
@@ -130,4 +107,33 @@ const FilteringContainer = styled.div`
   width: 100%;
   padding-bottom: 0;
   margin-top: 50px;
+`;
+
+const EmptyContainer = styled.div`
+  display: flex;  
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding-bottom: 0;
+  margin-top: 100px;
+  font-size: 1.2rem;
+`;
+
+const LoadMore = styled.button`
+  margin: 50px auto;
+  padding: 10px 30px;
+  background-color: #c1933f;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {     
+    background-color: #f3f3f3;
+    color: #c1933f;
+  }
 `;

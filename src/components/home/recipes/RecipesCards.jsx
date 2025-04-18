@@ -1,10 +1,8 @@
 import React from "react";
 import RecipeCard from "./RecipeCard";
 import styled from "styled-components";
-import LoadingSpinner from "../../common/LoadingSpinner";
 
 export default function RecipesCards({ recipes, loading }) {
-  if (loading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <CardsContainer>

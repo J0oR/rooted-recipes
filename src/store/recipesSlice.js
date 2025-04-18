@@ -39,18 +39,24 @@ export const fetchRecipes = createAsyncThunk(
       
 
       const snapshot = await getDocs(q);
-      let recipes = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+const docs = snapshot.docs;
 
+const hasMore = docs.length === 10;
 
+// If we fetched 10 docs, use the first 9 as recipes and hold the 10th for pagination only
+const visibleDocs = hasMore ? docs.slice(0, 9) : docs;
 
-      // Restituisci le ricette e l'ultimo documento per la paginazione
-      // Serialize the lastDoc as just its document ID or other serializable data
-      const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
-      const newLastDocId = newLastDoc ? newLastDoc.id : null;
-      return { recipes, lastDocId: newLastDocId }; // Only return the lastDocId as serializable data
+const recipes = visibleDocs.map((doc) => ({
+  id: doc.id,
+  ...doc.data(),
+}));
+
+// Set the 9th (last visible) doc as the new lastDoc
+const newLastDoc = visibleDocs[visibleDocs.length - 1];
+const newLastDocId = newLastDoc ? newLastDoc.id : null;
+
+return { recipes, lastDocId: newLastDocId, searchTerm, hasMore };
+
 
     } catch (err) {
       console.error("🔥 fetchRecipes error:", err);
@@ -68,7 +74,8 @@ const recipeSlice = createSlice({
     loading: false,
     error: null,
     lastDocId: null, // Store only the last document's ID (serializable)
-
+    searchTerm: "",
+    hasMore: true
   },
   reducers: {
     filterDataByDishType: (state, action) => {
@@ -108,10 +115,17 @@ const recipeSlice = createSlice({
       })
       .addCase(fetchRecipes.fulfilled, (state, action) => {
         // Aggiungi le nuove ricette a quelle esistenti
-        state.data = [...state.data, ...action.payload.recipes];
+        if (state.searchTerm === action.payload.searchTerm) {
+          state.data = [...state.data, ...action.payload.recipes];
+        }
+        else {
+          state.data = action.payload.recipes;
+        }
+        state.searchTerm = action.payload.searchTerm;
         state.backupData = state.data;
         state.lastDocId = action.payload.lastDocId; // Store the document ID
         state.loading = false;
+        state.hasMore = action.payload.hasMore;
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
         state.error = action.payload;
