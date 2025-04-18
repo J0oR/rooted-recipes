@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../config/firebase";
-import { doc, getDoc, query, getDocs, collection, limit, where } from "firebase/firestore";
+import { doc, getDoc, query, getDocs, collection, limit, where, startAfter, orderBy } from "firebase/firestore";
 
 
 export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
-  async ({ searchTerm, titles, suggestions }, { rejectWithValue }) => {
+  async ({ searchTerm, titles, suggestions, lastDocId, searchTermChange }, { rejectWithValue }) => {
+    
     try {
       const baseQuery = collection(db, "recipes");
       let q;
@@ -28,16 +29,14 @@ export const fetchRecipes = createAsyncThunk(
       else {
         q = query(baseQuery, limit(10));
       }
-      // 3. Filter by dish type only
-      /* else if (dishType) {
-        console.log("c");
-        q = query(baseQuery, where("dishTypes", "array-contains", dishType.toLowerCase()), limit(30));
-      } */
-      // 4. Default fallback (no filters)
-      /* else {
-        console.log("d");
-        q = query(baseQuery, limit(30));
-      } */
+
+      // Aggiungi la paginazione con startAfter se lastDoc è disponibile
+      if (lastDocId) {
+        const lastDocRef = doc(db, "recipes", lastDocId); // ✅ create a doc reference
+        const lastDoc = await getDoc(lastDocRef);         // ✅ get the snapshot
+        q = query(q, startAfter(lastDoc));
+      }
+      
 
       const snapshot = await getDocs(q);
       let recipes = snapshot.docs.map((doc) => ({
@@ -45,9 +44,14 @@ export const fetchRecipes = createAsyncThunk(
         ...doc.data(),
       }));
 
-      
 
-      return recipes;
+
+      // Restituisci le ricette e l'ultimo documento per la paginazione
+      // Serialize the lastDoc as just its document ID or other serializable data
+      const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
+      const newLastDocId = newLastDoc ? newLastDoc.id : null;
+      return { recipes, lastDocId: newLastDocId }; // Only return the lastDocId as serializable data
+
     } catch (err) {
       console.error("🔥 fetchRecipes error:", err);
       return rejectWithValue(err.message || "Unknown error");
@@ -63,20 +67,21 @@ const recipeSlice = createSlice({
     backupData: [],
     loading: false,
     error: null,
+    lastDocId: null, // Store only the last document's ID (serializable)
+
   },
   reducers: {
     filterDataByDishType: (state, action) => {
-      if (action.payload !== "all"){
+      if (action.payload !== "all") {
         state.data = state.backupData.filter((r) =>
           r.dishTypes.includes(action.payload.toLowerCase())
         );
       }
-      else
-      {
+      else {
         console.log("resetting");
         state.data = state.backupData;
       }
-      
+
     }
     /* setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
@@ -102,8 +107,10 @@ const recipeSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchRecipes.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.backupData = action.payload;
+        // Aggiungi le nuove ricette a quelle esistenti
+        state.data = [...state.data, ...action.payload.recipes];
+        state.backupData = state.data;
+        state.lastDocId = action.payload.lastDocId; // Store the document ID
         state.loading = false;
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
@@ -113,6 +120,6 @@ const recipeSlice = createSlice({
   },
 });
 
-export const {filterDataByDishType} = recipeSlice.actions;
+export const { filterDataByDishType } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

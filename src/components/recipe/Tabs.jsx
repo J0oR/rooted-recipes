@@ -35,7 +35,6 @@ function Tabs({ selectedTab, setSelectedTab }) {
   const tabs = [
     { key: "ingredients", label: "Ingredients" },
     { key: "recipe", label: "Recipe" },
-    { key: "summary", label: "Summary" },
   ];
 
   return (

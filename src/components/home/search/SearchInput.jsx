@@ -11,9 +11,9 @@ function SearchInput() {
   const dispatch = useDispatch();
   const [displayTerm, setDisplayTerm] = useState("");
 
-  const { searchTerm, dishType, clickedSuggestion } = useSelector((state) => state.search);
+  const { searchTerm, suggestions } = useSelector((state) => state.search);
   const { titles } = useSelector((state) => state.titles);
-  const { suggestions } = useSelector((state) => state.search);
+  const lastDocId = useSelector((state) => state.recipes.lastDocId);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -23,25 +23,15 @@ function SearchInput() {
 
   const handleClick = () => {
       dispatch(setSearchTerm(searchTerm));
-      dispatch(fetchRecipes({ searchTerm, titles, suggestions }));
+      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId}));
       dispatch(setSuggestions([]));
-
-    /* if (clickedSuggestion) {
-      dispatch(fetchRecipes({ clickedSuggestion, dishType}));
-    }
-    else if (debouncedSearchTerm) {
-      
-      dispatch(fetchRecipes({ debouncedSearchTerm, dishType, titles}));
-    }
-    else {
-      dispatch(fetchRecipes({dishType}));
-    } */
   };
 
   useEffect(() => {
     if(!searchTerm)
     {
-      dispatch(fetchRecipes({searchTerm, titles, suggestions}));
+      console.log("fetching recipes", searchTerm, titles, suggestions, lastDocId);
+      dispatch(fetchRecipes({searchTerm, titles, suggestions, lastDocId}));
     }
   }, [searchTerm]);
 

@@ -8,8 +8,8 @@ export default function RecipesCards({ recipes, loading }) {
 
   return (
     <CardsContainer>
-      {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
+      {recipes.map((recipe, index) => (
+        <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} />
       ))}
     </CardsContainer>
   );
@@ -20,10 +20,8 @@ const CardsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  overflow-y: scroll;
-  height: 100vh;
+  height: fit-content;
   width: 100vw;
   padding: 75px 10vw;
-  bottom: 0;
-  gap: 50px;
+  gap: 30px 50px;
 `;

@@ -15,6 +15,7 @@ const apiFetchDbSave = async () => {
        const recipes = response.data.results; 
        await saveRecipesToFirebase(recipes);
        await saveIngredientsToFirebase(recipes);
+       console.log("Data fetched from API and saved to Firebase.");
      }
 
     } catch (error) {

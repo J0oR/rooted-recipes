@@ -55,6 +55,7 @@ const Card = styled.div`
   position: relative;
   background-color: #41424a;
 
+
   &:hover {
     cursor: pointer;
 

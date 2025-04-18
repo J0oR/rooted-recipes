@@ -5,7 +5,6 @@ import { db } from "../config/firebase";
 export const fetchIngredients = createAsyncThunk(
   "ingredients/fetchIngredients",
   async (_, { rejectWithValue }) => {
-    console.log("fetching ingredients");
     try {
       const ingredientsCollection = collection(db, "ingredients");
       const querySnapshot = await getDocs(ingredientsCollection);
