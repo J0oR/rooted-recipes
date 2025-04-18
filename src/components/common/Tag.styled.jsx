@@ -1,25 +1,29 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
-const BasicTag = styled.div`padding: 10px 15px;
-      margin: 5px;
-      text-transform: uppercase;
-      transition: all 0.3s ease-in-out;
-  
-      &:hover {
-        cursor: pointer;
-        transform: scale(1.1);
-      }
-  
-      &.selected {
-        outline: none;
-        color: #43927C;
-        font-weight: 500;
-        border-bottom: 2px solid ;
-      }
-      `
+const BasicTag = styled.div`
+  padding: 10px 15px;
+  margin: 5px;
+  transition: all 0.3s ease-in-out;
 
-function Tag({onClick, className, children}) {
-    return <BasicTag className={className} onClick={onClick}>{children}</BasicTag>
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+
+  &.selected {
+    outline: none;
+    color: #43927c;
+    font-weight: 500;
+    border-bottom: 2px solid;
+  }
+`;
+
+function Tag({ onClick, className, children }) {
+  return (
+    <BasicTag className={className} onClick={onClick}>
+      {children}
+    </BasicTag>
+  );
 }
 
 export default Tag;

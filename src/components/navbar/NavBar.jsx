@@ -38,16 +38,12 @@ export default function Navbar() {
 }
 
 const NavBarContainer = styled.nav`
-  height: 50px;
-  border-radius: 25px;
-  top: 20px;
   display: flex;
-  left: 50%;
   justify-content: space-around;
   align-items: center;
   gap: 50px;
-  z-index: 10;
-  padding: 50px 100px 0px 100px;
+  border-bottom: 2px solid #c1933f;
+  padding: 30px;
 
   .LinksContainer{
     display: flex;

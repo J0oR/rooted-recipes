@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import RecipesCards from "../components/home/recipes/RecipesCards";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../store/ingredientsSlice";
@@ -13,26 +13,27 @@ import SearchInput from "../components/home/search/SearchInput";
 import { fetchRecipes } from "../store/recipesSlice";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 
-
 export default function Home() {
   const { data, loading, lastDocId, hasMore } = useSelector((state) => state.recipes);
-  const {searchTerm, suggestions} = useSelector((state) => state.search);
+  const { searchTerm, suggestions } = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const titles = useSelector((state) => state.titles.titles);
   const favourites = useSelector((state) => state.favourites.recipes);
+  const [isLoadMoreTriggered, setIsLoadMoreTriggered] = useState(false);
+  const loadMoreButtonRef = useRef();
 
-  /* 
-  * STARTUP TASKS: 
-  * - fetch data from Api and save to DB
-  * - fetch ingredients & titles for filtering, but also 
-  * - clear database, if needed
-  */
+  /*
+   * STARTUP TASKS:
+   * - fetch data from Api and save to DB
+   * - fetch ingredients & titles for filtering, but also
+   * - clear database, if needed
+   */
   useEffect(() => {
     //apiFetchDbSave();
     //clearDB();
-    
+
     if (!ingredients.length) {
       console.log("fetching ingredients on Startup");
       dispatch(fetchIngredients());
@@ -41,9 +42,12 @@ export default function Home() {
       console.log("fetching titles on Startup");
       dispatch(fetchTitles());
     }
-    
   }, [dispatch]);
 
+ /*
+   * If User is logged in:
+   * - fetch favourites
+   */
   useEffect(() => {
     if (user && !favourites.length) {
       console.log("fetching favourites on Startup, if user is logged in");
@@ -52,25 +56,25 @@ export default function Home() {
   }, [user, dispatch]);
 
   /*
-  */
+   * LOAD MORE TASKS:
+   * - fetch more recipes
+   */
   const loadMoreRecipes = () => {
     console.log("loading more recipes");
-    // Fetch altre ricette se c'è un lastDoc disponibile
     if (lastDocId) {
-      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }))
+      setIsLoadMoreTriggered(true);
+      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }));
     }
   };
 
-  // Aggiungi un ref per il bottone di "Load More"
-const loadMoreButtonRef = useRef();
-
 useEffect(() => {
-  // Scrolla giù quando nuove ricette vengono caricate
-  if (data.length > 0 && loadMoreButtonRef.current) {
+  if (isLoadMoreTriggered && loadMoreButtonRef.current) {
     loadMoreButtonRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    setIsLoadMoreTriggered(false); // reset dopo lo scroll
   }
-}, [data]); 
- 
+}, [data.length]);
+
+
   //if (error) return <p>Error: {error.message}</p>;
   return (
     <HomeContainer>
@@ -81,7 +85,11 @@ useEffect(() => {
       {!data && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
       {data && data.length > 0 && <RecipesCards recipes={data} loading={loading} />}
       {loading && <LoadingSpinner />}
-      {!loading && hasMore && <LoadMore   ref={loadMoreButtonRef} onClick={loadMoreRecipes} disabled={loading}>Load more...</LoadMore>}
+      {!loading && hasMore && (
+        <LoadMore ref={loadMoreButtonRef} onClick={loadMoreRecipes} disabled={loading}>
+          Load more...
+        </LoadMore>
+      )}
     </HomeContainer>
   );
 }
@@ -91,26 +99,21 @@ const HomeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
   width: 100%;
   padding-bottom: 0;
-  margin-top: 50px;
 `;
-
 
 const FilteringContainer = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 30px;
+  border: 1px solid #c1933f;
   gap: 20px;
-  width: 100%;
-  padding-bottom: 0;
-  margin-top: 50px;
 `;
 
 const EmptyContainer = styled.div`
-  display: flex;  
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -132,7 +135,7 @@ const LoadMore = styled.button`
   font-size: 1.2rem;
   transition: background-color 0.3s ease;
 
-  &:hover {     
+  &:hover {
     background-color: #f3f3f3;
     color: #c1933f;
   }

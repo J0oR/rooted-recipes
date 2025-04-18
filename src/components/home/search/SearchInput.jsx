@@ -6,6 +6,7 @@ import { fetchRecipes } from "../../../store/recipesSlice";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import Suggestions from "./Suggestions";
+import { data } from "react-router-dom";
 
 function SearchInput() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ function SearchInput() {
   const { searchTerm, suggestions } = useSelector((state) => state.search);
   const { titles } = useSelector((state) => state.titles);
   const lastDocId = useSelector((state) => state.recipes.lastDocId);
+  const data = useSelector((state) => state.recipes.data);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -22,28 +24,25 @@ function SearchInput() {
   };
 
   const handleClick = () => {
-      dispatch(setSearchTerm(searchTerm));
-      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId}));
-      dispatch(setSuggestions([]));
+    dispatch(setSearchTerm(searchTerm));
+    dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }));
+    dispatch(setSuggestions([]));
   };
 
   useEffect(() => {
-    if(!searchTerm)
-    {
+    if (!searchTerm && !data.length) {
       console.log("fetching recipes", searchTerm, titles, suggestions, lastDocId);
-      dispatch(fetchRecipes({searchTerm, titles, suggestions, lastDocId}));
+      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }));
     }
   }, [searchTerm]);
 
   return (
-    <>
       <InputWrapper>
         <StyledIcon></StyledIcon>
         <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} />
         <StyledButton onClick={handleClick}>Search</StyledButton>
+        <Suggestions displayTerm={displayTerm} setDisplayTerm={setDisplayTerm} />
       </InputWrapper>
-      <Suggestions displayTerm={displayTerm} setDisplayTerm={setDisplayTerm} />
-    </>
   );
 }
 export default SearchInput;
@@ -77,7 +76,7 @@ const StyledInput = styled.input`
   text-align: center;
   padding: 8px;
   margin: auto;
-  outline: 2px solid #EFF2EF;
+  outline: 2px solid #eff2ef;
 
   &:active {
   }
@@ -95,4 +94,8 @@ const StyledButton = styled.button`
   background-color: #89b919;
   color: #f3f3f3;
   font-size: 1rem;
+
+  &:hover {
+    background-color: #43927c;
+  }
 `;

@@ -46,12 +46,14 @@ const SuggestionsList = styled.ul`
   padding: 0;
   background: #eaede6;
   border-radius: 15px;
-  width: 300px;
+  width: 490px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
   position: absolute;
-  top: 150px;
+  width: 90%;
+  top: 60px;
+  left: 5%;
 `;
 
 const SuggestionItem = styled.li`
