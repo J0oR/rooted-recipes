@@ -59,7 +59,7 @@ const Card = styled.div`
   box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(20px);
   animation: fadeIn 0.3s ease forwards;
   animation-delay: ${({ $index }) => `${0.1 * $index}s`}; /* Correct use of index for delay */
 

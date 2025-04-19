@@ -3,15 +3,18 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { db, auth } from "../../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { setDoc, deleteDoc, doc } from "firebase/firestore"; // aggiungi questo in cima
+import { setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; // aggiungi questo in cima
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { addToFavourites, removeFromFavourites } from "../../../store/favouriteSlice";
 
 export default function HeartButton({ recipeId }) {
   const [isSaved, setIsSaved] = useState(false);
   const [user] = useAuthState(auth);
-  const { recipes } = useSelector((state) => state.favourites);
+  const { recipes, recipeIds } = useSelector((state) => state.favourites);
   const recipeRef = useMemo(() => doc(db, "heartedRecipes", recipeId.toString()), [recipeId]);
+  const dispatch = useDispatch();
 
   const toggleSave = async (event) => {
     event.stopPropagation();
@@ -22,12 +25,18 @@ export default function HeartButton({ recipeId }) {
 
     try {
       if (newSavedState) {
-        setDoc(recipeRef, {
+        await setDoc(recipeRef, {
           uid: user.uid,
           recipeId: recipeId,
         });
+        const recipeSnap = await getDoc(doc(db, "recipes", recipeId.toString()));
+        if (recipeSnap.exists()) {
+          const savedRecipe = { id: recipeSnap.id, ...recipeSnap.data() };
+          dispatch(addToFavourites({ recipeId, savedRecipe }));
+        }
       } else {
         deleteDoc(recipeRef);
+        dispatch(removeFromFavourites({recipeId}));
       }
     } catch (error) {
       console.error("Firestore error:", error);
@@ -45,7 +54,7 @@ export default function HeartButton({ recipeId }) {
 
   return (
     <StyledButton onClick={toggleSave} $isSaved={isSaved}>
-      {isSaved ? <AiFillHeart size={25}  className="icon" /> : <AiOutlineHeart size={25}  className="icon" />}
+      {isSaved ? <AiFillHeart size={25} className="icon" /> : <AiOutlineHeart size={25} className="icon" />}
     </StyledButton>
   );
 }
@@ -71,10 +80,10 @@ const StyledButton = styled.button`
 
   &:hover {
     transform: scale(1.1);
-    
-      .icon{
-        color: #da5f4e;
-      }
+
+    .icon {
+      color: #da5f4e;
+    }
   }
 
   .icon {

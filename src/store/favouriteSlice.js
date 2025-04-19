@@ -34,6 +34,14 @@ const favouritesSlice = createSlice({
     error: null,
   },
   reducers: {
+    addToFavourites: (state, action) => {
+      state.recipeIds.push(action.payload.recipeId);
+      state.recipes.push(action.payload.savedRecipe);
+    },
+    removeFromFavourites: (state, action) => {
+      state.recipeIds = state.recipeIds.filter((id) => id !== action.payload.recipeId);
+      state.recipes = state.recipes.filter((r) => r.id !== action.payload.recipeId);
+    },
     clearFavourites: (state) => {
       state.recipeIds = [];
       state.recipes = [];
@@ -57,5 +65,5 @@ const favouritesSlice = createSlice({
   },
 });
 
-export const { clearFavourites } = favouritesSlice.actions;
+export const { clearFavourites, addToFavourites, removeFromFavourites } = favouritesSlice.actions;
 export default favouritesSlice.reducer;
