@@ -2,7 +2,7 @@ import React from "react";
 import RecipeCard from "./RecipeCard";
 import styled from "styled-components";
 
-export default function RecipesCards({ recipes, loading }) {
+export default function RecipesCards({ recipes }) {
 
   return (
     <CardsContainer>

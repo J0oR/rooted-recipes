@@ -1,8 +1,8 @@
 import { useState, useEffect, use } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, setSuggestions } from "../../../store/searchSlice";
+import { setSearchTerm, clearSuggestions } from "../../../store/searchSlice";
 import { useDebounce } from "use-debounce";
-import { fetchRecipes } from "../../../store/recipesSlice";
+import { fetchRecipes } from "../../../store/recipes/asyncThunks";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import Suggestions from "./Suggestions";
@@ -14,35 +14,32 @@ function SearchInput() {
 
   const { searchTerm, suggestions } = useSelector((state) => state.search);
   const { titles } = useSelector((state) => state.titles);
-  const lastDocId = useSelector((state) => state.recipes.lastDocId);
-  const data = useSelector((state) => state.recipes.data);
+  const { data, lastDocId, searchMode } = useSelector((state) => state.recipes);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setDisplayTerm(value);
-    dispatch(setSearchTerm(value));
   };
 
   const handleClick = () => {
-    dispatch(setSearchTerm(searchTerm));
-    dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }));
-    dispatch(setSuggestions([]));
+    dispatch(setSearchTerm(displayTerm));
+    dispatch(clearSuggestions());
+    dispatch(fetchRecipes());
   };
 
   useEffect(() => {
-    if (!searchTerm && !data.length) {
-      console.log("fetching recipes", searchTerm, titles, suggestions, lastDocId);
-      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }));
+    if (!searchTerm && data.length) {
+      dispatch(fetchRecipes());
     }
   }, [searchTerm]);
 
   return (
-      <InputWrapper>
-        <StyledIcon></StyledIcon>
-        <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} />
-        <StyledButton onClick={handleClick}>Search</StyledButton>
-        <Suggestions displayTerm={displayTerm} setDisplayTerm={setDisplayTerm} />
-      </InputWrapper>
+    <InputWrapper>
+      <StyledIcon></StyledIcon>
+      <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} />
+      <StyledButton onClick={handleClick}>Search</StyledButton>
+      <Suggestions displayTerm={displayTerm} setDisplayTerm={setDisplayTerm} />
+    </InputWrapper>
   );
 }
 export default SearchInput;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { filterDataByDishType } from "../../../store/recipesSlice";
+import { filterDataByDishType } from "../../../store/recipes/recipesSlice";
 import { setDishType } from "../../../store/searchSlice";
 
 import { useEffect } from "react";
@@ -58,7 +58,7 @@ const Modal = styled.div`
   position: absolute;
   left: -521px;
   top: 35px;
-  background-color: #EFEFEF;
+  background-color: #efefef;
   color: #757575;
   transition: all 0.3s ease-in-out;
   border-radius: 25px;

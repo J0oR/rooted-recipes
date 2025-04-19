@@ -1,28 +1,26 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, setSuggestions } from "../../../store/searchSlice";
+import { setSearchTerm, clearSuggestions, filterSuggestions } from "../../../store/searchSlice";
 import styled from "styled-components";
 import { useEffect } from "react";
+import { fetchRecipes } from "../../../store/recipes/asyncThunks";
 
-export default function Suggestions({displayTerm, setDisplayTerm}) {
-
+export default function Suggestions({ displayTerm, setDisplayTerm }) {
   const dispatch = useDispatch();
-  const { suggestions } = useSelector((state) => state.search);
+  const { suggestions, searchTerm, searchMode } = useSelector((state) => state.search);
+  const { lastDocId} = useSelector((state) => state.recipes);
+  const { titles } = useSelector((state) => state.titles);
   const { ingredients } = useSelector((state) => state.ingredients);
 
   const handleSuggestionClick = (name) => {
-    dispatch(setSearchTerm(name));
     setDisplayTerm(name);
-    dispatch(setSuggestions([]));
+    dispatch(setSearchTerm(name));
+    dispatch(clearSuggestions());
+    dispatch(fetchRecipes());
   };
 
   useEffect(() => {
-    if (displayTerm) {
-      const matches = ingredients.filter((ing) => ing.nameClean && ing.nameClean.toLowerCase().includes(displayTerm.toLowerCase()));
-      dispatch(setSuggestions(matches.slice(0, 10)));
-    } else {
-      dispatch(setSuggestions([]));
-    }
-  }, [displayTerm]);
+    dispatch(filterSuggestions({ displayTerm, ingredients }));
+  }, [displayTerm, dispatch]);
 
   if (suggestions.length === 0) return null;
 
@@ -38,8 +36,6 @@ export default function Suggestions({displayTerm, setDisplayTerm}) {
     </>
   );
 }
-
-
 
 const SuggestionsList = styled.ul`
   list-style: none;

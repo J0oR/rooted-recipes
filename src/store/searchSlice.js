@@ -16,10 +16,23 @@ const searchSlice = createSlice({
     },
     setDishType: (state, action) => {
       state.dishType = action.payload;
-      console.log(action);
     },
     setSuggestions: (state, action) => {
       state.suggestions = action.payload;
+    },
+    clearSuggestions: (state) => {
+      state.suggestions = [];
+    },
+    filterSuggestions: (state, action) => {
+      const { displayTerm, ingredients } = action.payload;
+      if (displayTerm) {
+        const matches = ingredients.filter((ing) =>
+          ing.nameClean && ing.nameClean.toLowerCase().includes(displayTerm.toLowerCase())
+        );
+        state.suggestions = matches.slice(0, 10);
+      } else {
+        state.suggestions = [];
+      }
     },
   }
 });
@@ -29,6 +42,7 @@ export const {
   setDishType,
   setSuggestions,
   clearSuggestions,
+  filterSuggestions
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

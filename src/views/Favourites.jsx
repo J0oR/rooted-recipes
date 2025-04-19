@@ -10,8 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Favourites() {
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
-  const { loading } = useSelector((state) => state.favourites);
-  const { recipes } = useSelector((state) => state.favourites);
+  const { loading, recipes } = useSelector((state) => state.favourites);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +24,7 @@ function Favourites() {
 
   return (
     <div>
-      <RecipesCards recipes={recipes} loading={loading} />
+      <RecipesCards recipes={recipes} />
     </div>
   );
 }

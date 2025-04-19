@@ -10,11 +10,11 @@ import { apiFetchDbSave } from "../utils/apiFetchDbSave";
 import DishSelector from "../components/home/search/DishSelector";
 import styled from "styled-components";
 import SearchInput from "../components/home/search/SearchInput";
-import { fetchRecipes } from "../store/recipesSlice";
+import { fetchRecipes } from "../store/recipes/asyncThunks";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 
 export default function Home() {
-  const { data, loading, lastDocId, hasMore } = useSelector((state) => state.recipes);
+  const { data, loading, lastDocId, hasMore, searchMode } = useSelector((state) => state.recipes);
   const { searchTerm, suggestions } = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
@@ -44,7 +44,7 @@ export default function Home() {
     }
   }, [dispatch]);
 
- /*
+  /*
    * If User is logged in:
    * - fetch favourites
    */
@@ -63,17 +63,16 @@ export default function Home() {
     console.log("loading more recipes");
     if (lastDocId) {
       setIsLoadMoreTriggered(true);
-      dispatch(fetchRecipes({ searchTerm, titles, suggestions, lastDocId }));
+      dispatch(fetchRecipes());
     }
   };
 
-useEffect(() => {
-  if (isLoadMoreTriggered && loadMoreButtonRef.current) {
-    loadMoreButtonRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-    setIsLoadMoreTriggered(false); // reset dopo lo scroll
-  }
-}, [data.length]);
-
+  useEffect(() => {
+    if (isLoadMoreTriggered && loadMoreButtonRef.current) {
+      loadMoreButtonRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      setIsLoadMoreTriggered(false); // reset dopo lo scroll
+    }
+  }, [data?.length]);
 
   //if (error) return <p>Error: {error.message}</p>;
   return (
@@ -82,8 +81,8 @@ useEffect(() => {
         <SearchInput />
         <DishSelector />
       </FilteringContainer>
-      {!data && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
-      {data && data.length > 0 && <RecipesCards recipes={data} loading={loading} />}
+      {data.length === 0 && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
+      {data && data.length > 0 && <RecipesCards recipes={data} />}
       {loading && <LoadingSpinner />}
       {!loading && hasMore && (
         <LoadMore ref={loadMoreButtonRef} onClick={loadMoreRecipes} disabled={loading}>

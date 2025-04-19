@@ -1,7 +1,7 @@
 // src/store/index.js
 import { configureStore } from "@reduxjs/toolkit";
 import ingredientsReducer from "./ingredientsSlice";
-import recipesReducer from "./recipesSlice";
+import recipesReducer from "./recipes/recipesSlice";
 import titlesReducer from "./titlesSlice";
 import searchReducer from "./searchSlice";
 import favouritesReducer from "./favouriteSlice";
