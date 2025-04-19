@@ -7,7 +7,7 @@ export default function RecipesCards({ recipes, loading }) {
   return (
     <CardsContainer>
       {recipes.map((recipe, index) => (
-        <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} />
+        <RecipeCard key={`${recipe.id}-${index}`} recipe={recipe} index={index}/>
       ))}
     </CardsContainer>
   );
@@ -21,5 +21,5 @@ const CardsContainer = styled.div`
   height: fit-content;
   width: 100vw;
   padding: 50px 10vw;
-  gap: 30px 50px;
+  gap: 50px;
 `;

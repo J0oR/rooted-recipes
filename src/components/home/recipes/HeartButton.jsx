@@ -44,8 +44,8 @@ export default function HeartButton({ recipeId }) {
   if (!user) return null;
 
   return (
-    <StyledButton onClick={toggleSave}>
-      {isSaved ? <AiFillHeart size={25} color="#E91D63" className="icon" /> : <AiOutlineHeart size={25} color="#ffffff" className="icon" />}
+    <StyledButton onClick={toggleSave} $isSaved={isSaved}>
+      {isSaved ? <AiFillHeart size={25}  className="icon" /> : <AiOutlineHeart size={25}  className="icon" />}
     </StyledButton>
   );
 }
@@ -71,10 +71,15 @@ const StyledButton = styled.button`
 
   &:hover {
     transform: scale(1.1);
+    
+      .icon{
+        color: #da5f4e;
+      }
   }
 
   .icon {
     border-radius: 100%;
     font-weight: 800px;
+    color: ${({ $isSaved }) => ($isSaved ? "#E91D63" : "#ffffff")};
   }
 `;

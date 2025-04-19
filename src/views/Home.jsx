@@ -7,7 +7,7 @@ import { db, auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fetchFavourites } from "../store/favouriteSlice";
 import { apiFetchDbSave } from "../utils/apiFetchDbSave";
-import DishTypes from "../components/home/search/DishTypes";
+import DishSelector from "../components/home/search/DishSelector";
 import styled from "styled-components";
 import SearchInput from "../components/home/search/SearchInput";
 import { fetchRecipes } from "../store/recipesSlice";
@@ -80,7 +80,7 @@ useEffect(() => {
     <HomeContainer>
       <FilteringContainer>
         <SearchInput />
-        <DishTypes />
+        <DishSelector />
       </FilteringContainer>
       {!data && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
       {data && data.length > 0 && <RecipesCards recipes={data} loading={loading} />}
@@ -108,7 +108,6 @@ const FilteringContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 30px;
-  border: 1px solid #c1933f;
   gap: 20px;
 `;
 

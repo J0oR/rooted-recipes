@@ -8,7 +8,7 @@ import { TiThList } from "react-icons/ti";
 import styled from "styled-components";
 import HeartButton from "./HeartButton";
 
-function RecipeCard({ recipe }) {
+function RecipeCard({ recipe, index }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -19,7 +19,7 @@ function RecipeCard({ recipe }) {
 
   return (
     <>
-      <Card onClick={handleClick}>
+      <Card onClick={handleClick} $index={index}>
         <div className="image-container">
           <img src={recipe.image} alt={recipe.title} />
         </div>
@@ -54,6 +54,21 @@ const Card = styled.div`
   color: #090500;
   position: relative;
   background-color: #41424a;
+  background-color: #43927C;
+  background-color: transparent;
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.3s ease forwards;
+  animation-delay: ${({ $index }) => `${0.1 * $index}s`}; /* Correct use of index for delay */
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
 
   &:hover {
@@ -71,7 +86,7 @@ const Card = styled.div`
     overflow: hidden;
     position: absolute;
     left: -20px;
-    box-shadow: 10px 5px 15px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: rgba(0, 0, 0, 0.35) 5px 5px 15px;
 
     img {
       width: 100%;
@@ -93,6 +108,7 @@ const Card = styled.div`
     margin-left: 180px;
     width: 40%;
     color: #ffffff;
+    color: #C1933F;
 
     .title {
       white-space: normal; /* Allow text to wrap to a new line */
@@ -115,6 +131,7 @@ const Card = styled.div`
       gap: 10px;
       font-size: 0.8rem;
       color: #c9c9c9;
+      color: #DA5F4E;
       width: 100%;
     }
 

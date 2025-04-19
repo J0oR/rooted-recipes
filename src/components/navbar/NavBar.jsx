@@ -42,7 +42,6 @@ const NavBarContainer = styled.nav`
   justify-content: space-around;
   align-items: center;
   gap: 50px;
-  border-bottom: 2px solid #c1933f;
   padding: 30px;
 
   .LinksContainer{

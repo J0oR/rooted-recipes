@@ -6,7 +6,7 @@ const searchSlice = createSlice({
   initialState: {
     searchTerm: "",
     suggestions: [],
-    dishType: "",
+    dishType: "all",
     loading: false,
     error: null,
   },

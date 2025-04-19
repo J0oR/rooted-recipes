@@ -9,7 +9,7 @@ const StyledNavLink = styled(NavLink)`
   color: #71716c;
   font-size: 1.1rem;
   transition: all 0.3s ease-in-out;
-  border-radius: 25px;
+  border-radius: 50%;
   padding: 10px 20px;
 
   &:hover {
@@ -28,6 +28,7 @@ const StyledNavLink = styled(NavLink)`
   .icon {
     font-size: 1.5rem;
     transition: all 0.3s ease-in-out;
+    border-radius: 100%;
   }
 `;
 
