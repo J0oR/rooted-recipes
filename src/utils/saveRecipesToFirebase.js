@@ -27,6 +27,7 @@ const saveRecipesToFirebase = async (recipes) => {
         const recipeRef = doc(db, "recipes", recipe.id.toString());
         const recipeData = {
           title: recipe.title || "No title",
+          titleSplitted: recipe.title?.split(" ") || [],
           image: recipe.image || "No image",
           readyInMinutes: recipe.readyInMinutes || 0,
           summary: recipe.summary || "No summary",

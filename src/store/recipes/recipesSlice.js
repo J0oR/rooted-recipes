@@ -12,9 +12,20 @@ const recipeSlice = createSlice({
     error: null,
     lastDocId: null,
     hasMore: true,
-    searchMode: null,
+    searchMode: "title",
+    fetchedIds: [], // 👈 aggiungi questo
+
   },
   reducers: {
+    addFetchedIds: (state, action) => {
+      state.fetchedIds.push(...action.payload);
+    },
+    setSearchMode: (state, action) => {
+      state.searchMode = action.payload;
+    },
+    setLastDocId: (state, action) => {
+      state.lastDocId = action.payload;
+    },
     filterDataByDishType: (state, action) => {
       if (action.payload !== "all") {
         state.data = state.backupData.filter((r) =>
@@ -48,6 +59,6 @@ const recipeSlice = createSlice({
   },
 });
 
-export const { filterDataByDishType } = recipeSlice.actions;
+export const { filterDataByDishType, setSearchMode, setLastDocId, addFetchedIds } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

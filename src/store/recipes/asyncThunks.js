@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../config/firebase";
 import { doc, getDoc, query, getDocs, collection, limit, where, startAfter } from "firebase/firestore";
+import { setSearchMode, setLastDocId, addFetchedIds } from "./recipesSlice";
 
 // Helper function to get title matches
-const getTitleMatches = (titles, term) => {
+/* const getTitleMatches = (titles, term) => {
   if (!Array.isArray(titles)) {
     console.error("Titles is not an array:", titles);
     return [];
@@ -14,115 +15,118 @@ const getTitleMatches = (titles, term) => {
     .slice(0, 10)
     .map(m => m.id);  // Returning the IDs of the matched titles
 };
-
+ */
 // Function to build query constraints
 const buildQueryConstraints = async ({
   searchTerm,
-  titles,
-  lastDocId,
-  prevMode,
-  isTitleQuery,
-  excludedIds = []
+  searchMode,
+  lastDocId
 }) => {
   const constraints = [];
-  let searchMode = prevMode;
 
-  if (isTitleQuery) {
-    // Title search: Fetch based on title matches
-    const titleIds = getTitleMatches(titles, searchTerm);
-    if (titleIds.length >= 2) {
-      constraints.push(where("__name__", "in", titleIds)); // Query by the IDs of the matched titles
-      searchMode = "title";
-    } else {
-      constraints.push(where("ingredientsNames", "array-contains", searchTerm.toLowerCase()));
-      searchMode = "ingredient";
-    }
+  if (searchMode === "title") {
+    constraints.push(where("titleSplitted", "array-contains", searchTerm.toLowerCase()));
   } else {
-    // Ingredient search: Fetch based on ingredients
     constraints.push(where("ingredientsNames", "array-contains", searchTerm.toLowerCase()));
-    if (excludedIds.length > 0) {
-      constraints.push(where("__name__", "not-in", excludedIds)); // Exclude already fetched titles based on IDs
-    }
-    if (lastDocId) {
-      const lastDocRef = doc(db, "recipes", lastDocId);
-      const lastDoc = await getDoc(lastDocRef);
-      constraints.push(startAfter(lastDoc)); // Paginate based on the last document
-    }
-    searchMode = "ingredient";
+  }
+  constraints.push(limit(10)); // Limit to 10 results per query 
+
+
+  if (lastDocId) {
+    const lastDocRef = doc(db, "recipes", lastDocId);
+    const lastDoc = await getDoc(lastDocRef);
+    constraints.push(startAfter(lastDoc)); // Paginate based on the last document
   }
 
-  constraints.push(limit(10)); // Limit to 10 results per query
-  return { constraints, searchMode };
+
+  return constraints;
 };
 
 // Create the fetchRecipes async thunk
 export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
-  async (_, { getState, rejectWithValue }) => {
+  async (_, { getState, dispatch, rejectWithValue }) => {
     try {
-      const { titles } = getState().titles; // Get the titles from the state
-      const { searchTerm } = getState().search; // Get the search term from the state
-      const { lastDocId, searchMode: prevMode } = getState().recipes; // Get the last doc ID and search mode from the state
+      const { searchTerm, dishType } = getState().search;
+      const { lastDocId, searchMode, fetchedIds } = getState().recipes;
 
-      let titleResults = [];
-      let ingredientResults = [];
-      let titleIds = [];
-      let newLastDocId = null;
-      let hasMore = false;
+      const results = [];
+      let remaining = 10;
 
-      // First, we fetch title-based results
-      const { constraints: titleConstraints, searchMode: titleSearchMode } = await buildQueryConstraints({
-        searchTerm,
-        titles,
-        lastDocId,
-        prevMode,
-        isTitleQuery: true,
-      });
+      console.log("Before entering step 1/2", searchMode, searchTerm, lastDocId);
 
-      const titleSnapshot = await getDocs(query(collection(db, "recipes"), ...titleConstraints));
-      const titleDocs = titleSnapshot.docs;
-      titleResults = titleDocs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      // Step 1 – fetch from titleSplitted
+      if (searchMode === "title") {
 
-      titleIds = titleResults.map(doc => doc.id); // Store the IDs of fetched titles
-      hasMore = titleDocs.length === 10; // Check if there are more title results
-      newLastDocId = titleDocs.length ? titleDocs[titleDocs.length - 1].id : null;
+        // First, we fetch title-based results
+        const constraints = await buildQueryConstraints({
+          searchTerm,
+          searchMode: "title",
+          lastDocId,
+          dishType
+        });
 
-      // Then, we fetch ingredient-based results, if there are more pages (pagination)
-      const { constraints: ingredientConstraints, searchMode: ingredientSearchMode } = await buildQueryConstraints({
-        searchTerm,
-        titles,
-        lastDocId: newLastDocId,
-        prevMode: titleSearchMode,
-        isTitleQuery: false,
-        excludedIds: titleIds, // Exclude already fetched titles based on IDs
-      });
+        console.log("Constraints:", constraints);
 
-      const ingredientSnapshot = await getDocs(query(collection(db, "recipes"), ...ingredientConstraints));
-      const ingredientDocs = ingredientSnapshot.docs;
-      ingredientResults = ingredientDocs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+        // Fetch title-based results
+        const snapshot = await getDocs(query(collection(db, "recipes"), ...constraints));
+        const docs = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
 
-      // Set new last document ID for ingredient results
-      newLastDocId = ingredientDocs.length ? ingredientDocs[ingredientDocs.length - 1].id : newLastDocId;
+        console.log(snapshot);
 
-      const hasMoreIngredientResults = ingredientDocs.length === 10; // Check if there are more ingredient results
-      hasMore = hasMore || hasMoreIngredientResults; // Combine title and ingredient pagination status
+        // Filter out already fetched IDs, and add them to the results
+        const filtered = docs.filter(doc => !fetchedIds.includes(doc.id));
+        results.push(...filtered);
+        remaining = 10 - results.length;
 
-      // Combine title-based and ingredient-based results
-      const allRecipes = [...titleResults, ...ingredientResults];
+        if (remaining > 0) {
+          // Switch search mode to ingredients
+          dispatch(setSearchMode("ingredient")); // action nello slice
+        }
+
+        // Save lastDocId from this round if there are still docs
+        if (snapshot.docs.length) {
+          dispatch(setLastDocId(snapshot.docs[snapshot.docs.length - 1].id));
+        }
+      }
+      // Step 2 – fill remaining with ingredient-based search
+      if (remaining > 0) {
+        const constraints = await buildQueryConstraints({
+          searchTerm,
+          searchMode: "ingredient",
+          lastDocId: null, // start fresh
+          dishType,
+        });
+
+        const snapshot = await getDocs(query(collection(db, "recipes"), ...constraints));
+        const docs = snapshot.docs
+          .map(doc => ({ id: doc.id, ...doc.data() }))
+          .filter(doc => !fetchedIds.includes(doc.id))
+          .slice(0, remaining); // Only take what you need
+
+        results.push(...docs);
+
+        // Save lastDocId if there are still docs
+        if (snapshot.docs.length) {
+          dispatch(setLastDocId(snapshot.docs[snapshot.docs.length - 1].id));
+        }
+      }
+
+
+      dispatch(addFetchedIds(results.map(r => r.id))); // Update fetchedIds in store
 
       return {
-        recipes: allRecipes,
-        lastDocId: newLastDocId, // Return the last document ID for pagination
-        searchTerm,
-        hasMore,
-        searchMode: ingredientSearchMode,
+        recipes: results,
+        lastDocId: results.length ? results[results.length - 1].id : null,
+        hasMore: results.length === 10,
+        searchMode: getState().recipes.searchMode,
       };
+
+
+
     } catch (err) {
       console.error("🔥 fetchRecipes error:", err);
       return rejectWithValue(err.message || "Unknown error");
