@@ -31,7 +31,7 @@ export default function Home() {
    * - clear database, if needed
    */
   useEffect(() => {
-    apiFetchDbSave();
+    //apiFetchDbSave();
     //clearDB();
 
     if (!ingredients.length) {
@@ -84,7 +84,7 @@ export default function Home() {
       {searchTerm && data.length === 0 && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
       {data && data.length > 0 && <RecipesCards recipes={data} />}
       {loading && <LoadingSpinner />}
-      {!loading && data.length !== 0 && hasMore && (
+      {!loading && data.length !== 0 && (
         <LoadMore ref={loadMoreButtonRef} onClick={loadMoreRecipes} disabled={loading}>
           Load more...
         </LoadMore>

@@ -1,6 +1,7 @@
 import { useState, useEffect, use } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSearchTerm, clearSuggestions } from "../../../store/searchSlice";
+import { setSearchMode } from "../../../store/recipes/recipesSlice";
 import { useDebounce } from "use-debounce";
 import { fetchRecipes } from "../../../store/recipes/asyncThunks";
 import styled from "styled-components";
@@ -20,6 +21,9 @@ function SearchInput() {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setDisplayTerm(value);
+    dispatch(setSearchTerm(value));
+    dispatch(setSearchMode("title"));
+
   };
 
   const handleClick = () => {
@@ -29,15 +33,16 @@ function SearchInput() {
   };
 
   useEffect(() => {
-    if (!searchTerm && data.length) {
+    if (!searchTerm && !data.length) {
       dispatch(fetchRecipes());
     }
   }, [searchTerm]);
 
+
   return (
     <InputWrapper>
       <StyledIcon></StyledIcon>
-      <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} />
+      <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} $suggestions={suggestions.length}/>
       <StyledButton onClick={handleClick}>Search</StyledButton>
       <Suggestions displayTerm={displayTerm} setDisplayTerm={setDisplayTerm} />
     </InputWrapper>
@@ -68,6 +73,8 @@ const StyledInput = styled.input`
   font-size: 16px;
   height: 50px;
   border-radius: 25px;
+  border-bottom-left-radius: ${({ $suggestions }) => ($suggestions ? "0px" : "25px")};
+  border-bottom-right-radius: ${({ $suggestions }) => ($suggestions ? "0px" : "25px")};
   outline: none;
   border: none;
   width: 500px;

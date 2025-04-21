@@ -21,6 +21,7 @@ const recipeSlice = createSlice({
       state.fetchedIds.push(...action.payload);
     },
     setSearchMode: (state, action) => {
+      console.log("setSearchMode", action.payload);
       state.searchMode = action.payload;
     },
     setLastDocId: (state, action) => {

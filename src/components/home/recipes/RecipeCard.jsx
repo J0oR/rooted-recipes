@@ -48,6 +48,7 @@ const Card = styled.div`
   align-items: center;
   gap: 20px;
   height: 150px;
+  width: 550px;
   max-width: 550px;
   border-radius: 150px;
   background-color: #ffffff;

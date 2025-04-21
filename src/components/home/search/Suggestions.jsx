@@ -25,7 +25,6 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
   if (suggestions.length === 0) return null;
 
   return (
-    <>
       <SuggestionsList>
         {suggestions.map((s) => (
           <SuggestionItem key={s.id} onClick={() => handleSuggestionClick(s.nameClean)}>
@@ -33,23 +32,22 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
           </SuggestionItem>
         ))}
       </SuggestionsList>
-    </>
   );
 }
 
 const SuggestionsList = styled.ul`
   list-style: none;
   padding: 0;
-  background: #eaede6;
-  border-radius: 15px;
-  width: 490px;
+  background-color: #F3F3F3;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  width: 504px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
   position: absolute;
-  width: 90%;
-  top: 60px;
-  left: 5%;
+  top: 51px;
+  left: -2px;
 `;
 
 const SuggestionItem = styled.li`
