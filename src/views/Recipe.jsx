@@ -6,10 +6,13 @@ import Tabs from "../components/recipe/Tabs";
 import Ingredients from "../components/recipe/Ingredients";
 import Instructions from "../components/recipe/Instructions";
 import RecipeStat from "../components/recipe/RecipeStat";
+import SummaryStyled from "../components/recipe/summary.styled";
 import { IoPeopleOutline } from "react-icons/io5";
 import { PiTimerBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa";
 import styled from "styled-components";
+import { FaListUl } from "react-icons/fa";
+
 
 export default function Recipe() {
   const { id } = useParams();
@@ -41,62 +44,120 @@ export default function Recipe() {
 
   return (
     <RecipeContainer>
-      <h1>{data.title}</h1>
+      <TopSection>
+      <TitleContainer>{<h1>{data.title}</h1>}</TitleContainer>
 
-      <HeaderContainer>
-        <img src={data.image} />
-        <div dangerouslySetInnerHTML={{ __html: data.summary }} />
-      </HeaderContainer>
+      <CircleWrapper>
+        <ImgWrapper>
+          <img src={data.image} />
+        </ImgWrapper>
+        <RadialItem index={0} total={4}>
+          <RecipeStat label="Ingredients" stat={data.ingredientsNames?.length} icon={<FaListUl />} />
+        </RadialItem>
+        <RadialItem index={1} total={4}>
+          <RecipeStat label="Cook Time" stat={data.readyInMinutes} icon={<PiTimerBold />} />
+        </RadialItem>
+        <RadialItem index={2} total={4}>
+          <RecipeStat label="Servings" stat={data.servings} icon={<IoPeopleOutline />} />
+        </RadialItem>
+        <RadialItem index={3} total={4}>
+          <RecipeStat label="Score" stat={`${data.spoonacularScore?.toFixed(2)}%`} icon={<FaRegStar />} />
+        </RadialItem>
+      </CircleWrapper>
+      </TopSection>
 
-      <RecipeStatsContainer>
-        <RecipeStat label="Cook Time" stat={data.readyInMinutes} icon={<PiTimerBold />} />
-        <RecipeStat label="Servings" stat={data.servings} icon={<IoPeopleOutline />} />
-        <RecipeStat label="Score" stat={`${data.spoonacularScore?.toFixed(2)}%`} icon={<FaRegStar />} />
-      </RecipeStatsContainer>
+
 
       <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
       {selectedTab === "ingredients" && <Ingredients ingredients={data.ingredients} />}
       {selectedTab === "recipe" && <Instructions steps={data.steps} />}
+      {selectedTab === "summary" && <SummaryStyled summary={data.summary} />}
     </RecipeContainer>
   );
 }
 
-const RecipeContainer = styled.div`
-   display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 70%;
-    margin: 100px auto;
-    padding: 20px;
-    border-radius: 10px;
-`;
-
-const RecipeStatsContainer = styled.div`
+const TopSection = styled.div`
   display: flex;
-  justify-content: space-between;
-  gap: 100px;
-  margin: 50px auto;
-`;
-
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 50px;
-  margin: 50px auto;
-  padding: 50px;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+  position: relative;
+  background-color: #FEF2DA;
+  padding-bottom: 60px;
+`;
 
-  img{
-    border-radius: 15px;
-    flex: 1;
-    max-width: 400px;
+const CircleWrapper = styled.div`
+  position: relative;
+  width: 200px;
+  height: 200px;
+  left: -90px;
+  margin-bottom: 60px;
+`;
+
+const RadialItem = styled.div.attrs(({ index, total }) => {
+  const startAngle = -35; // gradi, in alto a destra
+  const endAngle = 35; // gradi, in basso a destra
+  const angle = startAngle + ((endAngle - startAngle) / (total - 1)) * index;
+
+  const radius = 170;
+  const rad = (angle * Math.PI) / 180;
+  const x = Math.cos(rad) * radius;
+  const y = Math.sin(rad) * radius;
+
+  return {
+    style: {
+      transform: `translate(${x}px, ${y}px)`,
+    },
+  };
+})`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+`;
+
+const RecipeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: 10px;
+  position: relative;
+`;
+
+const ImgWrapper = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 250px;
+  height: 250px;
+  border-radius: 100%;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.35) 5px 5px 15px;
+  z-index: 1;
+
+  img {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
+`;
 
-  div{
-    flex: 1;
-    line-height: 1.8rem;
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-bottom: 50px;
+
+  h1 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    flex-wrap: wrap;
   }
 `;

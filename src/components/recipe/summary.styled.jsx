@@ -1,16 +1,26 @@
+import styled from "styled-components";
 
-function SummaryStyled({ summary }) {
-  
+export default function SummaryStyled({ summary }) {
 
   return (
-    <div >
+    <Container>
       <div
-      dangerouslySetInnerHTML={{
-        __html: summary,
-      }}
-    />
-    </div>
+        dangerouslySetInnerHTML={{
+          __html: summary,
+        }}
+      />
+    </Container>
   );
 }
 
-export default SummaryStyled;
+const Container = styled.div`
+  width: 50%;
+  margin: auto;
+  background-color: #FBF5EC;
+  border-radius: 15px;
+  padding: 50px;
+
+  div{
+    line-height: 2.5;
+  }
+`;

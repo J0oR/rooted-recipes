@@ -71,6 +71,7 @@ const Modal = styled.div`
   transform-origin: top right;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 
+
   h1 {
     font-size: 1.2rem;
     font-weight: 500;

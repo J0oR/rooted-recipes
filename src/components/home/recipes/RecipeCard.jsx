@@ -48,7 +48,7 @@ const Card = styled.div`
   align-items: center;
   gap: 20px;
   height: 150px;
-  width: 400px;
+  max-width: 550px;
   border-radius: 150px;
   background-color: #ffffff;
   color: #090500;
@@ -106,7 +106,7 @@ const Card = styled.div`
     align-items: flex-start;
     gap: 10px;
     margin-left: 180px;
-    width: 40%;
+    width: 60%;
     color: #ffffff;
     color: #C1933F;
 

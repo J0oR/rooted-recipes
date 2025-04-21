@@ -17,6 +17,7 @@ const StatContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  width: 150px;
 `;
 
 const StatIcon = styled.div`
@@ -36,7 +37,6 @@ const StatDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px;
 `;
 
 const StatLabel = styled.div`

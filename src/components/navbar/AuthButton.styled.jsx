@@ -2,31 +2,12 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, provider } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import styled from "styled-components";
+import Button from "../common/Button";
 
-const AuthStateButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.9rem;
-  border-radius: 25px;
-  border: none;
-  padding: ${({ $logout }) => ($logout ? "10px 20px" : "10px 2px 10px 10px")};
-  height: 30px;
-  background-color: #fbf5ec;
-  color: #090500;
-`;
 
-const GoogleIcon = styled(FcGoogle)`
-  border-radius: 100%;
-  font-size: 1.5rem;
-  height: 24px;
-  width: 24px;
-`;
-
-function AuthButton() {
+export default function AuthButton() {
   const [user] = useAuthState(auth);
 
   const handleGoogleLogin = async () => {
@@ -48,4 +29,25 @@ function AuthButton() {
   );
 }
 
-export default AuthButton;
+
+const AuthStateButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+  border-radius: 25px;
+  border: none;
+  padding: 20px;
+  height: 30px;
+  background-color: #fbf5ec;
+  color: #090500;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+`;
+
+const GoogleIcon = styled(FcGoogle)`
+  border-radius: 100%;
+  font-size: 1.5rem;
+  height: 24px;
+  width: 24px;
+`;
+

@@ -3,6 +3,7 @@ import { setDishType } from "../../../store/searchSlice";
 import { LuSettings2 } from "react-icons/lu";
 import DishesModal from "./DishesModal";
 import styled from "styled-components";
+import Button from "../../common/Button";
 
 
 export default function DishSelector() {
@@ -34,7 +35,7 @@ const BasicContainer = styled.div`
   position: relative;
 `;
 
-const SettingsButton = styled.button`
+const SettingsButton = styled(Button)`
   background-color: transparent;
   cursor: pointer;
   font-size: 1.5rem;

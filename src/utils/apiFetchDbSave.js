@@ -16,10 +16,11 @@ const apiFetchDbSave = async () => {
        await saveRecipesToFirebase(recipes);
        await saveIngredientsToFirebase(recipes);
        console.log("Data fetched from API and saved to Firebase.");
+       console.log(recipes);
      }
 
     } catch (error) {
-      console.error("Error fetching data from API:", error);
+      console.log("Error fetching data from API:", error);
     }
   };
 

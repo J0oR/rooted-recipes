@@ -10,7 +10,6 @@ function Instructions({ steps }) {
   return (
     <div className={style.container}>
       <div className={style.header}>
-        <h2 className={style.title}>Instructions</h2>
       </div>
       {steps?.map((step, indexStep) => (
         <div key={indexStep}>

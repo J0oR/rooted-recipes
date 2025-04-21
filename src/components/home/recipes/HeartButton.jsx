@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { addToFavourites, removeFromFavourites } from "../../../store/favouriteSlice";
+import Button from "../../common/Button";
 
 export default function HeartButton({ recipeId }) {
   const [isSaved, setIsSaved] = useState(false);
@@ -59,7 +60,7 @@ export default function HeartButton({ recipeId }) {
   );
 }
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   background: transparent;
   display: flex;
   justify-content: center;

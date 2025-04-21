@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import Suggestions from "./Suggestions";
 import { data } from "react-router-dom";
+import Button from "../../common/Button";
 
 function SearchInput() {
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ const StyledInput = styled.input`
   }
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   position: absolute;
   top: 5px;
   right: 5px;

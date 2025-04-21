@@ -1,29 +1,44 @@
 import styled from "styled-components";
+import { useState } from "react";
+
+export default function Button({ className, onClick, children }) {
+
+  const [isAnimating, setIsAnimating] = useState(false);
+
+
+  const handleClick = (e) => {
+    onClick?.(e);
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 300); 
+  };
+
+  return (
+    <BasicButton className={`${className || ""} ${isAnimating ? "animating" : ""}`} onClick={handleClick}>
+      {children}
+    </BasicButton>
+  );
+}
+
+
 
 const BasicButton = styled.button`
-  padding: 10px 20px;
-  border-radius: 15px;
-  border: none;
-  cursor: pointer;
-  width: fit-content;
 
-  &:hover {
-    outline: 1px solid #43927c;
+cursor: pointer;
+
+  &.animating {
+    animation: clickAnimation 0.3s ease;
   }
 
-  &.active {
-    outline: 1px solid #43927c;
-    color: #43927c;
-  }
+  @keyframes clickAnimation {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  } 
 `;
 
-function Button({ className, onClick, children }) {
-  
-    return (
-      <BasicButton className={className} onClick={onClick}>
-        {children}
-      </BasicButton>
-    );
-  }
-  
-export default Button;

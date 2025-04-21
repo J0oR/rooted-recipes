@@ -1,29 +1,101 @@
-import style from "./ingredients.module.scss";
+import styled from "styled-components";
 
-function Ingredients({ ingredients }) {
-  
+export default function Ingredients({ ingredients }) {
+
+  const formatUnit = (unit) => {
+    if (!unit) return "";
+    const u = unit.toLowerCase();
+    if (u === "tablespoon" || u === "tablespoons") return "tbsp";
+    if (u === "teaspoon" || u === "teaspoons") return "tsp";
+    return unit;
+  };
 
   return (
-    <div className={style.container}>
-      <div className={style.header}>
-        <h2 className={style.title}>Ingredients</h2>
-        <span>
-          {ingredients?.length} item{ingredients?.length !== 1 ? "s" : ""}
-        </span>
-      </div>
-      <ul className={style.list}>
+    <Container>
+      <Header>
+        <span>Amount</span>
+        <span>Unit</span>
+        <span>Ingredient</span>
+      </Header>
+      <List>
         {ingredients?.map((ingredient, index) => (
-          <li key={index} className={style.ingredientRow}>
-            <span>{ingredient.nameClean}</span>
-            <div className={style.amount}>
-              <span >{ingredient.amount} </span>
-              <span>{ingredient.unit}</span>
-            </div>
-          </li>
+          <IngredientRow key={index}>
+            <span>{ingredient.amount} </span>
+            <span>{formatUnit(ingredient.unit)}</span>
+            <span className="name">{ingredient.nameClean}</span>
+          </IngredientRow>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 }
 
-export default Ingredients;
+const Container = styled.div`
+  width: 400px;
+  margin: auto;
+  background-color: #fef1da;
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  :nth-child(1) {
+    flex: 1;
+  }
+  :nth-child(2) {
+    flex: 2;
+  }
+  
+
+  :nth-child(3) {
+    flex: 3;
+  }
+  span {
+    text-align: center;
+  }
+`;
+
+const List = styled.ul`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 20px;
+  margin: auto;
+`;
+
+const IngredientRow = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c1933f;
+
+  :nth-child(1){
+    flex: 1;
+  }
+  :nth-child(2) {
+    flex: 2;
+  }
+
+  :nth-child(3) {
+    flex: 3;
+  }
+
+  span {
+    text-align: center;
+  }
+`;
