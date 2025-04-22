@@ -32,11 +32,11 @@ function SearchInput() {
     dispatch(fetchRecipes());
   };
 
-  useEffect(() => {
+ /*  useEffect(() => {
     if (!searchTerm && !data.length) {
       dispatch(fetchRecipes());
     }
-  }, [searchTerm]);
+  }, [searchTerm]); */
 
 
   return (

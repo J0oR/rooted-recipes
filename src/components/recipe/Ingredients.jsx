@@ -14,14 +14,12 @@ export default function Ingredients({ ingredients }) {
     <Container>
       <Header>
         <span>Amount</span>
-        <span>Unit</span>
         <span>Ingredient</span>
       </Header>
       <List>
         {ingredients?.map((ingredient, index) => (
           <IngredientRow key={index}>
-            <span>{ingredient.amount} </span>
-            <span>{formatUnit(ingredient.unit)}</span>
+            <span>{ingredient.amount} {formatUnit(ingredient.unit)}</span>
             <span className="name">{ingredient.nameClean}</span>
           </IngredientRow>
         ))}
@@ -50,20 +48,15 @@ const Header = styled.div`
   padding: 20px 0;
   font-size: 0.8rem;
   font-weight: 600;
+  gap: 50px;
 
   :nth-child(1) {
     flex: 1;
+    text-align: right;
   }
   :nth-child(2) {
     flex: 2;
-  }
-  
-
-  :nth-child(3) {
-    flex: 3;
-  }
-  span {
-    text-align: center;
+    text-align: left;
   }
 `;
 
@@ -83,19 +76,18 @@ const IngredientRow = styled.li`
   width: 100%;
   padding-bottom: 5px;
   border-bottom: 1px solid #c1933f;
+  gap: 50px;
 
   :nth-child(1){
+    text-align: right;
     flex: 1;
   }
+  
   :nth-child(2) {
+    text-align: left;
     flex: 2;
   }
 
-  :nth-child(3) {
-    flex: 3;
-  }
-
   span {
-    text-align: center;
   }
 `;

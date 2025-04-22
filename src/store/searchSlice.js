@@ -5,6 +5,7 @@ const searchSlice = createSlice({
   name: "recipes",
   initialState: {
     searchTerm: "",
+    prevSearchTerm: "",
     suggestions: [],
     dishType: "all",
     loading: false,
@@ -13,6 +14,9 @@ const searchSlice = createSlice({
   reducers: {
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
+    },
+    setPrevSearchTerm: (state, action) => {
+      state.prevSearchTerm = action.payload;
     },
     setDishType: (state, action) => {
       state.dishType = action.payload;
@@ -42,7 +46,8 @@ export const {
   setDishType,
   setSuggestions,
   clearSuggestions,
-  filterSuggestions
+  filterSuggestions,
+  setPrevSearchTerm
 } = searchSlice.actions;
 
 export default searchSlice.reducer;

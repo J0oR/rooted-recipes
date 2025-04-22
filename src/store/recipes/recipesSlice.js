@@ -20,12 +20,17 @@ const recipeSlice = createSlice({
     addFetchedIds: (state, action) => {
       state.fetchedIds.push(...action.payload);
     },
+    resetFetchedIds: (state) => {
+      state.fetchedIds = [];
+    },
     setSearchMode: (state, action) => {
-      console.log("setSearchMode", action.payload);
       state.searchMode = action.payload;
     },
     setLastDocId: (state, action) => {
       state.lastDocId = action.payload;
+    },
+    resetData: (state, action) => {
+      state.data = [];
     },
     filterDataByDishType: (state, action) => {
       if (action.payload !== "all") {
@@ -35,6 +40,9 @@ const recipeSlice = createSlice({
       } else {
         state.data = state.backupData;
       }
+    },
+    setHasMore: (state, action) => {
+      state.hasMore = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -60,6 +68,6 @@ const recipeSlice = createSlice({
   },
 });
 
-export const { filterDataByDishType, setSearchMode, setLastDocId, addFetchedIds } = recipeSlice.actions;
+export const { filterDataByDishType, setSearchMode, setLastDocId, addFetchedIds, setHasMore, resetData, resetFetchedIds } = recipeSlice.actions;
 
 export default recipeSlice.reducer;

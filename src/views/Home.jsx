@@ -84,7 +84,7 @@ export default function Home() {
       {searchTerm && data.length === 0 && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
       {data && data.length > 0 && <RecipesCards recipes={data} />}
       {loading && <LoadingSpinner />}
-      {!loading && data.length !== 0 && (
+      {!loading && data.length !== 0 && hasMore &&(
         <LoadMore ref={loadMoreButtonRef} onClick={loadMoreRecipes} disabled={loading}>
           Load more...
         </LoadMore>

@@ -1,41 +1,33 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../config/firebase";
 import { doc, getDoc, query, getDocs, collection, limit, where, startAfter } from "firebase/firestore";
-import { setSearchMode, setLastDocId, addFetchedIds } from "./recipesSlice";
+import { setSearchMode, setLastDocId, addFetchedIds, setHasMore, resetData, resetFetchedIds } from "./recipesSlice";
+import { setPrevSearchTerm } from "../searchSlice";
 
 
 const fetchDocs = async (constraints, fetchedIds = [], remaining = 0) => {
   const snapshot = await getDocs(query(collection(db, "recipes"), ...constraints));
+  const allDocs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
   if (fetchedIds.length) {
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      .filter(doc => !fetchedIds.includes(doc.id))
-      .slice(0, remaining);
+    const filtered = allDocs.filter(doc => !fetchedIds.includes(doc.id)).slice(0, remaining);
+    return filtered;
   }
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return allDocs;
 };
 
 // Function to build query constraints
-const buildQuery = async ({
-  searchTerm,
-  searchMode,
-  lastDocId
-}) => {
+const buildQuery = async ({ searchTerm, searchMode, lastDocId }) => {
   const constraints = [];
-
-  if (searchMode === "title") {
-    constraints.push(where("titleSplitted", "array-contains", searchTerm.toLowerCase()));
-  } else if (searchMode === "ingredient") {
-    constraints.push(where("ingredientsNames", "array-contains", searchTerm.toLowerCase()));
-  }
+  const fieldRef = searchMode === "title" ? "titleSplitted" : "ingredientsNames";
+  constraints.push(where(fieldRef, "array-contains", searchTerm.toLowerCase()));
   constraints.push(limit(10)); // Limit to 10 results per query 
-
 
   if (lastDocId) {
     const lastDocRef = doc(db, "recipes", lastDocId);
     const lastDoc = await getDoc(lastDocRef);
     constraints.push(startAfter(lastDoc));
   }
-
   return constraints;
 };
 
@@ -44,71 +36,69 @@ export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
-      const { searchTerm } = getState().search;
-      const { lastDocId, searchMode, fetchedIds } = getState().recipes;
+      const { searchTerm, prevSearchTerm } = getState().search;
+      
+      if (searchTerm !== prevSearchTerm) {
+        dispatch(setPrevSearchTerm(searchTerm));
+        dispatch(resetData());
+        dispatch(resetFetchedIds());
+      }
 
-      console.log((searchMode));
-
+      let { lastDocId, searchMode, fetchedIds } = getState().recipes;
       const results = [];
       let remaining = 10;
-      let constraints = [];
-
-      console.log("Before entering step 1/2", searchMode, searchTerm, lastDocId);
-
-      if (searchMode === "title" && searchTerm === "") {
-        constraints = await buildQuery({ searchTerm, searchMode: "none", lastDocId });
-      }
 
       if (searchMode === "title" && searchTerm !== "") {
-        constraints = await buildQuery({ searchTerm, searchMode: "title", lastDocId });
+        const titleConstraints = await buildQuery({ searchTerm, searchMode: "title", lastDocId });
+        const titleFiltered = await fetchDocs(titleConstraints, fetchedIds, remaining);
+        
+        results.push(...titleFiltered);
+        remaining -= titleFiltered.length;
+        
+        const titleIds = titleFiltered.map(d => d.id);
+        fetchedIds = [...fetchedIds, ...titleIds];
 
-        // Fetch title-based results
-        const docs = await fetchDocs(constraints);
-
-        // Filter out already fetched IDs, and add them to the results
-        /* const filtered = docs.filter(doc => !fetchedIds.includes(doc.id));
-        results.push(...filtered); */
-        results.push(...docs);
-        remaining = 10 - docs.length;
+        if (titleFiltered.length) {
+          dispatch(setLastDocId(titleFiltered[titleFiltered.length - 1].id));
+        }
 
         if (remaining > 0) {
-          // Switch search mode to ingredients
-          dispatch(setSearchMode("ingredient")); // action nello slice
+          dispatch(setSearchMode("ingredient"));
+          searchMode = "ingredient";
         }
 
-        // Save lastDocId from this round if there are still docs
-        if (docs.length) {
-          dispatch(setLastDocId(docs[docs.length - 1].id));
+        // Ingredient search (either from start or after switch)
+        if (searchMode === "ingredient" && remaining > 0) {
+          const ingredientConstraints = await buildQuery({ searchTerm, searchMode: "ingredient", lastDocId });
+          const ingFiltered = await fetchDocs(ingredientConstraints, fetchedIds, remaining);
+          
+          results.push(...ingFiltered);
+
+          const ingIds = ingFiltered.map(d => d.id);
+          fetchedIds = [...fetchedIds, ...ingIds];
+
+
+          console.log("ingFiltered", ingFiltered.length, "remaining", remaining);
+
+          if (ingFiltered.length) {
+            dispatch(setLastDocId(ingFiltered[ingFiltered.length - 1].id));
+          }
+          else {
+            dispatch(setHasMore(false));
+          }
         }
-        // Update fetchedIds in store
+
+        // ✅ aggiorna Redux una sola volta
         dispatch(addFetchedIds(results.map(r => r.id)));
+
+
+        return {
+          recipes: results,
+          lastDocId: results.length ? results[results.length - 1].id : null,
+          hasMore: results.length === 10, // or > 0 if you want infinite scroll style
+          searchMode: getState().recipes.searchMode,
+        };
       }
-
-      // Step 2 – fill remaining with ingredient-based search
-      if (remaining > 0) {
-        constraints = await buildQuery({ searchTerm, searchMode: "ingredient", lastDocId: lastDocId });
-
-        const docsIng = await fetchDocs(constraints, fetchedIds, remaining);
-        results.push(...docsIng);
-
-        // Save lastDocId if there are still docs
-        if (docsIng.length) {
-          dispatch(setLastDocId(docsIng[docsIng.length - 1].id));
-        }
-      }
-
-      // Update fetchedIds in store
-      dispatch(addFetchedIds(results.map(r => r.id)));
-
-      return {
-        recipes: results,
-        lastDocId: results.length ? results[results.length - 1].id : null,
-        hasMore: results.length === 10,
-        searchMode: getState().recipes.searchMode,
-      };
-
-
-
     } catch (err) {
       console.error("🔥 fetchRecipes error:", err);
       return rejectWithValue(err.message || "Unknown error");
