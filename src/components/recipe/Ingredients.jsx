@@ -29,19 +29,19 @@ export default function Ingredients({ ingredients }) {
 }
 
 const Container = styled.div`
-  width: 400px;
-  margin: auto;
-  background-color: #fef1da;
-  border-radius: 15px;
-  padding: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #F4E9D6;
+  padding: 10px 0 40px 0;
+  border-radius: 15px;
 `;
 
 const Header = styled.div`
-  width: 100%;
+  width: 80%;
+  margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,12 +61,16 @@ const Header = styled.div`
 `;
 
 const List = styled.ul`
-  width: 100%;
+  width: 80%;
+  margin: auto;
   display: flex;
   flex-direction: column;
   list-style: none;
   gap: 20px;
-  margin: auto;
+  //border: 2px solid #C2933F;
+  border-radius: 15px;
+  //background-color: #F4E9D6;
+  
 `;
 
 const IngredientRow = styled.li`
@@ -74,20 +78,22 @@ const IngredientRow = styled.li`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #c1933f;
   gap: 50px;
+ 
+
+
+  &:last-child {
+    border: none;
+  }
 
   :nth-child(1){
     text-align: right;
     flex: 1;
+    color: #c1933f;
   }
   
   :nth-child(2) {
     text-align: left;
     flex: 2;
-  }
-
-  span {
   }
 `;

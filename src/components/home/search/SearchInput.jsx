@@ -15,15 +15,14 @@ function SearchInput() {
   const [displayTerm, setDisplayTerm] = useState("");
 
   const { searchTerm, suggestions } = useSelector((state) => state.search);
-  const { titles } = useSelector((state) => state.titles);
-  const { data, lastDocId, searchMode } = useSelector((state) => state.recipes);
+  const [animateLens, setAnimateLens] = useState(false);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setDisplayTerm(value);
     dispatch(setSearchTerm(value));
     dispatch(setSearchMode("title"));
-
+    setAnimateLens(value.trim() !== "")
   };
 
   const handleClick = () => {
@@ -32,19 +31,19 @@ function SearchInput() {
     dispatch(fetchRecipes());
   };
 
- /*  useEffect(() => {
-    if (!searchTerm && !data.length) {
+  useEffect(() => {
+    if (!searchTerm) {
       dispatch(fetchRecipes());
     }
-  }, [searchTerm]); */
+  }, [searchTerm]);
 
 
   return (
     <InputWrapper>
-      <StyledIcon></StyledIcon>
+      <StyledIcon $animateLens={animateLens}></StyledIcon>
       <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} $suggestions={suggestions.length}/>
       <StyledButton onClick={handleClick}>Search</StyledButton>
-      <Suggestions displayTerm={displayTerm} setDisplayTerm={setDisplayTerm} />
+      <Suggestions displayTerm={searchTerm} setDisplayTerm={setDisplayTerm} />
     </InputWrapper>
   );
 }
@@ -64,8 +63,11 @@ const StyledIcon = styled(FiSearch)`
   pointer-events: none;
   font-size: 1.5rem;
   border-radius: 100%;
-  top: 25px;
+  top: 15px;
   left: 20px;
+  transition: transform 0.3s ease-in-out;
+  transform: ${({ $animateLens }) => ($animateLens ? "scale(1.3)" : "scale(1)")};
+  transform-origin: center;
 `;
 
 const StyledInput = styled.input`

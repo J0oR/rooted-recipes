@@ -20,6 +20,7 @@ const CardsContainer = styled.div`
   justify-content: center;
   height: fit-content;
   width: 100vw;
-  padding: 50px 10vw;
   gap: 50px;
+  max-width: 600px;
+  padding: 50px;
 `;

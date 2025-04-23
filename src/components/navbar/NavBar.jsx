@@ -3,6 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
 import NavLinkStyled from "./NavLink.styled";
 import AuthButton from "./AuthButton.styled";
+import UserButton from "./UserButton";
 
 export default function Navbar() {
   const [user] = useAuthState(auth);
@@ -14,7 +15,8 @@ export default function Navbar() {
         <div className="LinksContainer">
           <NavLinkStyled to="/" icon="home" text="Home" />
           <NavLinkStyled to="/favourites" icon="heart" text="Saved" />
-          <NavLinkStyled to="/user" icon="user" text="Profile" />
+          {/* <NavLinkStyled to="/user" icon="user" text="Profile" /> */}
+          <UserButton/>
         </div>
       )}
       {!user && <AuthButton />}

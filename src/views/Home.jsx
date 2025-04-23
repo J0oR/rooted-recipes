@@ -38,10 +38,6 @@ export default function Home() {
       console.log("fetching ingredients on Startup");
       dispatch(fetchIngredients());
     }
-    /* if (!titles.length) {
-      console.log("fetching titles on Startup");
-      dispatch(fetchTitles());
-    } */
   }, [dispatch]);
 
   /*

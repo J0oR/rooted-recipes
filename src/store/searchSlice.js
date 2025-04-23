@@ -25,6 +25,7 @@ const searchSlice = createSlice({
       state.suggestions = action.payload;
     },
     clearSuggestions: (state) => {
+      console.log("clearing suggestions");
       state.suggestions = [];
     },
     filterSuggestions: (state, action) => {

@@ -19,8 +19,10 @@ const fetchDocs = async (constraints, fetchedIds = [], remaining = 0) => {
 // Function to build query constraints
 const buildQuery = async ({ searchTerm, searchMode, lastDocId }) => {
   const constraints = [];
-  const fieldRef = searchMode === "title" ? "titleSplitted" : "ingredientsNames";
-  constraints.push(where(fieldRef, "array-contains", searchTerm.toLowerCase()));
+  if (searchTerm) {
+    const fieldRef = searchMode === "title" ? "titleSplitted" : "ingredientsNames";
+    constraints.push(where(fieldRef, "array-contains", searchTerm.toLowerCase()));
+  }
   constraints.push(limit(10)); // Limit to 10 results per query 
 
   if (lastDocId) {
@@ -37,7 +39,7 @@ export const fetchRecipes = createAsyncThunk(
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
       const { searchTerm, prevSearchTerm } = getState().search;
-      
+
       if (searchTerm !== prevSearchTerm) {
         dispatch(setPrevSearchTerm(searchTerm));
         dispatch(resetData());
@@ -48,13 +50,13 @@ export const fetchRecipes = createAsyncThunk(
       const results = [];
       let remaining = 10;
 
-      if (searchMode === "title" && searchTerm !== "") {
+      if (searchMode === "title") {
         const titleConstraints = await buildQuery({ searchTerm, searchMode: "title", lastDocId });
         const titleFiltered = await fetchDocs(titleConstraints, fetchedIds, remaining);
-        
+
         results.push(...titleFiltered);
         remaining -= titleFiltered.length;
-        
+
         const titleIds = titleFiltered.map(d => d.id);
         fetchedIds = [...fetchedIds, ...titleIds];
 
@@ -66,39 +68,39 @@ export const fetchRecipes = createAsyncThunk(
           dispatch(setSearchMode("ingredient"));
           searchMode = "ingredient";
         }
+      }
 
-        // Ingredient search (either from start or after switch)
-        if (searchMode === "ingredient" && remaining > 0) {
-          const ingredientConstraints = await buildQuery({ searchTerm, searchMode: "ingredient", lastDocId });
-          const ingFiltered = await fetchDocs(ingredientConstraints, fetchedIds, remaining);
-          
-          results.push(...ingFiltered);
+      // Ingredient search (either from start or after switch)
+      if (searchMode === "ingredient" && remaining > 0) {
+        const ingredientConstraints = await buildQuery({ searchTerm, searchMode: "ingredient", lastDocId });
+        const ingFiltered = await fetchDocs(ingredientConstraints, fetchedIds, remaining);
 
-          const ingIds = ingFiltered.map(d => d.id);
-          fetchedIds = [...fetchedIds, ...ingIds];
+        results.push(...ingFiltered);
+
+        const ingIds = ingFiltered.map(d => d.id);
+        fetchedIds = [...fetchedIds, ...ingIds];
 
 
-          console.log("ingFiltered", ingFiltered.length, "remaining", remaining);
+        console.log("ingFiltered", ingFiltered.length, "remaining", remaining);
 
-          if (ingFiltered.length) {
-            dispatch(setLastDocId(ingFiltered[ingFiltered.length - 1].id));
-          }
-          else {
-            dispatch(setHasMore(false));
-          }
+        if (ingFiltered.length) {
+          dispatch(setLastDocId(ingFiltered[ingFiltered.length - 1].id));
+        }
+        else {
+          dispatch(setHasMore(false));
         }
 
         // ✅ aggiorna Redux una sola volta
         dispatch(addFetchedIds(results.map(r => r.id)));
 
 
-        return {
-          recipes: results,
-          lastDocId: results.length ? results[results.length - 1].id : null,
-          hasMore: results.length === 10, // or > 0 if you want infinite scroll style
-          searchMode: getState().recipes.searchMode,
-        };
       }
+      return {
+        recipes: results,
+        lastDocId: results.length ? results[results.length - 1].id : null,
+        hasMore: results.length === 10, // or > 0 if you want infinite scroll style
+        searchMode: getState().recipes.searchMode,
+      };
     } catch (err) {
       console.error("🔥 fetchRecipes error:", err);
       return rejectWithValue(err.message || "Unknown error");

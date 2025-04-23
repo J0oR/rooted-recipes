@@ -4,7 +4,6 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { FaHome } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
 import { useState } from "react";
-import Button from "../common/Button";
 
 const icons = {
   home: FaHome,
@@ -40,15 +39,16 @@ const StyledNavLink = styled(NavLink)`
 
   &.active{
     .icon{
-      background-color: #da604e;
+      background-color: #C2933F;
+      
       color: #f3f3f3;
     }
   }
 
   &:hover {
     .icon {
-      outline: 2px solid #da604e;
-      color: #da604e;
+      outline: 2px solid #C2933F;
+      color: #C2933F;
     }
   }
 

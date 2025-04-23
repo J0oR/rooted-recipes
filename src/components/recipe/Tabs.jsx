@@ -1,5 +1,34 @@
 import { useState } from "react";
 import styled from "styled-components";
+import Ingredients from "./Ingredients";
+import Instructions from "./Instructions";
+import SummaryStyled from "./Summary";
+
+export default function Tabs({ ingredients, steps, summary }) {
+  const [selectedTab, setSelectedTab] = useState("ingredients");
+  const tabs = [
+    { key: "ingredients", label: "Ingredients" },
+    { key: "recipe", label: "Recipe" },
+    { key: "summary", label: "Summary" },
+  ];
+
+  return (
+    <>
+      <TabsContainer>
+        {tabs.map(({ key, label }) => (
+          <Tab key={key} className={`${selectedTab === key ? "active" : ""}`} onClick={() => setSelectedTab(key)}>
+            {label}
+          </Tab>
+        ))}
+      </TabsContainer>
+      <SectionContainer>
+        {selectedTab === "ingredients" && <Ingredients ingredients={ingredients} />}
+        {selectedTab === "recipe" && <Instructions steps={steps} />}
+        {selectedTab === "summary" && <SummaryStyled summary={summary} />}
+      </SectionContainer>
+    </>
+  );
+}
 
 const TabsContainer = styled.div`
   display: flex;
@@ -11,7 +40,7 @@ const TabsContainer = styled.div`
   position: relative;
   width: 100%;
   top: -55px;
-  background-color: #C3D1BC;
+  background-color: #FFF2DA;
   width: fit-content;
   border-radius: 25px;
 `;
@@ -26,7 +55,6 @@ const Tab = styled.div`
 
   &.active {
     font-weight: 600;
-    
 
     &::after {
       content: "";
@@ -41,22 +69,11 @@ const Tab = styled.div`
   }
 `;
 
-function Tabs({ selectedTab, setSelectedTab }) {
-  const tabs = [
-    { key: "ingredients", label: "Ingredients" },
-    { key: "recipe", label: "Recipe" },
-    { key: "summary", label: "Summary" },
-  ];
+const SectionContainer = styled.div`
+  padding: 50px 25px;
+  margin-top: -110px;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 100px;
 
-  return (
-    <TabsContainer>
-      {tabs.map(({ key, label }) => (
-        <Tab key={key} className={`${selectedTab === key ? "active" : ""}`} onClick={() => setSelectedTab(key)}>
-          {label}
-        </Tab>
-      ))}
-    </TabsContainer>
-  );
-}
-
-export default Tabs;
+`;

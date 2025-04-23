@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function SummaryStyled({ summary }) {
+export default function Summary({ summary }) {
 
   return (
     <Container>
@@ -14,8 +14,7 @@ export default function SummaryStyled({ summary }) {
 }
 
 const Container = styled.div`
-  width: 50%;
-  margin: auto;
+width: 100%;
   background-color: #FBF5EC;
   border-radius: 15px;
   padding: 50px;

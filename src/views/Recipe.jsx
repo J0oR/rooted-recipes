@@ -3,10 +3,7 @@ import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import Tabs from "../components/recipe/Tabs";
-import Ingredients from "../components/recipe/Ingredients";
-import Instructions from "../components/recipe/Instructions";
 import RecipeStat from "../components/recipe/RecipeStat";
-import SummaryStyled from "../components/recipe/summary.styled";
 import { IoPeopleOutline } from "react-icons/io5";
 import { PiTimerBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa";
@@ -19,7 +16,6 @@ export default function Recipe() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("ingredients");
 
   const fetchFirebaseData = async () => {
     try {
@@ -68,11 +64,9 @@ export default function Recipe() {
 
 
 
-      <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+      <Tabs ingredients={data.ingredients} steps={data.steps} summary={data.summary} />
 
-      {selectedTab === "ingredients" && <Ingredients ingredients={data.ingredients} />}
-      {selectedTab === "recipe" && <Instructions steps={data.steps} />}
-      {selectedTab === "summary" && <SummaryStyled summary={data.summary} />}
+      
     </RecipeContainer>
   );
 }
@@ -85,7 +79,6 @@ const TopSection = styled.div`
   width: 100%;
   padding: 20px;
   position: relative;
-  background-color: #FEF2DA;
   padding-bottom: 60px;
 `;
 
@@ -143,7 +136,6 @@ const ImgWrapper = styled.div`
     object-position: center;
     width: 100%;
     height: 100%;
-    object-fit: cover;
   }
 `;
 
