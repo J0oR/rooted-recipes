@@ -1,14 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, clearSuggestions, filterSuggestions } from "../../../store/searchSlice";
+import { setSearchTerm, clearSuggestions, filterSuggestions } from "../../store/searchSlice";
 import styled from "styled-components";
 import { useEffect } from "react";
-import { fetchRecipes } from "../../../store/recipes/asyncThunks";
+import { fetchRecipes } from "../../store/recipes/asyncThunks";
 
 export default function Suggestions({ displayTerm, setDisplayTerm }) {
   const dispatch = useDispatch();
   const { suggestions, searchTerm, searchMode } = useSelector((state) => state.search);
   const { lastDocId } = useSelector((state) => state.recipes);
-  const { titles } = useSelector((state) => state.titles);
   const { ingredients } = useSelector((state) => state.ingredients);
 
   const handleSuggestionClick = (name) => {

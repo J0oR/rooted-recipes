@@ -1,14 +1,15 @@
 import { useState, useEffect, use } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, clearSuggestions } from "../../../store/searchSlice";
-import { setSearchMode } from "../../../store/recipes/recipesSlice";
+import { setSearchTerm, clearSuggestions } from "../../store/searchSlice";
+import { setSearchMode } from "../../store/recipes/recipesSlice";
 import { useDebounce } from "use-debounce";
-import { fetchRecipes } from "../../../store/recipes/asyncThunks";
+import { fetchRecipes } from "../../store/recipes/asyncThunks";
 import styled from "styled-components";
 import { FiSearch } from "react-icons/fi";
 import Suggestions from "./Suggestions";
 import { data } from "react-router-dom";
-import Button from "../../common/Button";
+import Button from "../common/Button";
+import DishSelector from "./DishSelector";
 
 function SearchInput() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function SearchInput() {
     setDisplayTerm(value);
     dispatch(setSearchTerm(value));
     dispatch(setSearchMode("title"));
-    setAnimateLens(value.trim() !== "")
+    setAnimateLens(value.trim() !== "");
   };
 
   const handleClick = () => {
@@ -37,12 +38,12 @@ function SearchInput() {
     }
   }, [searchTerm]);
 
-
   return (
     <InputWrapper>
       <StyledIcon $animateLens={animateLens}></StyledIcon>
-      <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} $suggestions={suggestions.length}/>
+      <StyledInput type="text" placeholder={`Search for recipes or ingredient`} value={displayTerm} onChange={handleInputChange} $suggestions={suggestions.length} />
       <StyledButton onClick={handleClick}>Search</StyledButton>
+      <DishSelector />
       <Suggestions displayTerm={searchTerm} setDisplayTerm={setDisplayTerm} />
     </InputWrapper>
   );

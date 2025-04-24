@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { filterDataByDishType } from "../../../store/recipes/recipesSlice";
-import { setDishType } from "../../../store/searchSlice";
+import { filterDataByDishType } from "../../store/recipes/recipesSlice";
+import { setDishType } from "../../store/searchSlice";
 
 import { useEffect } from "react";
 

@@ -1,15 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import RecipesCards from "../components/home/recipes/RecipesCards";
+import RecipesCards from "../components/recipeCards/RecipesCards";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIngredients } from "../store/ingredientsSlice";
-import { fetchTitles } from "../store/titlesSlice";
 import { db, auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fetchFavourites } from "../store/favouriteSlice";
 import { apiFetchDbSave } from "../utils/apiFetchDbSave";
-import DishSelector from "../components/home/search/DishSelector";
+import DishSelector from "../components/search/DishSelector";
+import SearchInput from "../components/search/SearchInput";
 import styled from "styled-components";
-import SearchInput from "../components/home/search/SearchInput";
 import { fetchRecipes } from "../store/recipes/asyncThunks";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 
@@ -19,10 +18,10 @@ export default function Home() {
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
-  const titles = useSelector((state) => state.titles.titles);
   const favourites = useSelector((state) => state.favourites.recipes);
-  const [isLoadMoreTriggered, setIsLoadMoreTriggered] = useState(false);
   const loadMoreButtonRef = useRef();
+  const [scrollTarget, setScrollTarget] = useState(null);
+
 
   /*
    * STARTUP TASKS:
@@ -35,7 +34,6 @@ export default function Home() {
     //clearDB();
 
     if (!ingredients.length) {
-      console.log("fetching ingredients on Startup");
       dispatch(fetchIngredients());
     }
   }, [dispatch]);
@@ -46,7 +44,6 @@ export default function Home() {
    */
   useEffect(() => {
     if (user && !favourites.length) {
-      console.log("fetching favourites on Startup, if user is logged in");
       dispatch(fetchFavourites(user.uid));
     }
   }, [user, dispatch]);
@@ -56,26 +53,28 @@ export default function Home() {
    * - fetch more recipes
    */
   const loadMoreRecipes = () => {
-    console.log("loading more recipes");
-    if (lastDocId) {
-      setIsLoadMoreTriggered(true);
+    if (lastDocId && loadMoreButtonRef.current) {
+      setScrollTarget(loadMoreButtonRef.current.offsetTop);
       dispatch(fetchRecipes());
     }
   };
 
   useEffect(() => {
-    if (isLoadMoreTriggered && loadMoreButtonRef.current) {
-      loadMoreButtonRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      setIsLoadMoreTriggered(false); // reset dopo lo scroll
+    if (scrollTarget !== null) {
+      window.scrollTo({
+        top: scrollTarget - 100,
+        behavior: "smooth"
+      });
+      setScrollTarget(null); // reset per evitare scroll successivi indesiderati
     }
-  }, [data?.length]);
+  }, [data.length]);
+ 
 
-  //if (error) return <p>Error: {error.message}</p>;
   return (
     <HomeContainer>
       <FilteringContainer>
         <SearchInput />
-        <DishSelector />
+        
       </FilteringContainer>
       {searchTerm && data.length === 0 && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
       {data && data.length > 0 && <RecipesCards recipes={data} />}

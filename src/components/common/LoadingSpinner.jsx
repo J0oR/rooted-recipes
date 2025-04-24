@@ -1,9 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 export default function LoadingSpinner(){
+
+  const { loading } = useSelector((state) => state.recipes);
+
+
     return (
-        <Spinner />
+        <Spinner className={`loading-spinner ${!loading ? 'hidden' : ''}`}/>
     )
 }
 
@@ -17,6 +22,14 @@ const Spinner = styled.div`
     border-radius: 50%;
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
 
   @keyframes rotation {
     0% {

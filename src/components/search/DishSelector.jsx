@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { setDishType } from "../../../store/searchSlice";
+import { setDishType } from "../../store/searchSlice";
 import { LuSettings2 } from "react-icons/lu";
 import DishesModal from "./DishesModal";
 import styled from "styled-components";
-import Button from "../../common/Button";
+import Button from "../common/Button";
 
 
 export default function DishSelector() {
@@ -22,20 +22,21 @@ export default function DishSelector() {
   }, []);
 
   return (
-    <BasicContainer>
+    <>
       <SettingsButton onClick={() => handleVisibility()}>
         <LuSettings2 />
       </SettingsButton>
       <DishesModal modalState={modalState} setModalState={setModalState} />
-    </BasicContainer>
+    </>
   );
 }
 
-const BasicContainer = styled.div`
-  position: relative;
-`;
 
 const SettingsButton = styled(Button)`
+
+position: absolute;
+  top: 5px;
+  right: 5px;
   background-color: transparent;
   cursor: pointer;
   font-size: 1.5rem;

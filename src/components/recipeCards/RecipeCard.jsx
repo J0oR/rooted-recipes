@@ -1,25 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import { PiTimerBold } from "react-icons/pi";
-
-
+import { useEffect } from "react";
+import { useRef } from "react";
 
 import { TiThList } from "react-icons/ti";
 
 import styled from "styled-components";
 import HeartButton from "./HeartButton";
 
-function RecipeCard({ recipe, index }) {
+export default function RecipeCard({ recipe, $index }) {
   const navigate = useNavigate();
+  const cardRef = useRef(null); // Aggiungi il ref
+
 
   const handleClick = () => {
     navigate(`/recipe/${recipe.id}`);
   };
 
+  useEffect(() => {
+    if (cardRef.current) {
+      cardRef.current.style.animation = `fadeIn 0.3s ease-in-out forwards`;
+      cardRef.current.style.animationDelay = `${0.01 * $index}s`;
+    }
+  }, [$index]);
+
   if (!recipe) return null;
 
   return (
     <>
-      <Card onClick={handleClick} $index={index}>
+      <Card onClick={handleClick} $index={$index}>
         <div className="image-container">
           <img src={recipe.image} alt={recipe.title} />
         </div>
@@ -40,8 +49,6 @@ function RecipeCard({ recipe, index }) {
   );
 }
 
-export default RecipeCard;
-
 const Card = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -50,26 +57,22 @@ const Card = styled.div`
   height: 150px;
   border-radius: 150px;
   width: 100%;
-  background-color: #E5E9DE;
   color: #090500;
   position: relative;
-  background-color: #41424a;
-  background-color: #43927C;
   background-color: transparent;
   box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 
-  opacity: 0;
-  transform: translateX(20px);
-  animation: fadeIn 0.3s ease forwards;
-  animation-delay: ${({ $index }) => `${0.1 * $index}s`}; /* Correct use of index for delay */
 
   @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
   }
-
 
   &:hover {
     cursor: pointer;
@@ -108,7 +111,7 @@ const Card = styled.div`
     margin-left: 180px;
     width: 60%;
     color: #ffffff;
-    color: #C1933F;
+    color: #c1933f;
 
     .title {
       white-space: normal; /* Allow text to wrap to a new line */
@@ -131,7 +134,7 @@ const Card = styled.div`
       gap: 10px;
       font-size: 0.8rem;
       color: #c9c9c9;
-      color: #DA5F4E;
+      color: #da5f4e;
       width: 100%;
     }
 

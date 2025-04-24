@@ -57,8 +57,7 @@ export const fetchRecipes = createAsyncThunk(
         results.push(...titleFiltered);
         remaining -= titleFiltered.length;
 
-        const titleIds = titleFiltered.map(d => d.id);
-        fetchedIds = [...fetchedIds, ...titleIds];
+        fetchedIds = [...fetchedIds, ...titleFiltered.map(d => d.id)];
 
         if (titleFiltered.length) {
           dispatch(setLastDocId(titleFiltered[titleFiltered.length - 1].id));
@@ -77,11 +76,7 @@ export const fetchRecipes = createAsyncThunk(
 
         results.push(...ingFiltered);
 
-        const ingIds = ingFiltered.map(d => d.id);
-        fetchedIds = [...fetchedIds, ...ingIds];
-
-
-        console.log("ingFiltered", ingFiltered.length, "remaining", remaining);
+        fetchedIds = [...fetchedIds, ...ingFiltered.map(d => d.id)];
 
         if (ingFiltered.length) {
           dispatch(setLastDocId(ingFiltered[ingFiltered.length - 1].id));
@@ -90,7 +85,7 @@ export const fetchRecipes = createAsyncThunk(
           dispatch(setHasMore(false));
         }
 
-        // ✅ aggiorna Redux una sola volta
+        
         dispatch(addFetchedIds(results.map(r => r.id)));
 
 

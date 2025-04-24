@@ -8,7 +8,6 @@ const searchSlice = createSlice({
     prevSearchTerm: "",
     suggestions: [],
     dishType: "all",
-    loading: false,
     error: null,
   },
   reducers: {

@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import { db, auth } from "../../../config/firebase";
+import { db, auth } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; // aggiungi questo in cima
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { addToFavourites, removeFromFavourites } from "../../../store/favouriteSlice";
-import Button from "../../common/Button";
+import { addToFavourites, removeFromFavourites } from "../../store/favouriteSlice";
+import Button from "../common/Button";
 
 export default function HeartButton({ recipeId }) {
   const [isSaved, setIsSaved] = useState(false);
