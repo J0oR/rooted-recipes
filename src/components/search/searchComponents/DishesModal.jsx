@@ -1,36 +1,31 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { filterDataByDishType } from "../../store/recipes/recipesSlice";
-import { setDishType } from "../../store/searchSlice";
-
+import { filterDataByDishType } from "../../../store/recipes/recipesSlice";
+import { setDishType } from "../../../store/searchSlice";
 import { useEffect } from "react";
 
 export default function DishesModal({ dishesModalState, setDishesModalState }) {
   const dishTypes = ["all", "breakfast", "appetizer", "main course", "side dish", "dessert", "drink"];
-
   const { dishType } = useSelector((state) => state.search);
   const dispatch = useDispatch();
-
   const { visible, animateTags } = dishesModalState;
 
   const handleClick = (type) => {
     dispatch(setDishType(type));
-    setTimeout(() => setDishesModalState((prevState) => ({visible: false, animateTags: false})), 300);
-    if (type) {
-      dispatch(filterDataByDishType(type));
-    }
+    dispatch(filterDataByDishType(type));
+    setTimeout(() => setDishesModalState({ visible: false, animateTags: false }), 500);
   };
 
-  // Trigger tag animation
+  // Trigger tag animation on modal visibility
   useEffect(() => {
-    if (visible) {
-      // Wait a bit to ensure modal is visible before animating tags
-      setTimeout(() => setDishesModalState((prevState) => ({ ...prevState, animateTags: true })), 100);
-    } else {
-      setDishesModalState((prevState) => ({ ...prevState, animateTags: false }));
-    }
+      setDishesModalState((prevState) => ({ ...prevState, animateTags: visible ? true : false }));
   }, [visible]);
+
+  // on component mount, set dishType to "all"
+  useEffect(() => {
+    dispatch(setDishType("all"));
+  }, []);
 
   return (
     <Modal $visible={visible}>
@@ -54,15 +49,12 @@ const Modal = styled.div`
   gap: 20px;
   background-color: transparent;
   color: #757575;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  
   pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   transform: ${({ $visible }) => ($visible ? "translateY(0)" : "translateY(-2px)")};
-  transform-origin: top ;
+  transform-origin: top;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-  `;
+`;
 
 const TagsContainer = styled.div`
   display: flex;
@@ -81,7 +73,7 @@ const AnimatedTag = styled.div`
 
   padding: 10px 15px;
   margin: 5px;
-  transition: all 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 
   @keyframes fadeIn {
     to {

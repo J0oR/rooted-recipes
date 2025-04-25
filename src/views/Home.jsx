@@ -6,7 +6,6 @@ import { db, auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { fetchFavourites } from "../store/favouriteSlice";
 import { apiFetchDbSave } from "../utils/apiFetchDbSave";
-import DishSelector from "../components/search/DishSelector";
 import SearchInput from "../components/search/SearchInput";
 import styled from "styled-components";
 import { fetchRecipes } from "../store/recipes/asyncThunks";
@@ -22,6 +21,15 @@ export default function Home() {
   const loadMoreButtonRef = useRef();
   const [scrollTarget, setScrollTarget] = useState(null);
 
+  /* 
+  Todo
+  - loadmore con dish types selected non funziona a dovere
+  - dishtype filtering su favourites
+  - save to favourites in recipe page
+  - logo
+  - profile modal
+  - decide palette
+  */
 
   /*
    * STARTUP TASKS:

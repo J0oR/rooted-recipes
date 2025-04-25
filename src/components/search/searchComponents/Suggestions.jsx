@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setSearchTerm, clearSuggestions, filterSuggestions } from "../../store/searchSlice";
+import { setSearchTerm, clearSuggestions, filterSuggestions } from "../../../store/searchSlice";
 import styled from "styled-components";
 import { useEffect } from "react";
-import { fetchRecipes } from "../../store/recipes/asyncThunks";
+import { fetchRecipes } from "../../../store/recipes/asyncThunks";
 
 export default function Suggestions({ displayTerm, setDisplayTerm }) {
   const dispatch = useDispatch();
@@ -18,13 +18,12 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
   };
 
   useEffect(() => {
-    if (searchTerm !== prevSearchTerm) 
-      {
-        dispatch(filterSuggestions({ displayTerm, ingredients }));
-      }
-      
-
-
+    if (searchTerm !== prevSearchTerm) {
+      dispatch(filterSuggestions({ displayTerm, ingredients }));
+    }
+    if (displayTerm === "") {
+      dispatch(clearSuggestions());
+    }
   }, [displayTerm, dispatch]);
 
   if (suggestions.length === 0) return null;
@@ -41,26 +40,34 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
 }
 
 const SuggestionsList = styled.ul`
-  width: 500px;
+margin-top: 10px;
+  width: 100%;
   height: fit-content;
   list-style: none;
-  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   background-color: transparent;
-  border-bottom-right-radius: 15px;
   overflow: hidden;
+  padding: 10px;
+  border-radius: 25px;
 `;
 
 const SuggestionItem = styled.li`
-  padding: 10px;
+  width: 100%;
+  height: 35px;
   cursor: pointer;
-  text-align: center;
-  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  color: #666;
 
   &:hover {
-    background: #d1d1d1;
+    outline: 2px solid #43927c;
+    color: #43927c;
   }
 `;

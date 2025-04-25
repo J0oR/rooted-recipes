@@ -65,7 +65,7 @@ const StyledNavLink = styled(NavLink)`
     border-radius: 50%;
 
     &.animating {
-    animation: clickAnimation 0.3s ease;
+    animation: clickAnimation 0.3s ease-in-out;
   }
 
   @keyframes clickAnimation {
