@@ -2,8 +2,7 @@ import { auth } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styled from "styled-components";
 import NavLinkStyled from "./NavLink.styled";
-import AuthButton from "./AuthButton.styled";
-import UserButton from "./UserButton";
+import AuthButton from "./AuthButton";
 
 export default function Navbar() {
   const [user] = useAuthState(auth);
@@ -11,15 +10,12 @@ export default function Navbar() {
   return (
     <NavBarContainer>
       <span className="Logo">Rooted Recipes</span>
-      {user && (
+      
         <div className="LinksContainer">
-          <NavLinkStyled to="/" icon="home" text="Home" />
-          <NavLinkStyled to="/favourites" icon="heart" text="Saved" />
-          {/* <NavLinkStyled to="/user" icon="user" text="Profile" /> */}
-          <UserButton/>
+          {user && <NavLinkStyled to="/" icon="home" text="Home" />}
+          {user && <NavLinkStyled to="/favourites" icon="heart" text="Saved" />}
+          <AuthButton/>
         </div>
-      )}
-      {!user && <AuthButton />}
     </NavBarContainer>
   );
 }

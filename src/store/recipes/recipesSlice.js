@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { db } from "../../config/firebase";
-import { doc, getDoc, query, getDocs, collection, limit, where, startAfter } from "firebase/firestore";
 import { fetchRecipes } from "./asyncThunks";
 
 const recipeSlice = createSlice({
@@ -13,7 +11,7 @@ const recipeSlice = createSlice({
     lastDocId: null,
     hasMore: true,
     searchMode: "title",
-    fetchedIds: [], // 👈 aggiungi questo
+    fetchedIds: [],
 
   },
   reducers: {
@@ -31,13 +29,15 @@ const recipeSlice = createSlice({
     },
     resetData: (state, action) => {
       state.data = [];
+      state.backupData = [];
     },
     filterDataByDishType: (state, action) => {
       if (action.payload !== "all") {
         state.data = state.backupData.filter((r) =>
           r.dishTypes.includes(action.payload.toLowerCase())
         );
-      } else {
+      }
+      else {
         state.data = state.backupData;
       }
     },
@@ -52,14 +52,21 @@ const recipeSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchRecipes.fulfilled, (state, action) => {
-        const { recipes, lastDocId, hasMore, searchMode } = action.payload;
+        const { recipes, lastDocId, hasMore, searchMode, dishType } = action.payload;
 
-        state.data = state.lastDocId ? [...state.data, ...recipes] : recipes;
-        state.backupData = state.data;
+        const newData = state.lastDocId ? [...state.data, ...recipes] : recipes;
+        state.data = newData;
+        state.backupData = newData;
+
         state.lastDocId = lastDocId;
         state.searchMode = searchMode;
         state.hasMore = hasMore;
         state.loading = false;
+        if (dishType && dishType !== "all") {
+            state.data = state.backupData.filter((r) =>
+              r.dishTypes.includes(dishType.toLowerCase())
+            );
+          }
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
         state.error = action.payload;

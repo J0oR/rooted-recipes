@@ -6,7 +6,7 @@ import { fetchRecipes } from "../../store/recipes/asyncThunks";
 
 export default function Suggestions({ displayTerm, setDisplayTerm }) {
   const dispatch = useDispatch();
-  const { suggestions, searchTerm, searchMode } = useSelector((state) => state.search);
+  const { suggestions, searchTerm, searchMode, prevSearchTerm } = useSelector((state) => state.search);
   const { lastDocId } = useSelector((state) => state.recipes);
   const { ingredients } = useSelector((state) => state.ingredients);
 
@@ -18,7 +18,13 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
   };
 
   useEffect(() => {
-    dispatch(filterSuggestions({ displayTerm, ingredients }));
+    if (searchTerm !== prevSearchTerm) 
+      {
+        dispatch(filterSuggestions({ displayTerm, ingredients }));
+      }
+      
+
+
   }, [displayTerm, dispatch]);
 
   if (suggestions.length === 0) return null;
@@ -35,18 +41,16 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
 }
 
 const SuggestionsList = styled.ul`
+  width: 500px;
+  height: fit-content;
   list-style: none;
   padding: 5px;
-  background-color: #f3f3f3;
-  border-bottom-left-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
   border-bottom-right-radius: 15px;
-  width: 504px;
-  max-height: fit-content;
-  overflow-y: auto;
-  z-index: 10;
-  position: absolute;
-  top: 51px;
-  left: -2px;
   overflow: hidden;
 `;
 

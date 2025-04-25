@@ -6,28 +6,22 @@ import styled from "styled-components";
 import Button from "../common/Button";
 
 
-export default function DishSelector() {
+export default function DishSelector({dishesModalState, setDishesModalState, disabled}) {
 
-  const [modalState, setModalState] = useState({ visible: false, animateTags: false });
 
-  const handleVisibility = () => {
-    setModalState((prevState) => ({
-      visible: !prevState.visible,
-      animateTags: prevState.visible, 
-    }));
-  };
+  const handleModalVisibility = () => {
+    if (disabled) return; // prevent click when disabled
+      setDishesModalState((prevState) => ({
+        visible: !prevState.visible,
+        animateTags: prevState.visible, 
+      }));
+    };
 
-  useEffect(() => {
-    setDishType("all");
-  }, []);
 
   return (
-    <>
-      <SettingsButton onClick={() => handleVisibility()}>
+      <SettingsButton onClick={() => handleModalVisibility()} className={dishesModalState.visible ? "active" : ""} disabled={disabled}>
         <LuSettings2 />
       </SettingsButton>
-      <DishesModal modalState={modalState} setModalState={setModalState} />
-    </>
   );
 }
 
@@ -35,8 +29,8 @@ export default function DishSelector() {
 const SettingsButton = styled(Button)`
 
 position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 8px;
+  right: 8px;
   background-color: transparent;
   cursor: pointer;
   font-size: 1.5rem;
@@ -44,13 +38,24 @@ position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #c1933f;
   position: absolute;
-  top: -16px;
-  transition: all 0.5s ease-in-out;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
   padding: 5px;
-  color: #c1933f;
+  color: #7d7d7d;
+  outline: 2px solid #7d7d7d;
+  border: none;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+
   &:hover {
+    outline: 2px solid #c1933f;
+    //background-color: #c1933f;
+    color: #c1933f;
+  }
+
+  &.active {
+    outline: none;
     background-color: #c1933f;
     color: #f3f3f3;
   }

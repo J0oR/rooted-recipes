@@ -5,6 +5,9 @@ import { setSearchMode, setLastDocId, addFetchedIds, setHasMore, resetData, rese
 import { setPrevSearchTerm } from "../searchSlice";
 
 
+/*
+* FUNCTION TO FETCH DOCUMENTS
+*/
 const fetchDocs = async (constraints, fetchedIds = [], remaining = 0) => {
   const snapshot = await getDocs(query(collection(db, "recipes"), ...constraints));
   const allDocs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -16,40 +19,48 @@ const fetchDocs = async (constraints, fetchedIds = [], remaining = 0) => {
   return allDocs;
 };
 
-// Function to build query constraints
+/*
+* FUNCTION TO BUILD QUERY CONSTRAINTS
+*/
 const buildQuery = async ({ searchTerm, searchMode, lastDocId }) => {
   const constraints = [];
   if (searchTerm) {
-    const fieldRef = searchMode === "title" ? "titleSplitted" : "ingredientsNames";
-    constraints.push(where(fieldRef, "array-contains", searchTerm.toLowerCase()));
+    constraints.push(where(searchMode === "title" ? "titleSplitted" : "ingredientsNames", "array-contains", searchTerm.toLowerCase()));
   }
-  constraints.push(limit(10)); // Limit to 10 results per query 
+  constraints.push(limit(10));
 
   if (lastDocId) {
-    const lastDocRef = doc(db, "recipes", lastDocId);
-    const lastDoc = await getDoc(lastDocRef);
+    const lastDoc = await getDoc(doc(db, "recipes", lastDocId));
     constraints.push(startAfter(lastDoc));
   }
   return constraints;
 };
 
-// Create the fetchRecipes async thunk
+/*
+* FUNCTION TO FETCH RECIPES, BASED ON SEARCH TERM AND PAGINATION
+* - if search term is empty, it fetches all recipes
+* - if search term is not empty, it fetches by title match first, then by ingredients match
+* - it halso handles pagination, by keeping track of lastDocId
+*/
 export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
-      const { searchTerm, prevSearchTerm } = getState().search;
+      const { searchTerm, prevSearchTerm, dishType } = getState().search;
 
       if (searchTerm !== prevSearchTerm) {
         dispatch(setPrevSearchTerm(searchTerm));
         dispatch(resetData());
         dispatch(resetFetchedIds());
+        dispatch(setSearchMode("title"));
+        dispatch(setLastDocId(null)); 
       }
 
       let { lastDocId, searchMode, fetchedIds } = getState().recipes;
       const results = [];
       let remaining = 10;
 
+      // Title search (also works if search term is empty)
       if (searchMode === "title") {
         const titleConstraints = await buildQuery({ searchTerm, searchMode: "title", lastDocId });
         const titleFiltered = await fetchDocs(titleConstraints, fetchedIds, remaining);
@@ -84,20 +95,17 @@ export const fetchRecipes = createAsyncThunk(
         else {
           dispatch(setHasMore(false));
         }
-
-        
         dispatch(addFetchedIds(results.map(r => r.id)));
-
-
       }
       return {
         recipes: results,
         lastDocId: results.length ? results[results.length - 1].id : null,
-        hasMore: results.length === 10, // or > 0 if you want infinite scroll style
+        hasMore: results.length === 10,
         searchMode: getState().recipes.searchMode,
+        dishType: dishType
       };
     } catch (err) {
-      console.error("🔥 fetchRecipes error:", err);
+      console.error("fetchRecipes error:", err);
       return rejectWithValue(err.message || "Unknown error");
     }
   }
