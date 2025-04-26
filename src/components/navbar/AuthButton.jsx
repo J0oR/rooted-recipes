@@ -9,12 +9,12 @@ import { FcGoogle } from "react-icons/fc";
 import { signInWithPopup, signOut } from "firebase/auth";
 
 
-export default function AuthButton({ text }) {
+export default function AuthButton({ showModal, setShowModal }) {
   const [user, loading] = useAuthState(auth);
   const [initialized, setInitialized] = useState(false); // Track whether auth state is initialized
 
   const [isAnimating, setIsAnimating] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -53,9 +53,8 @@ export default function AuthButton({ text }) {
         <Container>
           <UsrButton className={`${showModal ? "active" : ""}`} onClick={toggleModal}>
             <AiOutlineUser className={`icon ${isAnimating ? "animating" : ""} `} />
-            {text}
+            Profile
           </UsrButton>
-          <LogoutModal modalState={showModal} />
         </Container>
       )}
     </>
@@ -75,6 +74,7 @@ const UsrButton = styled(Button)`
   color: #757575;
   border: none;
   background-color: transparent;
+  
 
   &.active {
     .icon {
@@ -102,6 +102,8 @@ const UsrButton = styled(Button)`
     padding: 5px;
     font-size: 2rem;
     border-radius: 50%;
+    width: 32px;
+  height: 32px;
 
     &.animating {
       animation: clickAnimation 0.3s ease;

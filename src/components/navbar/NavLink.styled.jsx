@@ -12,7 +12,7 @@ const icons = {
 };
 
 
-export default function NavLinkStyled({ to, className, icon, text }) {
+export default function NavLinkStyled({ to, className, icon, text, showModal }) {
   const IconComponent = icons[icon];
 
   const [isAnimating, setIsAnimating] = useState(false);
@@ -23,7 +23,7 @@ export default function NavLinkStyled({ to, className, icon, text }) {
     setTimeout(() => setIsAnimating(false), 300); 
   };
   return (
-    <StyledNavLink to={to} className={className} onClick={handleClick}>
+    <StyledNavLink to={to} className={className} onClick={handleClick} $visible={showModal}>
         {IconComponent && <IconComponent className={`icon ${isAnimating ? "animating" : ""}`} />}
       {text}
     </StyledNavLink>
@@ -36,6 +36,10 @@ const StyledNavLink = styled(NavLink)`
   gap: 5px;
   text-decoration: none;
   color: #757575;
+
+  opacity: ${({ $visible }) => ($visible ? 0 : 1)};
+  transition: opacity 0.1s ease-in-out;
+
 
   &.active{
     .icon{

@@ -10,21 +10,15 @@ import { clearFavourites } from "../../store/favouriteSlice";
 import { FiLogOut } from "react-icons/fi";
 import Button from "../common/Button";
 
-export default function LogoutModal({modalState}) {
+export default function LogoutModal({ showModal }) {
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
   const { recipes } = useSelector((state) => state.favourites);
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(modalState);
 
   const logOut = async () => {
     await signOut(auth);
   };
-
-
-  useEffect(() => {
-    setVisible(modalState); // Sync modalState to visible
-  }, [modalState]);
 
   useEffect(() => {
     if (!user) {
@@ -34,7 +28,8 @@ export default function LogoutModal({modalState}) {
   }, [user, dispatch, navigate]);
 
   return (
-    <Container $visible={visible}>
+    <Modal $visible={showModal}>
+      
       <img src={user && user.photoURL} />
 
       <Field>
@@ -42,7 +37,7 @@ export default function LogoutModal({modalState}) {
         <span>{user && user.displayName}</span>
       </Field>
       <Field>
-        <span className="fieldLabel">Email ({user && user.emailVerified ? "Verified" : "Not verified"})</span>
+        <span className="fieldLabel">Email</span>
         <span>{user && user.email} </span>
       </Field>
       <Field>
@@ -54,42 +49,36 @@ export default function LogoutModal({modalState}) {
           Log out <FiLogOut className="icon" />
         </LogoutButton>
       )}
-    </Container>
+    </Modal>
   );
 }
 
-const Container = styled.div`
-  position: absolute;
-  top: 3rem; // or adjust as needed
+const Modal = styled.div`
   right: 0;
-  background-color: #efefef;
   color: #757575;
-  border-radius: 25px;
-  padding: 40px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 100;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
   gap: 20px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px,
-    rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
+  pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transform: ${({ $visible }) => ($visible ? "scale(1)" : "scale(0.8)")};
+  transform: ${({ $visible }) => ($visible ? "translateY(0), scale(1)" : "translateY(-100px), scale(0.5)")};
   transform-origin: top right;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  width: 100%;
 
   img {
-    width: 100px;
+    width: 80px;
     border-radius: 100%;
   }
 `;
 
 const Field = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   width: 300px;
   gap: 10px;
   color: black;
@@ -100,8 +89,6 @@ const Field = styled.div`
     color: #4c4d51;
     font-size: 1rem;
   }
-
- 
 `;
 
 const LogoutButton = styled(Button)`
@@ -122,7 +109,6 @@ const LogoutButton = styled(Button)`
   &:hover {
     background-color: #f04b53;
     color: #f3f3f3;
-    
   }
 
   .icon {

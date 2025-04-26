@@ -27,7 +27,6 @@ export default function Home() {
   - dishtype filtering su favourites
   - save to favourites in recipe page
   - logo
-  - profile modal
   - decide palette
   */
 
