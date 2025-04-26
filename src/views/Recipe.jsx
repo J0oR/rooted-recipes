@@ -9,7 +9,7 @@ import { PiTimerBold } from "react-icons/pi";
 import { FaRegStar } from "react-icons/fa";
 import styled from "styled-components";
 import { FaListUl } from "react-icons/fa";
-
+import HeartButton from "../components/recipeCards/HeartButton";
 
 export default function Recipe() {
   const { id } = useParams();
@@ -41,32 +41,29 @@ export default function Recipe() {
   return (
     <RecipeContainer>
       <TopSection>
-      <TitleContainer>{<h1>{data.title}</h1>}</TitleContainer>
-
-      <CircleWrapper>
-        <ImgWrapper>
-          <img src={data.image} />
-        </ImgWrapper>
-        <RadialItem index={0} total={4}>
-          <RecipeStat label="Ingredients" stat={data.ingredientsNames?.length} icon={<FaListUl />} />
-        </RadialItem>
-        <RadialItem index={1} total={4}>
-          <RecipeStat label="Cook Time" stat={data.readyInMinutes} icon={<PiTimerBold />} />
-        </RadialItem>
-        <RadialItem index={2} total={4}>
-          <RecipeStat label="Servings" stat={data.servings} icon={<IoPeopleOutline />} />
-        </RadialItem>
-        <RadialItem index={3} total={4}>
-          <RecipeStat label="Score" stat={`${data.spoonacularScore?.toFixed(2)}%`} icon={<FaRegStar />} />
-        </RadialItem>
-      </CircleWrapper>
+        <TitleContainer>{<h1>{data.title}</h1>}</TitleContainer>
+        <CircleWrapper>
+          <ImgWrapper>
+            <img src={data.image} />
+            <HeartButton recipeId={id} className="heart-button"/>
+          </ImgWrapper>
+          <RadialItem $index={0} $total={4}>
+            <RecipeStat label="Ingredients" stat={data.ingredientsNames?.length} icon={<FaListUl />} />
+          </RadialItem>
+          <RadialItem $index={1} $total={4}>
+            <RecipeStat label="Cook Time" stat={data.readyInMinutes} icon={<PiTimerBold />} />
+          </RadialItem>
+          <RadialItem $index={2} $total={4}>
+            <RecipeStat label="Servings" stat={data.servings} icon={<IoPeopleOutline />} />
+          </RadialItem>
+          <RadialItem $index={3} $total={4}>
+            <RecipeStat label="Score" stat={`${data.spoonacularScore?.toFixed(2)}%`} icon={<FaRegStar />} />
+          </RadialItem>
+        </CircleWrapper>
+      
       </TopSection>
 
-
-
       <Tabs ingredients={data.ingredients} steps={data.steps} summary={data.summary} />
-
-      
     </RecipeContainer>
   );
 }
@@ -90,10 +87,10 @@ const CircleWrapper = styled.div`
   margin-bottom: 60px;
 `;
 
-const RadialItem = styled.div.attrs(({ index, total }) => {
+const RadialItem = styled.div.attrs(({ $index, $total }) => {
   const startAngle = -35; // gradi, in alto a destra
   const endAngle = 35; // gradi, in basso a destra
-  const angle = startAngle + ((endAngle - startAngle) / (total - 1)) * index;
+  const angle = startAngle + ((endAngle - startAngle) / ($total - 1)) * $index;
 
   const radius = 170;
   const rad = (angle * Math.PI) / 180;
@@ -136,6 +133,11 @@ const ImgWrapper = styled.div`
     object-position: center;
     width: 100%;
     height: 100%;
+  }
+
+  .heart-button{
+    left: 100px !important;
+    bottom: 0px !important;
   }
 `;
 

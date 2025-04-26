@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { addToFavourites, removeFromFavourites } from "../../store/favouriteSlice";
 import Button from "../common/Button";
 
-export default function HeartButton({ recipeId }) {
+export default function HeartButton({ recipeId, className }) {
   const [isSaved, setIsSaved] = useState(false);
   const [user] = useAuthState(auth);
   const { recipes, recipeIds } = useSelector((state) => state.favourites);
@@ -54,7 +54,7 @@ export default function HeartButton({ recipeId }) {
   if (!user) return null;
 
   return (
-    <StyledButton onClick={toggleSave} $isSaved={isSaved}>
+    <StyledButton onClick={toggleSave} $isSaved={isSaved} className={className}>
       {isSaved ? <AiFillHeart size={25} className="icon" /> : <AiOutlineHeart size={25} className="icon" />}
     </StyledButton>
   );

@@ -24,9 +24,6 @@ export default function Home() {
   /* 
   Todo
   - loadmore con dish types selected non funziona a dovere
-  - dishtype filtering su favourites
-  - save to favourites in recipe page
-  - logo
   - decide palette
   */
 

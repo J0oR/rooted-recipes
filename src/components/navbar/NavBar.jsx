@@ -13,6 +13,7 @@ export default function Navbar() {
   return (
     <NavBarContainer>
       <span className="Logo">Rooted Recipes</span>
+      
 
       <LinksContainer $showmodal={showModal}>
         <LinksWrapper>
@@ -34,7 +35,11 @@ const NavBarContainer = styled.nav`
   padding: 30px;
 
   .Logo {
-    font-size: 1rem;
+    font-size: 2rem;
+    font-family: "Merienda", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
   }
 `;
 

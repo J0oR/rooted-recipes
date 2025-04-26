@@ -30,6 +30,7 @@ const favouritesSlice = createSlice({
   initialState: {
     recipeIds: [],
     recipes: [],
+    recipesBackup: [],
     loading: false,
     error: null,
   },
@@ -37,14 +38,27 @@ const favouritesSlice = createSlice({
     addToFavourites: (state, action) => {
       state.recipeIds.push(action.payload.recipeId);
       state.recipes.push(action.payload.savedRecipe);
+      state.recipesBackup.push(action.payload.savedRecipe);
     },
     removeFromFavourites: (state, action) => {
       state.recipeIds = state.recipeIds.filter((id) => id !== action.payload.recipeId);
       state.recipes = state.recipes.filter((r) => r.id !== action.payload.recipeId);
+      state.recipesBackup = state.recipesBackup.filter((r) => r.id !== action.payload.recipeId);
     },
     clearFavourites: (state) => {
       state.recipeIds = [];
       state.recipes = [];
+      state.recipesBackup = [];
+    },
+    filterSavedByDishType: (state, action) => {
+      if (action.payload !== "all") {
+        state.recipes = state.recipesBackup.filter((r) =>
+          r.dishTypes.includes(action.payload.toLowerCase())
+        );
+      }
+      else {
+        state.recipes = state.recipesBackup;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -57,6 +71,7 @@ const favouritesSlice = createSlice({
         state.loading = false;
         state.recipeIds = action.payload.ids;
         state.recipes = action.payload.recipes;
+        state.recipesBackup = action.payload.recipes;
       })
       .addCase(fetchFavourites.rejected, (state, action) => {
         state.loading = false;
@@ -65,5 +80,5 @@ const favouritesSlice = createSlice({
   },
 });
 
-export const { clearFavourites, addToFavourites, removeFromFavourites } = favouritesSlice.actions;
+export const { clearFavourites, addToFavourites, removeFromFavourites, filterSavedByDishType } = favouritesSlice.actions;
 export default favouritesSlice.reducer;

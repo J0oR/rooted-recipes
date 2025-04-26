@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { fetchFavourites, clearFavourites } from "../store/favouriteSlice";
+import { fetchFavourites, clearFavourites, filterSavedByDishType } from "../store/favouriteSlice";
 import { useSelector, useDispatch } from "react-redux";
 import RecipesCards from "../components/recipeCards/RecipesCards";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,9 @@ export default function Favourites() {
   const [user] = useAuthState(auth);
   const {recipes, loading } = useSelector((state) => state.favourites);
   const navigate = useNavigate();
+  const dishTypes = ["all", "breakfast", "appetizer", "main course", "side dish", "dessert", "drink"];
+  const [dishType, setDishType] = useState("all");
+  const [animateTags, setAnimateTags] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -25,19 +28,33 @@ export default function Favourites() {
     }
   }, [user, dispatch, navigate]);
 
+  useEffect(() => {
+    setAnimateTags(true);
+  }, []);
 
-  if (recipes.length === 0 && !loading)
-    return <EmptyContainer>No recipes found</EmptyContainer>
+  const handleClick = (type) => {
+    dispatch(filterSavedByDishType(type));
+    setDishType(type);
+  };
 
   return (
-    <div>
+    <MainContainer>
+      <TagsContainer>
+        {dishTypes.map((type, i) => (
+          <AnimatedTag $index={i} $animate={animateTags} key={type} className={`${dishType === type ? "selected" : ""}`} onClick={() => handleClick(type)} children={type} />
+        ))}
+      </TagsContainer>
+      {recipes.length === 0 && !loading && <MessageContainer>0 saved recipes {dishType ? `for ${dishType}` : ""}</MessageContainer>}
       <RecipesCards recipes={recipes} />
       {loading && <LoadingSpinner />}
-    </div>
+    </MainContainer>
   );
 }
 
-const EmptyContainer = styled.div`
+const MainContainer = styled.div`
+`;
+
+const MessageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,4 +64,43 @@ const EmptyContainer = styled.div`
   padding-bottom: 0;
   margin-top: 100px;
   font-size: 1.2rem;
+`;
+
+const TagsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  margin: auto;
+`;
+
+const AnimatedTag = styled.div`
+  transform: translateY(20px);
+  opacity: 0;
+  animation: ${({ $animate }) => ($animate ? "fadeIn 0.3s ease forwards" : "none")};
+  animation-delay: ${({ $animate, $index }) => ($animate ? `${0.05 * $index}s` : "0s")};
+
+  padding: 10px 15px;
+  margin: 5px;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+
+  &.selected {
+    outline: none;
+    color: #43927c;
+    font-weight: 500;
+    border-bottom: 2px solid;
+  }
 `;

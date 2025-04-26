@@ -43,7 +43,7 @@ export default function RecipeCard({ recipe, $index }) {
             {recipe.readyInMinutes} minutes
           </span>
         </div>
-        <HeartButton recipeId={recipe.id} />
+        <HeartButton recipeId={recipe.id}/>
       </Card>
     </>
   );
