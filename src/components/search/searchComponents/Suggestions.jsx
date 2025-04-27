@@ -14,7 +14,7 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
     dispatch(clearSuggestions());
     setDisplayTerm(name);
     dispatch(setSearchTerm(name));
-    dispatch(fetchRecipes());
+    //dispatch(fetchRecipes());
   };
 
   useEffect(() => {

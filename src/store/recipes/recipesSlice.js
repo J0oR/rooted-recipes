@@ -5,7 +5,6 @@ const recipeSlice = createSlice({
   name: "recipes",
   initialState: {
     data: [],
-    backupData: [],
     loading: false,
     error: null,
     lastDocId: null,
@@ -29,17 +28,6 @@ const recipeSlice = createSlice({
     },
     resetData: (state, action) => {
       state.data = [];
-      state.backupData = [];
-    },
-    filterDataByDishType: (state, action) => {
-      if (action.payload !== "all") {
-        state.data = state.backupData.filter((r) =>
-          r.dishTypes.includes(action.payload.toLowerCase())
-        );
-      }
-      else {
-        state.data = state.backupData;
-      }
     },
     setHasMore: (state, action) => {
       state.hasMore = action.payload;
@@ -56,17 +44,10 @@ const recipeSlice = createSlice({
 
         const newData = state.lastDocId ? [...state.data, ...recipes] : recipes;
         state.data = newData;
-        state.backupData = newData;
-
         state.lastDocId = lastDocId;
         state.searchMode = searchMode;
         state.hasMore = hasMore;
         state.loading = false;
-        /* if (dishType && dishType !== "all") {
-            state.data = state.backupData.filter((r) =>
-              r.dishTypes.dishType === true
-            );
-          } */
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
         state.error = action.payload;

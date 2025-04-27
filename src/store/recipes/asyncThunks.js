@@ -53,18 +53,16 @@ export const fetchRecipes = createAsyncThunk(
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
       const { searchTerm, prevSearchTerm, dishType, prevDishType } = getState().search;
-      console.log(`fetching recipes", search term : ${searchTerm}, prev serch term: ${prevSearchTerm}, dish type: ${dishType}`);
 
       if (searchTerm !== prevSearchTerm) {
         dispatch(setPrevSearchTerm(searchTerm));
-        dispatch(resetData());
-        dispatch(resetFetchedIds());
-        dispatch(setSearchMode("title"));
-        dispatch(setLastDocId(null)); 
       }
 
       if (dishType !== prevDishType) {
         dispatch(setPrevDishType(dishType));
+      }
+
+      if (searchTerm !== prevSearchTerm || dishType !== prevDishType) {
         dispatch(resetData());
         dispatch(resetFetchedIds());
         dispatch(setSearchMode("title"));

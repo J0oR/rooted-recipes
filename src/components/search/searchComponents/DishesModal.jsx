@@ -16,7 +16,7 @@ export default function DishesModal({ dishesModalState, setDishesModalState }) {
     dispatch(setDishType(type));
     //dispatch(filterDataByDishType(type));
     dispatch(fetchRecipes());
-    setTimeout(() => setDishesModalState({ visible: false, animateTags: false }), 500);
+    setTimeout(() => setDishesModalState({ visible: false, animateTags: false }), 100);
   };
 
   // Trigger tag animation on modal visibility
