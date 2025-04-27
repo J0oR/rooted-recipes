@@ -8,6 +8,7 @@ const searchSlice = createSlice({
     prevSearchTerm: "",
     suggestions: [],
     dishType: "all",
+    prevDishType: "all",
     error: null,
   },
   reducers: {
@@ -19,6 +20,9 @@ const searchSlice = createSlice({
     },
     setDishType: (state, action) => {
       state.dishType = action.payload;
+    },
+    setPrevDishType: (state, action) => {
+      state.prevDishType = action.payload;
     },
     setSuggestions: (state, action) => {
       state.suggestions = action.payload;
@@ -44,6 +48,7 @@ const searchSlice = createSlice({
 export const {
   setSearchTerm,
   setDishType,
+  setPrevDishType,
   setSuggestions,
   clearSuggestions,
   filterSuggestions,

@@ -25,6 +25,7 @@ export default function Home() {
   Todo
   - loadmore con dish types selected non funziona a dovere
   - decide palette
+  - modal when logged out
   */
 
   /*

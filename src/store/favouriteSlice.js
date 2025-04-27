@@ -51,9 +51,10 @@ const favouritesSlice = createSlice({
       state.recipesBackup = [];
     },
     filterSavedByDishType: (state, action) => {
+      const dishType = action.payload;
       if (action.payload !== "all") {
         state.recipes = state.recipesBackup.filter((r) =>
-          r.dishTypes.includes(action.payload.toLowerCase())
+          r.dishTypes[dishType] === true
         );
       }
       else {

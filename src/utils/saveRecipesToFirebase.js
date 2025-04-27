@@ -39,7 +39,15 @@ const saveRecipesToFirebase = async (recipes) => {
             amount: ing.amount, 
             unit: ing.unit
           })) || [],
-          dishTypes: recipe.dishTypes?.map((type) => type) || [],
+          dishTypes: {
+            breakfast: recipe.dishTypes?.includes("breakfast") || false,
+            appetizer: recipe.dishTypes?.includes("appetizer") || false,
+            main: recipe.dishTypes?.includes("main course") || false,
+            side: recipe.dishTypes?.includes("side dish") || false,
+            dessert: recipe.dishTypes?.includes("dessert") || false,
+            drink: recipe.dishTypes?.includes("drink") || false
+            // aggiungi altri tipi che vuoi controllare
+          },
           steps: recipe.analyzedInstructions?.flatMap((steps) => ({
             step: steps.name || '',
             instructions: steps.steps.map((step) => (

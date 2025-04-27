@@ -4,16 +4,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { filterDataByDishType } from "../../../store/recipes/recipesSlice";
 import { setDishType } from "../../../store/searchSlice";
 import { useEffect } from "react";
+import { fetchRecipes } from "../../../store/recipes/asyncThunks";
 
 export default function DishesModal({ dishesModalState, setDishesModalState }) {
-  const dishTypes = ["all", "breakfast", "appetizer", "main course", "side dish", "dessert", "drink"];
+  const dishTypes = ["all", "breakfast", "appetizer", "main", "side", "dessert", "drink"];
   const { dishType } = useSelector((state) => state.search);
   const dispatch = useDispatch();
   const { visible, animateTags } = dishesModalState;
 
   const handleClick = (type) => {
     dispatch(setDishType(type));
-    dispatch(filterDataByDishType(type));
+    //dispatch(filterDataByDishType(type));
+    dispatch(fetchRecipes());
     setTimeout(() => setDishesModalState({ visible: false, animateTags: false }), 500);
   };
 

@@ -22,7 +22,6 @@ const CardsContainer = styled.div`
   height: fit-content;
   width: 100vw;
   gap: 50px;
-  max-width: 600px;
   padding: 50px;
   margin-top: 50px;
 `;

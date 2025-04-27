@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../../config/firebase";
 import { doc, getDoc, query, getDocs, collection, limit, where, startAfter } from "firebase/firestore";
 import { setSearchMode, setLastDocId, addFetchedIds, setHasMore, resetData, resetFetchedIds } from "./recipesSlice";
-import { setPrevSearchTerm } from "../searchSlice";
+import { setPrevSearchTerm, setPrevDishType } from "../searchSlice";
 
 
 /*
@@ -22,10 +22,16 @@ const fetchDocs = async (constraints, fetchedIds = [], remaining = 0) => {
 /*
 * FUNCTION TO BUILD QUERY CONSTRAINTS
 */
-const buildQuery = async ({ searchTerm, searchMode, lastDocId }) => {
+const buildQuery = async ({ searchTerm, searchMode, lastDocId, dishType }) => {
   const constraints = [];
   if (searchTerm) {
     constraints.push(where(searchMode === "title" ? "titleSplitted" : "ingredientsNames", "array-contains", searchTerm.toLowerCase()));
+  }
+  if (dishType && dishType !== "all") {
+    console.log(`dishTypes.${dishType}`, dishType);
+    constraints.push(
+      where(`dishTypes.${dishType}`, "==", true)
+    );
   }
   constraints.push(limit(10));
 
@@ -46,7 +52,8 @@ export const fetchRecipes = createAsyncThunk(
   "recipes/fetchRecipes",
   async (_, { getState, dispatch, rejectWithValue }) => {
     try {
-      const { searchTerm, prevSearchTerm, dishType } = getState().search;
+      const { searchTerm, prevSearchTerm, dishType, prevDishType } = getState().search;
+      console.log(`fetching recipes", search term : ${searchTerm}, prev serch term: ${prevSearchTerm}, dish type: ${dishType}`);
 
       if (searchTerm !== prevSearchTerm) {
         dispatch(setPrevSearchTerm(searchTerm));
@@ -56,13 +63,21 @@ export const fetchRecipes = createAsyncThunk(
         dispatch(setLastDocId(null)); 
       }
 
+      if (dishType !== prevDishType) {
+        dispatch(setPrevDishType(dishType));
+        dispatch(resetData());
+        dispatch(resetFetchedIds());
+        dispatch(setSearchMode("title"));
+        dispatch(setLastDocId(null));
+      }
+
       let { lastDocId, searchMode, fetchedIds } = getState().recipes;
       const results = [];
       let remaining = 10;
 
       // Title search (also works if search term is empty)
       if (searchMode === "title") {
-        const titleConstraints = await buildQuery({ searchTerm, searchMode: "title", lastDocId });
+        const titleConstraints = await buildQuery({ searchTerm, searchMode: "title", lastDocId, dishType });
         const titleFiltered = await fetchDocs(titleConstraints, fetchedIds, remaining);
 
         results.push(...titleFiltered);
@@ -82,7 +97,7 @@ export const fetchRecipes = createAsyncThunk(
 
       // Ingredient search (either from start or after switch)
       if (searchMode === "ingredient" && remaining > 0) {
-        const ingredientConstraints = await buildQuery({ searchTerm, searchMode: "ingredient", lastDocId });
+        const ingredientConstraints = await buildQuery({ searchTerm, searchMode: "ingredient", lastDocId, dishType });
         const ingFiltered = await fetchDocs(ingredientConstraints, fetchedIds, remaining);
 
         results.push(...ingFiltered);

@@ -14,7 +14,7 @@ export default function Favourites() {
   const [user] = useAuthState(auth);
   const {recipes, loading } = useSelector((state) => state.favourites);
   const navigate = useNavigate();
-  const dishTypes = ["all", "breakfast", "appetizer", "main course", "side dish", "dessert", "drink"];
+  const dishTypes = ["all", "breakfast", "appetizer", "main", "side", "dessert", "drink"];
   const [dishType, setDishType] = useState("all");
   const [animateTags, setAnimateTags] = useState(false);
 

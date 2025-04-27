@@ -62,11 +62,11 @@ const recipeSlice = createSlice({
         state.searchMode = searchMode;
         state.hasMore = hasMore;
         state.loading = false;
-        if (dishType && dishType !== "all") {
+        /* if (dishType && dishType !== "all") {
             state.data = state.backupData.filter((r) =>
-              r.dishTypes.includes(dishType.toLowerCase())
+              r.dishTypes.dishType === true
             );
-          }
+          } */
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
         state.error = action.payload;

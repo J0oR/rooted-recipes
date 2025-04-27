@@ -56,7 +56,7 @@ const Card = styled.div`
   gap: 20px;
   height: 150px;
   border-radius: 150px;
-  width: 100%;
+  width: 500px;
   color: #090500;
   position: relative;
   background-color: transparent;
