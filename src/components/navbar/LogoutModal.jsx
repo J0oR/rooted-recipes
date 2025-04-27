@@ -10,13 +10,14 @@ import { clearFavourites } from "../../store/favouriteSlice";
 import { FiLogOut } from "react-icons/fi";
 import Button from "../common/Button";
 
-export default function LogoutModal({ showModal }) {
+export default function LogoutModal({ showModal, setShowModal }) {
   const dispatch = useDispatch();
   const [user] = useAuthState(auth);
   const { recipes } = useSelector((state) => state.favourites);
   const navigate = useNavigate();
 
   const logOut = async () => {
+    setShowModal(false);
     await signOut(auth);
   };
 

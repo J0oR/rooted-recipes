@@ -21,13 +21,6 @@ export default function Home() {
   const loadMoreButtonRef = useRef();
   const [scrollTarget, setScrollTarget] = useState(null);
 
-  /* 
-  Todo
-  - loadmore con dish types selected non funziona a dovere
-  - decide palette
-  - modal when logged out
-  */
-
   /*
    * STARTUP TASKS:
    * - fetch data from Api and save to DB

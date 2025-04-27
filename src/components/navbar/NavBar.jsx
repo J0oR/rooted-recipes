@@ -21,7 +21,7 @@ export default function Navbar() {
           {user && <NavLinkStyled to="/favourites" icon="heart" showModal={showModal} text="Saved" />}
           <AuthButton showModal={showModal} setShowModal={setShowModal} />
         </LinksWrapper>
-        <LogoutModal showModal={showModal} />
+        <LogoutModal showModal={showModal} setShowModal={setShowModal} />
       </LinksContainer>
     </NavBarContainer>
   );
