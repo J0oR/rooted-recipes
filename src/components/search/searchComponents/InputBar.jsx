@@ -18,17 +18,17 @@ export default function InputBar({ displayTerm, setDisplayTerm, setAnimateLens, 
 
   useEffect(() => {
     if (displayTerm == "") {
-    dispatch(setSearchTerm(""));
-    dispatch(setDishType("all"));
+      dispatch(setSearchTerm(""));
+      dispatch(setDishType("all"));
       dispatch(fetchRecipes());
       setAnimateLens(false);
     }
   }, [displayTerm, dispatch]);
 
-  useEffect(() => {
+ /*  useEffect(() => {
     dispatch(setSearchTerm(""));
     dispatch(fetchRecipes());
-  }, [dispatch]);
+  }, [dispatch]); */
 
   return (
     <StyledInput

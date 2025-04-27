@@ -4,9 +4,11 @@ import { fetchRecipes } from "../../../store/recipes/asyncThunks";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { FiSearch } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 export default function SearchButton({ displayTerm, dishesModalState, animateLens }) {
     const dispatch = useDispatch();
+    const {searchTerm, prevSearchTerm} = useSelector((state) => state.search);
 
     const handleClick = () => {
         dispatch(setSearchTerm(displayTerm));
@@ -15,7 +17,7 @@ export default function SearchButton({ displayTerm, dishesModalState, animateLen
       };
 
     return (
-        <StyledButton onClick={handleClick} disabled={!displayTerm} $visible={dishesModalState} $animateLens={animateLens} >
+        <StyledButton onClick={handleClick} disabled={!displayTerm || searchTerm === prevSearchTerm} $visible={dishesModalState} $animateLens={animateLens} >
             <LensIcon $animateLens={animateLens} />
         </StyledButton>
     );

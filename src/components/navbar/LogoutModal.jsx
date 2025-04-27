@@ -18,15 +18,11 @@ export default function LogoutModal({ showModal, setShowModal }) {
 
   const logOut = async () => {
     setShowModal(false);
+    dispatch(clearFavourites());
     await signOut(auth);
   };
 
-  useEffect(() => {
-    if (!user) {
-      dispatch(clearFavourites());
-      navigate("/");
-    }
-  }, [user, dispatch, navigate]);
+
 
   return (
     <Modal $visible={showModal}>

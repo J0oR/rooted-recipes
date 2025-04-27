@@ -10,6 +10,8 @@ import SearchInput from "../components/search/SearchInput";
 import styled from "styled-components";
 import { fetchRecipes } from "../store/recipes/asyncThunks";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import Button from "../components/common/Button";
+import { FaChevronUp } from "react-icons/fa";
 
 export default function Home() {
   const { data, loading, lastDocId, hasMore, searchMode } = useSelector((state) => state.recipes);
@@ -61,27 +63,28 @@ export default function Home() {
     if (scrollTarget !== null) {
       window.scrollTo({
         top: scrollTarget - 100,
-        behavior: "smooth"
+        behavior: "smooth",
       });
       setScrollTarget(null); // reset per evitare scroll successivi indesiderati
     }
   }, [data.length]);
- 
 
   return (
     <HomeContainer>
       <FilteringContainer>
         <SearchInput />
-        
       </FilteringContainer>
       {searchTerm && data.length === 0 && !loading && <EmptyContainer>No recipes found</EmptyContainer>}
       {data && data.length > 0 && <RecipesCards recipes={data} />}
       {loading && <LoadingSpinner />}
-      {!loading && data.length !== 0 && hasMore &&(
+      {!loading && data.length !== 0 && hasMore && (
         <LoadMore ref={loadMoreButtonRef} onClick={loadMoreRecipes} disabled={loading}>
           Load more...
         </LoadMore>
       )}
+      <UpButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <FaChevronUp />
+      </UpButton>
     </HomeContainer>
   );
 }
@@ -129,5 +132,32 @@ const LoadMore = styled.button`
   &:hover {
     background-color: #f3f3f3;
     color: #c1933f;
+  }
+`;
+
+const UpButton = styled(Button)`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: #fff;
+  border: none;
+  border-radius: 100%;
+  cursor: pointer;
+  font-size: 2rem;
+  padding: 15px;
+  transition: background-color 0.3s ease;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid #c1933f;
+  background-color: #f3f3f3;
+  color: #c1933f;
+
+  &:hover {
+    background-color: #c1933f;
+    color:  #f3f3f3;
   }
 `;

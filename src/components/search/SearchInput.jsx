@@ -7,17 +7,25 @@ import DishSelector from "./searchComponents/DishSelector";
 import DishesModal from "./searchComponents/DishesModal";
 import InputBar from "./searchComponents/InputBar";
 import SearchButton from "./searchComponents/SearchButton";
+import { clearSuggestions } from "../../store/searchSlice";
 
 function SearchInput() {
+  const dispatch = useDispatch();
   const [displayTerm, setDisplayTerm] = useState("");
   const [animateLens, setAnimateLens] = useState(false);
   const [dishesModalState, setDishesModalState] = useState({ visible: false, animateTags: false });
   const [inputFocused, setInputFocused] = useState(false); // Track if input is focused
   const { searchTerm, suggestions } = useSelector((state) => state.search);
+  
+  const exit = () => {
+    setDishesModalState({ visible: false, animateTags: false });
+    setInputFocused(false);
+    dispatch(clearSuggestions());
+  }
 
   return (
     <>
-      <Overlay $isActive={inputFocused || dishesModalState.visible || suggestions.length > 0} />
+      <Overlay $isActive={inputFocused || dishesModalState.visible || suggestions.length > 0} onClick={()=>exit()}/>
       <InputWrapper $modalVisible={dishesModalState.visible || suggestions.length}>
         <InputRow>
           <DishSelector dishesModalState={dishesModalState} setDishesModalState={setDishesModalState} disabled={suggestions.length} />
@@ -42,7 +50,7 @@ function SearchInput() {
 export default SearchInput;
 
 const Overlay = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -51,6 +59,7 @@ const Overlay = styled.div`
   transition: background-color 0.3s ease-in-out;
   z-index: 50; // Ensure it is above everything else
   visibility: ${({ $isActive }) => ($isActive ? "visible" : "hidden")};
+  height: 100vh;
 `;
 
 const InputWrapper = styled.div`

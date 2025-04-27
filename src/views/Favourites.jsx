@@ -37,6 +37,12 @@ export default function Favourites() {
     setDishType(type);
   };
 
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user, dispatch, navigate]);
+
   return (
     <MainContainer>
       <TagsContainer>

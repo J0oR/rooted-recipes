@@ -15,14 +15,14 @@ export default function RecipesCards({ recipes}) {
 }
 
 const CardsContainer = styled.div`
+width: 100%;
   margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  height: fit-content;
-  width: 100vw;
-  gap: 50px;
   padding: 50px;
   margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  grid-gap: 50px;
+  justify-items: center;
+  
 `;
 
