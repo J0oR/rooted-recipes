@@ -70,10 +70,7 @@ const StyledButton = styled(Button)`
   position: absolute;
   left: 40px;
   bottom: 10px;
-  background: rgba(255, 255, 255, 0.48); /* or darker if needed */
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(10px); /* for Safari support */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: #f3f3f3;
   border: none;
   width: 50px;
   height: 30px;

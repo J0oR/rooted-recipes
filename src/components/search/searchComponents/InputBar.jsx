@@ -39,6 +39,7 @@ export default function InputBar({ displayTerm, setDisplayTerm, setAnimateLens, 
       onFocus={() => setInputFocused(true)} // Set input as focused
       onBlur={() => setInputFocused(false)} // Unset input as focused
       disabled={dishesModalState.visible}
+      $placeValue={dishesModalState.visible ? "Dish Types" : `Search for recipes or ingredient`}
     />
   );
 }
@@ -48,7 +49,7 @@ const StyledInput = styled.input`
   border: 1px solid #c1933f;
   background-color: transparent;
   font-size: 16px;
-  color: #666;
+  color: #254A5D;
   outline: none;
   border: none;
   text-align: center;
@@ -56,4 +57,11 @@ const StyledInput = styled.input`
   outline: none;
   transition: all 0.1s ease-in-out;
   pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
+  cursor: pointer;
+ 
+ &::placeholder{
+  color: #337179;
+  font-size: ${({ $placeValue }) => ($placeValue == "Dish Types" ? "1.2rem" : "1rem")};
+  font-weight: ${({ $placeValue }) => ($placeValue == "Dish Types" ? 800 : 400)};
+ }
 `;

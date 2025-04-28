@@ -52,7 +52,7 @@ export default function LogoutModal({ showModal, setShowModal }) {
 
 const Modal = styled.div`
   right: 0;
-  color: #757575;
+  color: #254A5D;
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -78,12 +78,12 @@ const Field = styled.div`
   align-items: center;
   width: 300px;
   gap: 10px;
-  color: black;
   font-size: 1rem;
   width: 100%;
 
   .fieldLabel {
-    color: #4c4d51;
+    color: #337179;
+    font-weight: 600;
     font-size: 1rem;
   }
 `;

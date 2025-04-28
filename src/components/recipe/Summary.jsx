@@ -14,7 +14,7 @@ export default function Summary({ summary }) {
 
 const Container = styled.div`
   flex: 1;
-  color: rgb(37, 74, 93);
+  color: #254A5D;
   
   div {
     font-size: clamp(0.9rem, 2vw, 1.1rem);

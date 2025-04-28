@@ -71,23 +71,24 @@ const UsrButton = styled(Button)`
   align-items: center;
   gap: 5px;
   text-decoration: none;
-  color: #757575;
+  color: #337179;
   border: none;
   background-color: transparent;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   
 
   &.active {
     .icon {
       outline: none;
-      background-color: #da604e;
+      background-color: #337179;
       color: #f3f3f3;
     }
   }
 
   &:hover {
     .icon {
-      outline: 2px solid #da604e;
-      color: #da604e;
+      outline: 2px solid #337179;
+      color: #337179;
     }
   }
 
@@ -127,14 +128,13 @@ const AuthStateButton = styled(Button)`
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.9rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   border-radius: 25px;
   border: none;
   padding: 20px;
   height: 30px;
-  background-color: #fbf5ec;
-  color: #090500;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: #ECF0F1;
+  color: #1E3B4A;
 `;
 
 const GoogleIcon = styled(FcGoogle)`

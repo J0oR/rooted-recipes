@@ -117,22 +117,29 @@ const EmptyContainer = styled.div`
   padding-bottom: 0;
   margin-top: 100px;
   font-size: 1.2rem;
+  color: #254A5D;
 `;
 
 const LoadMore = styled.button`
   margin: 50px auto;
-  padding: 10px 30px;
-  background-color: #c1933f;
+  padding: 10px 40px;
+  background-color: #337179;
   color: #fff;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 1.2rem;
-  transition: background-color 0.3s ease;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    background-color: #f3f3f3;
-    color: #c1933f;
+    background-color: #337179;
+    color: #f3f3f3;
+    transform: scale(1.05);
+  }
+  &:active {
+    transform: scale(0.95);
+    background-color: #337179;
+    color: #f3f3f3;
   }
 `;
 
@@ -153,16 +160,17 @@ const UpButton = styled(Button)`
   justify-content: center;
   align-items: center;
 
-  border: 2px solid #c1933f;
-  background-color: #f3f3f3;
-  color: #c1933f;
-  background: rgba(255, 255, 255, 0.48); /* or darker if needed */
+  border: 2px solid #337179;
+  background-color: #337179;
+  color: #f3f3f3;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(10px); /* for Safari support */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 30px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
 
   &:hover {
-    background-color: #c1933f;
+    background-color: #337179;
     color:  #f3f3f3;
+    transform: scale(1.1);
   }
 `;

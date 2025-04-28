@@ -38,17 +38,18 @@ const SettingsButton = styled(Button)`
   padding: 5px;
   border: 2px solid #7d7d7d;
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  outline: none;
 
   &:hover {
-    border: 2px solid #c1933f;
+    border: 2px solid #337179;
     //background-color: #c1933f;
-    color: #c1933f;
+    color: #337179;
   }
 
   &.active {
     outline: none;
-    background-color: #c1933f;
-    border: 2px solid #c1933f;
+    background-color: #337179;
+    border: 2px solid #337179;
     color: #f3f3f3;
   }
   z-index: 12;

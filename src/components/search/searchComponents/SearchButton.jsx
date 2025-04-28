@@ -27,7 +27,7 @@ const StyledButton = styled(Button)`
   border-radius: 100%;
   border: none;
   cursor: pointer;
-  color: #43927c;
+  color: #337179;
   pointer-events: ${({ disabled }) => (disabled ? "none" : "auto")};
   display: flex;
   justify-content: center;
@@ -37,12 +37,12 @@ const StyledButton = styled(Button)`
   width: 40px;
   height: 40px;
   padding: ${({ $animateLens }) =>($animateLens ? "0px" : "5px")};
-  border: ${({ $animateLens }) =>($animateLens ? "2px solid #43927c" : "2px solid #7d7d7d")};
+  border: ${({ $animateLens }) =>($animateLens ? "2px solid #337179" : "2px solid #7d7d7d")};
   opacity: ${({ $animateLens }) => ($animateLens ? 1 : 0)};
   
   &:hover {
-    border: 2px solid #89b919;
-    background-color: #89b919;
+    border: 2px solid #337179;
+    background-color: #337179;
     color: #f3f3f3;
   }
 `;

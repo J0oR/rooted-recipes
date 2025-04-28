@@ -11,9 +11,9 @@ export default function Suggestions({ displayTerm, setDisplayTerm }) {
   const { ingredients } = useSelector((state) => state.ingredients);
 
   const handleSuggestionClick = (name) => {
-    dispatch(clearSuggestions());
     setDisplayTerm(name);
     dispatch(setSearchTerm(name));
+    dispatch(clearSuggestions());
     //dispatch(fetchRecipes());
   };
 
@@ -62,12 +62,14 @@ const SuggestionItem = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: #E9EDEF;
   border-radius: 25px;
-  color: #666;
+  color: #254A5D;
+  font-size: 1rem;
+  transition: all 0.1s ease-in-out;
 
   &:hover {
-    outline: 2px solid #43927c;
-    color: #43927c;
+    border: 2px solid #337179;
+    color: #337179;
   }
 `;

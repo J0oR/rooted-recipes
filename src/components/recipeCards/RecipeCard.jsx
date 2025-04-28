@@ -26,7 +26,6 @@ export default function RecipeCard({ recipe, $index }) {
   if (!recipe) return null;
 
   return (
-    <>
       <Card onClick={handleClick} $index={$index}>
         <div className="image-container">
           <img src={recipe.image} alt={recipe.title} />
@@ -46,7 +45,6 @@ export default function RecipeCard({ recipe, $index }) {
         </div>
         <HeartButton recipeId={recipe.id} />
       </Card>
-    </>
   );
 }
 
@@ -58,19 +56,22 @@ const Card = styled.div`
   height: 150px;
   border-radius: 150px;
   width: clamp(300px, 80%, 500px);
-  color: #090500;
   position: relative;
   background-color: #ecf0f1;
   color: #337179;
+  animation: fadeIn 0.3s ease-in-out forwards;
+
+  animation-delay: ${({ $index }) => 0.03 * $index}s;
+opacity: 0;
 
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateX(20px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
     }
   }
 
@@ -108,6 +109,7 @@ const Card = styled.div`
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+    
   }
 
   .details {

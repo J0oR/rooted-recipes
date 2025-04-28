@@ -66,6 +66,7 @@ const InputWrapper = styled.div`
   position: absolute;
   top: 150px;
 
+
   @media (max-width: 768px) {
     top: 250px;
     right: auto;
@@ -76,10 +77,16 @@ const InputWrapper = styled.div`
   background-color: #f3f3f3;
   display: flex;
   flex-direction: column;
-  transition: max-height 0.3s ease-in-out;
+  transition: max-height 0.3s ease-in-out, background-color 0.1s ease-in-out;
   max-height: ${({ $modalVisible }) => ($modalVisible ? "530px" : "58px")};
   overflow: hidden;
   padding: 10px;
+  
+
+  &:hover{
+    cursor: pointer;
+    background-color: #e6e5e5;
+  }
 `;
 
 const InputRow = styled.div`

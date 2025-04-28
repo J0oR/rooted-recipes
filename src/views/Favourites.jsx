@@ -20,8 +20,9 @@ export default function Favourites() {
 
   useEffect(() => {
     if (user) {
-      //dispatch(fetchFavourites(user.uid));
-      console.log(recipes);
+      if (!recipes.length) {
+        dispatch(fetchFavourites());
+      }
     } else {
       dispatch(clearFavourites());
       navigate("/");
@@ -37,11 +38,7 @@ export default function Favourites() {
     setDishType(type);
   };
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/");
-    }
-  }, [user, dispatch, navigate]);
+ 
 
   return (
     <>
@@ -67,6 +64,7 @@ const MessageContainer = styled.div`
   padding-bottom: 0;
   margin-top: 100px;
   font-size: 1.2rem;
+  color: #254A5D;
 `;
 
 const TagsContainer = styled.div`
@@ -89,7 +87,7 @@ const AnimatedTag = styled.div`
 
   padding: 10px 15px;
   margin: 5px;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out  ;
 
   @keyframes fadeIn {
     to {

@@ -41,15 +41,17 @@ export default function DishesModal({ dishesModalState, setDishesModalState }) {
 }
 
 const Modal = styled.div`
+padding: 20px;
   height: fit-content;
   gap: 20px;
   background-color: transparent;
-  color: #757575;
+  color: #1E3B4A;
   pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   transform: ${({ $visible }) => ($visible ? "translateY(0)" : "translateY(-2px)")};
   transform-origin: top;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
 `;
 
 const TagsContainer = styled.div`
@@ -59,6 +61,7 @@ const TagsContainer = styled.div`
   flex-wrap: wrap;
   margin-top: 50px;
   margin: auto;
+  color: #254A5D;
 `;
 
 const AnimatedTag = styled.div`
@@ -85,8 +88,8 @@ const AnimatedTag = styled.div`
 
   &.selected {
     outline: none;
-    color: #43927c;
+    color: #337179;
     font-weight: 500;
-    border-bottom: 2px solid;
+    border-bottom: 2px solid #337179;
   }
 `;

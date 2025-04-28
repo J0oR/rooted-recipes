@@ -36,9 +36,9 @@ const StyledNavLink = styled(NavLink)`
   gap: 5px;
   text-decoration: none;
   color: #337179;
-
   opacity: ${({ $visible }) => ($visible ? 0 : 1)};
   transition: opacity 0.1s ease-in-out;
+  font-size: clamp(1rem, 2vw, 1.2rem);
 
 
   &.active{

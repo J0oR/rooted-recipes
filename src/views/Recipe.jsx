@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
-import Tabs from "../components/recipe/Tabs";
 import RecipeStat from "../components/recipe/RecipeStat";
 import { IoPeopleOutline } from "react-icons/io5";
 import { PiTimerBold } from "react-icons/pi";
@@ -11,6 +10,8 @@ import styled from "styled-components";
 import { FaListUl } from "react-icons/fa";
 import HeartButton from "../components/recipeCards/HeartButton";
 import Summary from "../components/recipe/Summary";
+import Instructions from "../components/recipe/Instructions";
+import Ingredients from "../components/recipe/Ingredients";
 
 export default function Recipe() {
   const { id } = useParams();
@@ -43,7 +44,7 @@ export default function Recipe() {
   return (
     <RecipeContainer>
       <Title>{data.title}</Title>
-      <FlexContainer1>
+      <FlexContainer>
         <RapidInfo>
           <ImgWrapper>
             <img src={data.image} />
@@ -57,8 +58,11 @@ export default function Recipe() {
           </Stats>
         </RapidInfo>
         <Summary summary={data.summary} />
-      </FlexContainer1>
-      <Tabs ingredients={data.ingredients} steps={data.steps} summary={data.summary} />
+      </FlexContainer>
+      <Tabs>
+        <Ingredients ingredients={data.ingredients} />
+        <Instructions steps={data.steps} />
+      </Tabs>
     </RecipeContainer>
   );
 }
@@ -82,7 +86,7 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-const FlexContainer1 = styled.div`
+const FlexContainer = styled.div`
   flex: 1;
   display: flex;
   align-items: flex-start;
@@ -92,6 +96,7 @@ const FlexContainer1 = styled.div`
   flex-wrap: wrap;
   gap: 50px;
   padding: 20px 50px;
+  margin-bottom: 50px;
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
@@ -99,28 +104,13 @@ const FlexContainer1 = styled.div`
   }
 `;
 
-const FlexContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  position: relative;
-
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 50px;
-  }
-`;
 
 const RapidInfo = styled.div`
   flex: 1;
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center ;
+  justify-content: center;
   @media screen and (max-width: 768px) {
     height: fit-content;
   }
@@ -139,6 +129,7 @@ const ImgWrapper = styled.div`
     object-position: center;
     width: 100%;
     height: 100%;
+    
   }
 
   .heart-button {
@@ -152,5 +143,21 @@ const Stats = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
+  height: 250px;
+`;
+
+const Tabs = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  background-color: #F5F6F7;
+  gap: 100px;
+  padding-bottom: 100px;
+  
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
