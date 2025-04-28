@@ -2,14 +2,13 @@ import { useState } from "react";
 import styled from "styled-components";
 import Ingredients from "./Ingredients";
 import Instructions from "./Instructions";
-import SummaryStyled from "./Summary";
+
 
 export default function Tabs({ ingredients, steps, summary }) {
   const [selectedTab, setSelectedTab] = useState("ingredients");
   const tabs = [
     { key: "ingredients", label: "Ingredients" },
-    { key: "recipe", label: "Recipe" },
-    { key: "summary", label: "Summary" },
+    { key: "recipe", label: "Recipe" }
   ];
 
   return (
@@ -24,7 +23,7 @@ export default function Tabs({ ingredients, steps, summary }) {
       <SectionContainer>
         {selectedTab === "ingredients" && <Ingredients ingredients={ingredients} />}
         {selectedTab === "recipe" && <Instructions steps={steps} />}
-        {selectedTab === "summary" && <SummaryStyled summary={summary} />}
+        
       </SectionContainer>
     </InfoContainer>
   );
@@ -35,7 +34,8 @@ const InfoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: clamp(300px, 80%, 800px);
+  width: 100%;
+  background-color: #ECF0F1;
 `;
 
 const TabsContainer = styled.div`
@@ -47,8 +47,6 @@ const TabsContainer = styled.div`
   padding: 20px 40px;
   position: relative;
   width: 100%;
-  top: -55px;
-  width: fit-content;
   border-radius: 25px;
   color: #337179;
   font-size: 1rem;
@@ -64,7 +62,7 @@ const Tab = styled.div`
 
   &.active {
     font-weight: 600;
-    color: #254A5D;
+    color: #254a5d;
 
     &::after {
       content: "";
@@ -74,16 +72,14 @@ const Tab = styled.div`
       transform: translateX(-50%);
       width: 25px;
       height: 2px; /* or whatever thickness you want */
-      background-color: #254A5D; /* or use a specific color */
+      background-color: #254a5d; /* or use a specific color */
     }
   }
 `;
 
 const SectionContainer = styled.div`
-  padding: 50px 25px;
-  margin-top: -110px;
   width: 100%;
-  max-width: 600px;
   margin-bottom: 100px;
-
+  display: flex;
+  justify-content: center;
 `;

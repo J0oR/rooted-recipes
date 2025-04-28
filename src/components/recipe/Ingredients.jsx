@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export default function Ingredients({ ingredients }) {
-
   const formatUnit = (unit) => {
     if (!unit) return "";
     const u = unit.toLowerCase();
@@ -19,7 +18,9 @@ export default function Ingredients({ ingredients }) {
       <List>
         {ingredients?.map((ingredient, index) => (
           <IngredientRow key={index}>
-            <span>{ingredient.amount} {formatUnit(ingredient.unit)}</span>
+            <span>
+              {ingredient.amount} {formatUnit(ingredient.unit)}
+            </span>
             <span className="name">{ingredient.nameClean}</span>
           </IngredientRow>
         ))}
@@ -35,16 +36,15 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ECF0F1;
+  background-color: #ecf0f1;
   padding: 10px 0 40px 0;
   border-radius: 15px;
-  margin: auto;
   color: rgb(37, 74, 93);
-    font-size: 1rem;
+  font-size: 1rem;
 `;
 
 const Header = styled.div`
-  width: 80%;
+  width: 100%;
   margin: auto;
   display: flex;
   justify-content: center;
@@ -57,7 +57,6 @@ const Header = styled.div`
   :nth-child(1) {
     flex: 1;
     text-align: right;
-    
   }
   :nth-child(2) {
     flex: 2;
@@ -66,7 +65,7 @@ const Header = styled.div`
 `;
 
 const List = styled.ul`
-  width: 80%;
+  width: 100%;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -75,7 +74,6 @@ const List = styled.ul`
   //border: 2px solid #C2933F;
   border-radius: 15px;
   //background-color: #F4E9D6;
-  
 `;
 
 const IngredientRow = styled.li`
@@ -84,20 +82,18 @@ const IngredientRow = styled.li`
   align-items: center;
   width: 100%;
   gap: 50px;
- 
-
 
   &:last-child {
     border: none;
   }
 
-  :nth-child(1){
+  :nth-child(1) {
     text-align: right;
     flex: 1;
     color: #337179;
     font-weight: 500;
   }
-  
+
   :nth-child(2) {
     text-align: left;
     flex: 2;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export default function Summary({ summary }) {
-
   return (
     <Container>
       <div
@@ -14,14 +13,11 @@ export default function Summary({ summary }) {
 }
 
 const Container = styled.div`
-width: 100%;
-  background-color: #ECF0F1;
-  border-radius: 15px;
-  padding: 50px;
+  flex: 1;
   color: rgb(37, 74, 93);
-    font-size: 1rem;
-
-  div{
-    line-height: 2.5;
+  
+  div {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    line-height: 2;
   }
 `;

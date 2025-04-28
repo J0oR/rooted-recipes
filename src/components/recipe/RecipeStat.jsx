@@ -17,15 +17,22 @@ const StatContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  width: 150px;
-  color: #48C5B0;
+  width: 100%;
+  color: #DA604E;
+
+&:nth-child(2), &:nth-child(3){
+  margin-left: 50px;
+}
+&:nth-child(1), &:nth-child(4){
+  margin-left: -20px;
+}
 `;
 
 const StatIcon = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 100%;
-  border: 2px solid #48C5B0;
+  border: 2px solid #DA604E;
   display: flex;
   justify-content: center;
   align-items: center;

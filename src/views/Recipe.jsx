@@ -10,6 +10,7 @@ import { FaRegStar } from "react-icons/fa";
 import styled from "styled-components";
 import { FaListUl } from "react-icons/fa";
 import HeartButton from "../components/recipeCards/HeartButton";
+import Summary from "../components/recipe/Summary";
 
 export default function Recipe() {
   const { id } = useParams();
@@ -41,76 +42,26 @@ export default function Recipe() {
 
   return (
     <RecipeContainer>
-        <TitleContainer>{<h1>{data.title}</h1>}</TitleContainer>
-      <TopSection>
-        <CircleWrapper>
+      <Title>{data.title}</Title>
+      <FlexContainer1>
+        <RapidInfo>
           <ImgWrapper>
             <img src={data.image} />
-            <HeartButton recipeId={id} className="heart-button"/>
+            <HeartButton recipeId={id} className="heart-button" />
           </ImgWrapper>
-          <RadialItem $index={0} $total={4}>
+          <Stats>
             <RecipeStat label="Ingredients" stat={data.ingredientsNames?.length} icon={<FaListUl />} />
-          </RadialItem>
-          <RadialItem $index={1} $total={4}>
             <RecipeStat label="Cook Time" stat={data.readyInMinutes} icon={<PiTimerBold />} />
-          </RadialItem>
-          <RadialItem $index={2} $total={4}>
             <RecipeStat label="Servings" stat={data.servings} icon={<IoPeopleOutline />} />
-          </RadialItem>
-          <RadialItem $index={3} $total={4}>
             <RecipeStat label="Score" stat={`${data.spoonacularScore?.toFixed(2)}%`} icon={<FaRegStar />} />
-          </RadialItem>
-        </CircleWrapper>
+          </Stats>
+        </RapidInfo>
+        <Summary summary={data.summary} />
+      </FlexContainer1>
       <Tabs ingredients={data.ingredients} steps={data.steps} summary={data.summary} />
-      </TopSection>
-
     </RecipeContainer>
   );
 }
-
-const TopSection = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  padding: 20px;
-  position: relative;
-  padding-bottom: 60px;
-  gap: clamp(100px, 10%, 150px);
-  @media screen and (max-width: 768px) {
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-`;
-
-const CircleWrapper = styled.div`
-  position: relative;
-  width: fit-content;
-`;
-
-const RadialItem = styled.div.attrs(({ $index, $total }) => {
-  const startAngle = -35; // gradi, in alto a destra
-  const endAngle = 35; // gradi, in basso a destra
-  const angle = startAngle + ((endAngle - startAngle) / ($total - 1)) * $index;
-
-  const radius = 170;
-  const rad = (angle * Math.PI) / 180;
-  const x = Math.cos(rad) * radius;
-  const y = Math.sin(rad) * radius;
-
-  return {
-    style: {
-      transform: `translate(${x}px, ${y}px)`,
-    },
-  };
-})`
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform-origin: center;
-`;
 
 const RecipeContainer = styled.div`
   display: flex;
@@ -118,8 +69,61 @@ const RecipeContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  border-radius: 10px;
+`;
+
+const Title = styled.h1`
+  margin: 30px auto 50px auto;
+  width: 100%;
+  color: #337179;
+  font-size: clamp(2rem, 4vw, 10rem);
+  font-weight: 800;
+  flex-wrap: wrap;
+  text-transform: uppercase;
+  text-align: center;
+`;
+
+const FlexContainer1 = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
   position: relative;
+  flex-wrap: wrap;
+  gap: 50px;
+  padding: 20px 50px;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  position: relative;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 50px;
+  }
+`;
+
+const RapidInfo = styled.div`
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center ;
+  @media screen and (max-width: 768px) {
+    height: fit-content;
+  }
 `;
 
 const ImgWrapper = styled.div`
@@ -128,6 +132,7 @@ const ImgWrapper = styled.div`
   border-radius: 100%;
   overflow: hidden;
   z-index: 1;
+  position: relative;
 
   img {
     object-fit: cover;
@@ -136,26 +141,16 @@ const ImgWrapper = styled.div`
     height: 100%;
   }
 
-  .heart-button{
+  .heart-button {
     left: 100px !important;
+    top: 200px;
   }
 `;
 
-const TitleContainer = styled.div`
+const Stats = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  margin: 30px auto 50px auto;
-  
-  h1 {
-    width: 100%;
-    color: #337179;
-    font-size: clamp(2rem, 4vw, 10rem);
-    font-weight: 800;
-    flex-wrap: wrap;
-    text-transform: uppercase;
-    text-align: center;
-  }
+  justify-content: center;
+  gap: 20px;
 `;
