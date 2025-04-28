@@ -40,7 +40,6 @@ const TabsContainer = styled.div`
   position: relative;
   width: 100%;
   top: -55px;
-  background-color: #FFF2DA;
   width: fit-content;
   border-radius: 25px;
 `;

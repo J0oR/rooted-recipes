@@ -41,13 +41,7 @@ export default function DishesModal({ dishesModalState, setDishesModalState }) {
 }
 
 const Modal = styled.div`
-  width: 500px;
   height: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
   gap: 20px;
   background-color: transparent;
   color: #757575;

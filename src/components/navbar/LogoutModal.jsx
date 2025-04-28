@@ -63,7 +63,7 @@ const Modal = styled.div`
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   transform: ${({ $visible }) => ($visible ? "translateY(0), scale(1)" : "translateY(-100px), scale(0.5)")};
   transform-origin: top right;
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  transition: opacity 0.1s ease-out, transform 0.1s ease-out, color 0.1s ease-out;
   width: 100%;
 
   img {

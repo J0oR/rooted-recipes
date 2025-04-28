@@ -10,11 +10,16 @@ export default function Navbar() {
   const [user] = useAuthState(auth);
   const [showModal, setShowModal] = useState(false);
 
+  const exit = () => {
+    setShowModal(false);
+  };
+
   return (
     <NavBarContainer>
       <span className="Logo">Rooted Recipes</span>
       
 
+      <Overlay $isActive={showModal} onClick={()=>exit()}/>
       <LinksContainer $showmodal={showModal}>
         <LinksWrapper>
           {user && <NavLinkStyled to="/" icon="home" text="Home" showModal={showModal} />}
@@ -27,12 +32,32 @@ export default function Navbar() {
   );
 }
 
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.25); // Dark overlay
+  transition: background-color 0.3s ease-in-out;
+  z-index: 90; // Ensure it is above everything else
+  visibility: ${({ $isActive }) => ($isActive ? "visible" : "hidden")};
+  height: 100vh;
+`;
+
 const NavBarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 50px;
-  padding: 30px;
+  flex-wrap: wrap;
+  height: 100px;
+  padding: 33px;
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* Forza i figli a stare uno sopra l'altro */
+    align-items: center; /* Centra i figli */
+    margin-bottom: 150px;
+  }
 
   .Logo {
     font-size: 2rem;
@@ -48,17 +73,22 @@ const LinksContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   right: 20px;
-  top: 20px;
-  padding: 30px;
-  width: 400px;
-  height: fit-content;
+  top: 37px;
+  width: clamp(300px, 80%, 400px);
+  padding: ${({ $showmodal }) => ($showmodal ? "30px" : "10px 30px")};
+  padding-top: 6px;
+  height: ${({ $showmodal }) => ($showmodal ? "fit-content" : "48px")};
   background-color: ${({ $showmodal }) => ($showmodal ? "#f3f3f3" : "transparent")};
   border-radius: 25px;
-  transition: height 0.3s, background-color 0.3s;
+  transition: height 0.1s ease-in, background-color 0.1s ease-in, padding 0.1s ease-in;
   transform-origin: top right;
-  z-index: 110;
+  z-index: 100;
+  @media (max-width: 768px) {
+    top: 120px;
+    right: auto;
+  }
 `;
 
 

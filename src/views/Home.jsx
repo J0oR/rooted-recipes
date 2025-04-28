@@ -104,6 +104,7 @@ const FilteringContainer = styled.div`
   justify-content: center;
   padding: 30px;
   gap: 20px;
+  width: 100%;
 `;
 
 const EmptyContainer = styled.div`
@@ -155,6 +156,10 @@ const UpButton = styled(Button)`
   border: 2px solid #c1933f;
   background-color: #f3f3f3;
   color: #c1933f;
+  background: rgba(255, 255, 255, 0.48); /* or darker if needed */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(10px); /* for Safari support */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
   &:hover {
     background-color: #c1933f;

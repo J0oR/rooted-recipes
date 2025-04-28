@@ -44,7 +44,7 @@ export default function Favourites() {
   }, [user, dispatch, navigate]);
 
   return (
-    <MainContainer>
+    <>
       <TagsContainer>
         {dishTypes.map((type, i) => (
           <AnimatedTag $index={i} $animate={animateTags} key={type} className={`${dishType === type ? "selected" : ""}`} onClick={() => handleClick(type)} children={type} />
@@ -53,12 +53,9 @@ export default function Favourites() {
       {recipes.length === 0 && !loading && <MessageContainer>0 saved recipes {dishType ? `for ${dishType}` : ""}</MessageContainer>}
       <RecipesCards recipes={recipes} />
       {loading && <LoadingSpinner />}
-    </MainContainer>
+    </>
   );
 }
-
-const MainContainer = styled.div`
-`;
 
 const MessageContainer = styled.div`
   display: flex;
@@ -77,8 +74,8 @@ const TagsContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 50px;
-  margin: auto;
+  margin: 50px auto -46px auto;
+  width: clamp(300px, 80%, 600px);
 `;
 
 const AnimatedTag = styled.div`

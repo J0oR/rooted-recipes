@@ -33,7 +33,7 @@ export default function RecipeCard({ recipe, $index }) {
           <img src={recipe.image} alt={recipe.title} />
         </div>
         <div className="details">
-          <div className="title">{recipe.title}</div>
+          <h1 className="title">{recipe.title}</h1>
           <span className="detail-row">
             <TiThList className="icon" />
             {recipe.ingredientsNames?.length || 0} ingredients
@@ -56,7 +56,7 @@ const Card = styled.div`
   gap: 20px;
   height: 150px;
   border-radius: 150px;
-  width: 500px;
+  width: clamp(300px, 80%, 500px);
   color: #090500;
   position: relative;
   background-color: transparent;
@@ -90,6 +90,7 @@ const Card = styled.div`
     position: absolute;
     left: -20px;
     box-shadow: rgba(0, 0, 0, 0.35) 5px 5px 15px;
+    border: none;
 
     img {
       width: 100%;
@@ -105,13 +106,14 @@ const Card = styled.div`
   .details {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-start;
     gap: 10px;
-    margin-left: 180px;
-    width: 60%;
+    margin-left: 170px;
+    width: clamp(150px, 80%, 280px);
     color: #ffffff;
-    color: #c1933f;
+    color: #da5f4e;
+    height: 80%;
 
     .title {
       white-space: normal; /* Allow text to wrap to a new line */
@@ -125,6 +127,8 @@ const Card = styled.div`
       -webkit-box-orient: vertical; /* Needed for the -webkit-line-clamp to work */
       font-size: 1rem;
       font-weight: 500;
+      max-width: clamp(150px, 80%, 280px);
+
     }
 
     .detail-row {
@@ -134,8 +138,7 @@ const Card = styled.div`
       gap: 10px;
       font-size: 0.8rem;
       color: #c9c9c9;
-      color: #da5f4e;
-      width: 100%;
+      color: #8c4339;
     }
 
     .icon {

@@ -30,13 +30,15 @@ export default function Ingredients({ ingredients }) {
 
 const Container = styled.div`
   width: 100%;
+  width: clamp(300px, 80%, 400px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #F4E9D6;
+  background-color: #FBF5EC;
   padding: 10px 0 40px 0;
   border-radius: 15px;
+  margin: auto;
 `;
 
 const Header = styled.div`

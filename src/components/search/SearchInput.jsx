@@ -64,9 +64,14 @@ const Overlay = styled.div`
 
 const InputWrapper = styled.div`
   position: absolute;
-  top: 100px;
-  width: 500px;
-  z-index: 100;
+  top: 150px;
+
+  @media (max-width: 768px) {
+    top: 250px;
+    right: auto;
+  }
+  width: clamp(300px, 80%, 500px);
+  z-index: 70;
   border-radius: 25px;
   background-color: #f3f3f3;
   display: flex;
@@ -83,14 +88,6 @@ const InputRow = styled.div`
   justify-content: space-between;
 `;
 
-
-
-const ButtonsWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-`;
 
 const ModalRow = styled.div`
   display: flex;
