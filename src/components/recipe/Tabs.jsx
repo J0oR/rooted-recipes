@@ -13,7 +13,7 @@ export default function Tabs({ ingredients, steps, summary }) {
   ];
 
   return (
-    <>
+    <InfoContainer>
       <TabsContainer>
         {tabs.map(({ key, label }) => (
           <Tab key={key} className={`${selectedTab === key ? "active" : ""}`} onClick={() => setSelectedTab(key)}>
@@ -26,9 +26,17 @@ export default function Tabs({ ingredients, steps, summary }) {
         {selectedTab === "recipe" && <Instructions steps={steps} />}
         {selectedTab === "summary" && <SummaryStyled summary={summary} />}
       </SectionContainer>
-    </>
+    </InfoContainer>
   );
 }
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(300px, 80%, 800px);
+`;
 
 const TabsContainer = styled.div`
   display: flex;
@@ -42,6 +50,8 @@ const TabsContainer = styled.div`
   top: -55px;
   width: fit-content;
   border-radius: 25px;
+  color: #337179;
+  font-size: 1rem;
 `;
 
 const Tab = styled.div`
@@ -54,6 +64,7 @@ const Tab = styled.div`
 
   &.active {
     font-weight: 600;
+    color: #254A5D;
 
     &::after {
       content: "";
@@ -63,7 +74,7 @@ const Tab = styled.div`
       transform: translateX(-50%);
       width: 25px;
       height: 2px; /* or whatever thickness you want */
-      background-color: #823939; /* or use a specific color */
+      background-color: #254A5D; /* or use a specific color */
     }
   }
 `;

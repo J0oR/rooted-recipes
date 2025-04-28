@@ -41,8 +41,8 @@ export default function Recipe() {
 
   return (
     <RecipeContainer>
-      <TopSection>
         <TitleContainer>{<h1>{data.title}</h1>}</TitleContainer>
+      <TopSection>
         <CircleWrapper>
           <ImgWrapper>
             <img src={data.image} />
@@ -61,31 +61,33 @@ export default function Recipe() {
             <RecipeStat label="Score" stat={`${data.spoonacularScore?.toFixed(2)}%`} icon={<FaRegStar />} />
           </RadialItem>
         </CircleWrapper>
-      
+      <Tabs ingredients={data.ingredients} steps={data.steps} summary={data.summary} />
       </TopSection>
 
-      <Tabs ingredients={data.ingredients} steps={data.steps} summary={data.summary} />
     </RecipeContainer>
   );
 }
 
 const TopSection = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
   padding: 20px;
   position: relative;
   padding-bottom: 60px;
+  gap: clamp(100px, 10%, 150px);
+  @media screen and (max-width: 768px) {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 `;
 
 const CircleWrapper = styled.div`
   position: relative;
-  width: 200px;
-  height: 200px;
-  left: -90px;
-  margin-bottom: 60px;
+  width: fit-content;
 `;
 
 const RadialItem = styled.div.attrs(({ $index, $total }) => {
@@ -105,7 +107,7 @@ const RadialItem = styled.div.attrs(({ $index, $total }) => {
   };
 })`
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform-origin: center;
 `;
@@ -121,12 +123,10 @@ const RecipeContainer = styled.div`
 `;
 
 const ImgWrapper = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   width: 250px;
   height: 250px;
   border-radius: 100%;
   overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.35) 5px 5px 15px;
   z-index: 1;
 
   img {
@@ -138,7 +138,6 @@ const ImgWrapper = styled.div`
 
   .heart-button{
     left: 100px !important;
-    bottom: 0px !important;
   }
 `;
 
@@ -148,11 +147,15 @@ const TitleContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 50px;
-
+  margin: 30px auto 50px auto;
+  
   h1 {
-    font-size: 1.4rem;
-    font-weight: 500;
+    width: 100%;
+    color: #337179;
+    font-size: clamp(2rem, 4vw, 10rem);
+    font-weight: 800;
     flex-wrap: wrap;
+    text-transform: uppercase;
+    text-align: center;
   }
 `;

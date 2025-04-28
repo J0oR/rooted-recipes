@@ -83,13 +83,13 @@ const StyledButton = styled(Button)`
     transform: scale(1.1);
 
     .icon {
-      color: #da5f4e;
+      color: #DA604E;
     }
   }
 
   .icon {
     border-radius: 100%;
     font-weight: 800px;
-    color: ${({ $isSaved }) => ($isSaved ? "#E91D63" : "#ffffff")};
+    color: ${({ $isSaved }) => ($isSaved ? "#DA604E" : "#337179")};
   }
 `;

@@ -12,7 +12,6 @@ export default function RecipeCard({ recipe, $index }) {
   const navigate = useNavigate();
   const cardRef = useRef(null); // Aggiungi il ref
 
-
   const handleClick = () => {
     navigate(`/recipe/${recipe.id}`);
   };
@@ -34,16 +33,18 @@ export default function RecipeCard({ recipe, $index }) {
         </div>
         <div className="details">
           <h1 className="title">{recipe.title}</h1>
-          <span className="detail-row">
-            <TiThList className="icon" />
-            {recipe.ingredientsNames?.length || 0} ingredients
-          </span>
-          <span className="detail-row">
-            <PiTimerBold className="icon" />
-            {recipe.readyInMinutes} minutes
-          </span>
+          <div className="details-row">
+            <span className="detail-row">
+              <TiThList className="icon" />
+              {recipe.ingredientsNames?.length || 0} ingredients
+            </span>
+            <span className="detail-row">
+              <PiTimerBold className="icon" />
+              {recipe.readyInMinutes} minutes
+            </span>
+          </div>
         </div>
-        <HeartButton recipeId={recipe.id}/>
+        <HeartButton recipeId={recipe.id} />
       </Card>
     </>
   );
@@ -59,9 +60,8 @@ const Card = styled.div`
   width: clamp(300px, 80%, 500px);
   color: #090500;
   position: relative;
-  background-color: transparent;
-  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
-
+  background-color: #ecf0f1;
+  color: #337179;
 
   @keyframes fadeIn {
     from {
@@ -89,18 +89,25 @@ const Card = styled.div`
     overflow: hidden;
     position: absolute;
     left: -20px;
-    box-shadow: rgba(0, 0, 0, 0.35) 5px 5px 15px;
-    border: none;
-
+    
     img {
       width: 100%;
       height: 100%;
+      border-radius: 100%;
       object-fit: cover;
       filter: brightness(80%) contrast(1);
       transition: transform 0.3s ease-in-out;
       position: relative;
       left: 0;
+    
     }
+  }
+
+  .details-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 
   .details {
@@ -111,8 +118,6 @@ const Card = styled.div`
     gap: 10px;
     margin-left: 170px;
     width: clamp(150px, 80%, 280px);
-    color: #ffffff;
-    color: #da5f4e;
     height: 80%;
 
     .title {
@@ -121,14 +126,17 @@ const Card = styled.div`
       overflow: hidden;
       text-overflow: ellipsis;
       text-transform: uppercase;
-
+      font-weight: 800;
       display: -webkit-box; /* Enable multi-line truncation */
       -webkit-line-clamp: 2; /* Limit to 2 lines (you can adjust this as needed) */
       -webkit-box-orient: vertical; /* Needed for the -webkit-line-clamp to work */
       font-size: 1rem;
-      font-weight: 500;
       max-width: clamp(150px, 80%, 280px);
 
+      font-family: "Bebas Neue", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 1.5rem;
     }
 
     .detail-row {
@@ -136,9 +144,7 @@ const Card = styled.div`
       align-items: center;
       justify-content: space;
       gap: 10px;
-      font-size: 0.8rem;
-      color: #c9c9c9;
-      color: #8c4339;
+      font-size: 0.9rem;
     }
 
     .icon {

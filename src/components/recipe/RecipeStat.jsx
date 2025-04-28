@@ -18,19 +18,18 @@ const StatContainer = styled.div`
   align-items: center;
   gap: 20px;
   width: 150px;
+  color: #48C5B0;
 `;
 
 const StatIcon = styled.div`
   width: 50px;
   height: 50px;
   border-radius: 100%;
-  border: 1px solid #c1933f;
-  color: #c1933f;
+  border: 2px solid #48C5B0;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fef3db;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 `;
 
 const StatDetailsContainer = styled.div`
@@ -40,10 +39,12 @@ const StatDetailsContainer = styled.div`
 `;
 
 const StatLabel = styled.div`
-  color: #9b9b9b;
+  color: #337179
 `;
 
 const StatValue = styled.div`
   font-weight: bold;
   font-size: 1.2rem;
+  color: rgb(37, 74, 93);
+  
 `;

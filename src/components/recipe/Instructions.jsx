@@ -40,13 +40,15 @@ width: 100%;
     flex-direction: column;
     list-style: none;
     gap: 20px;
+    color: rgb(37, 74, 93);
+    font-size: 1rem;
 `;
 
 const Step = styled.div`
   display: flex;
   align-items: center;
   gap: 50px;
-  background-color: #fbf5ec;
+  background-color: #ECF0F1;
   padding: 20px;
   border-radius: 15px;
 `;
@@ -55,7 +57,7 @@ const StepIndex = styled.div`
   width: 30px;
   height: 30px;
   border-radius: 100%;
-  border: 1px solid #c1933f;
+  border: 1px solid #337179;
   display: flex;
   justify-content: center;
   align-items: center;

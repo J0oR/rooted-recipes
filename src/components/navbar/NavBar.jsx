@@ -17,9 +17,8 @@ export default function Navbar() {
   return (
     <NavBarContainer>
       <span className="Logo">Rooted Recipes</span>
-      
 
-      <Overlay $isActive={showModal} onClick={()=>exit()}/>
+      <Overlay $isActive={showModal} onClick={() => exit()} />
       <LinksContainer $showmodal={showModal}>
         <LinksWrapper>
           {user && <NavLinkStyled to="/" icon="home" text="Home" showModal={showModal} />}
@@ -61,10 +60,11 @@ const NavBarContainer = styled.nav`
 
   .Logo {
     font-size: 2rem;
-    font-family: "Merienda", cursive;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: italic;
+    font-family: "Lobster Two", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-style: italic;
+    color: #337179;
   }
 `;
 
@@ -90,7 +90,6 @@ const LinksContainer = styled.div`
     right: auto;
   }
 `;
-
 
 const LinksWrapper = styled.div`
   display: flex;

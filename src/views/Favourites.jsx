@@ -75,7 +75,10 @@ const TagsContainer = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   margin: 50px auto -46px auto;
-  width: clamp(300px, 80%, 600px);
+  width: clamp(300px, 80%, 800px);
+  color: #337179;
+  font-size: 1rem;
+  text-transform: uppercase;
 `;
 
 const AnimatedTag = styled.div`
@@ -103,7 +106,7 @@ const AnimatedTag = styled.div`
   &.selected {
     outline: none;
     color: #43927c;
-    font-weight: 500;
-    border-bottom: 2px solid;
+    font-weight: 700;
+    border-bottom: 4px solid;
   }
 `;

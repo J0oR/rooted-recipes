@@ -35,10 +35,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #FBF5EC;
+  background-color: #ECF0F1;
   padding: 10px 0 40px 0;
   border-radius: 15px;
   margin: auto;
+  color: rgb(37, 74, 93);
+    font-size: 1rem;
 `;
 
 const Header = styled.div`
@@ -48,13 +50,14 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px 0;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   gap: 50px;
 
   :nth-child(1) {
     flex: 1;
     text-align: right;
+    
   }
   :nth-child(2) {
     flex: 2;
@@ -91,7 +94,8 @@ const IngredientRow = styled.li`
   :nth-child(1){
     text-align: right;
     flex: 1;
-    color: #c1933f;
+    color: #337179;
+    font-weight: 500;
   }
   
   :nth-child(2) {

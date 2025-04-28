@@ -35,7 +35,7 @@ const StyledNavLink = styled(NavLink)`
   align-items: center;
   gap: 5px;
   text-decoration: none;
-  color: #757575;
+  color: #337179;
 
   opacity: ${({ $visible }) => ($visible ? 0 : 1)};
   transition: opacity 0.1s ease-in-out;
@@ -43,22 +43,22 @@ const StyledNavLink = styled(NavLink)`
 
   &.active{
     .icon{
-      background-color: #C2933F;
+      background-color: #337179;
       
-      color: #f3f3f3;
+      color: #FFFFFF;
     }
   }
 
   &:hover {
     .icon {
-      outline: 2px solid #C2933F;
-      color: #C2933F;
+      outline: 2px solid #337179;
+      color: #337179;
     }
   }
 
   &.active:hover{
     .icon{
-      color: #f3f3f3;
+      color: #FFFFFF;
       outline: none;
     }
   }
