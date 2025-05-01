@@ -1,7 +1,6 @@
 import { saveRecipesToFirebase } from "../utils/saveRecipesToFirebase";
 import { saveIngredientsToFirebase } from "../utils/saveIngredientsToFirebase";
 import axios from "axios";
-import localData from "../assets/localData";
 
 const apiFetchDbSave = async () => {
     const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -25,51 +24,3 @@ const apiFetchDbSave = async () => {
   };
 
   export { apiFetchDbSave };
-
-
-
-  import {
-    collection,
-    getDocs,
-    deleteDoc,
-    doc,
-    query,
-    limit,
-    startAfter,
-  } from "firebase/firestore";
-
-  async function clearDB() {
-    const recipesRef = collection(db, "recipes");
-    let lastDoc = null;
-    let deletedCount = 0;
-    let keepGoing = true;
-  
-    while (keepGoing) {
-      let q = query(recipesRef, limit(100));
-      if (lastDoc) {
-        q = query(recipesRef, startAfter(lastDoc), limit(100));
-      }
-  
-      const snapshot = await getDocs(q);
-      if (snapshot.empty) break;
-  
-      const deletions = [];
-      snapshot.docs.forEach((docSnap) => {
-        const data = docSnap.data();
-        if (!data.summary || data.summary.trim() === "") {
-          deletions.push(deleteDoc(doc(db, "recipes", docSnap.id)));
-          console.log(`Scheduled delete: ${docSnap.id}`);
-        }
-      });
-  
-      await Promise.all(deletions);
-      deletedCount += deletions.length;
-      console.log(`Deleted ${deletedCount} recipes so far...`);
-  
-      lastDoc = snapshot.docs[snapshot.docs.length - 1];
-      keepGoing = snapshot.size === 100;
-    }
-  
-    console.log(`✅ Cleanup finished. Total deleted: ${deletedCount}`);
-  }
-  

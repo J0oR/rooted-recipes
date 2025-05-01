@@ -51,7 +51,7 @@ export default function AuthButton({ showModal, setShowModal }) {
         </AuthStateButton>
       ) : (
         <Container>
-          <UsrButton className={`${showModal ? "active" : ""}`} onClick={toggleModal}>
+          <UsrButton className={`${showModal ? "active" : ""}`} onClick={toggleModal} $showmodal={showModal}>
             <AiOutlineUser className={`icon ${isAnimating ? "animating" : ""} `} />
             Profile
           </UsrButton>
@@ -75,11 +75,11 @@ const UsrButton = styled(Button)`
   border: none;
   background-color: transparent;
   font-size: clamp(1rem, 2vw, 1.2rem);
+  z-index: 120;
   
 
   &.active {
     .icon {
-      outline: none;
       background-color: #337179;
       color: #f3f3f3;
     }

@@ -26,25 +26,26 @@ export default function RecipeCard({ recipe, $index }) {
   if (!recipe) return null;
 
   return (
-      <Card onClick={handleClick} $index={$index}>
-        <div className="image-container">
-          <img src={recipe.image} alt={recipe.title} />
-        </div>
-        <div className="details">
-          <h1 className="title">{recipe.title}</h1>
-          <div className="details-row">
-            <span className="detail-row">
-              <TiThList className="icon" />
-              {recipe.ingredientsNames?.length || 0} ingredients
-            </span>
-            <span className="detail-row">
-              <PiTimerBold className="icon" />
-              {recipe.readyInMinutes} minutes
-            </span>
-          </div>
-        </div>
+    <Card onClick={handleClick} $index={$index}>
+      <div className="image-container">
+        <img src={recipe.image} alt={recipe.title} />
         <HeartButton recipeId={recipe.id} />
-      </Card>
+      </div>
+      <div className="details">
+        <h1 className="title">{recipe.title}</h1>
+        <div className="details-row">
+          <span className="detail-row">
+            <TiThList className="icon" />
+            {recipe.ingredientsNames?.length || 0} ingredients
+          </span>
+          <span className="detail-row">
+            <PiTimerBold className="icon" />
+            {recipe.readyInMinutes} minutes
+          </span>
+        </div>
+      </div>
+      
+    </Card>
   );
 }
 
@@ -52,17 +53,17 @@ const Card = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 20px;
-  height: 150px;
+  gap: 10px;
   border-radius: 150px;
-  width: clamp(300px, 80%, 500px);
+  height: clamp(110px, 80%, 150px);
+  width: clamp(300px, 80vw, 450px);
   position: relative;
   background-color: #ecf0f1;
   color: #337179;
   animation: fadeIn 0.3s ease-in-out forwards;
 
   animation-delay: ${({ $index }) => 0.03 * $index}s;
-opacity: 0;
+  opacity: 0;
 
   @keyframes fadeIn {
     from {
@@ -85,32 +86,22 @@ opacity: 0;
 
   .image-container {
     width: 170px;
-    height: 170px;
+    aspect-ratio: 1 / 1; /* NEW: mantiene proporzioni 1:1 */
     border-radius: 100%;
     overflow: hidden;
-    position: absolute;
-    left: -20px;
-    
+    position: relative;
+
     img {
       width: 100%;
       height: 100%;
       border-radius: 100%;
       object-fit: cover;
+      object-position: center;
       filter: brightness(80%) contrast(1);
       transition: transform 0.3s ease-in-out;
-      position: relative;
-      left: 0;
-    
     }
   }
 
-  .details-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    
-  }
 
   .details {
     display: flex;
@@ -118,9 +109,7 @@ opacity: 0;
     justify-content: space-between;
     align-items: flex-start;
     gap: 10px;
-    margin-left: 170px;
     width: clamp(150px, 80%, 280px);
-    height: 80%;
 
     .title {
       white-space: normal; /* Allow text to wrap to a new line */
@@ -132,13 +121,12 @@ opacity: 0;
       display: -webkit-box; /* Enable multi-line truncation */
       -webkit-line-clamp: 2; /* Limit to 2 lines (you can adjust this as needed) */
       -webkit-box-orient: vertical; /* Needed for the -webkit-line-clamp to work */
-      font-size: 1rem;
+      font-size: clamp(1.2rem, 4vw, 1.5rem); /* Uso di clamp per scalare il font */
       max-width: clamp(150px, 80%, 280px);
 
       font-family: "Bebas Neue", sans-serif;
       font-weight: 400;
       font-style: normal;
-      font-size: 1.5rem;
     }
 
     .detail-row {
@@ -147,10 +135,11 @@ opacity: 0;
       justify-content: space;
       gap: 10px;
       font-size: 0.9rem;
+      font-size: clamp(0.8rem, 1vw, 0.9rem); /* Uso di clamp per scalare il font */
     }
 
     .icon {
-      font-size: 1.2rem;
+      font-size: clamp(0.9rem, 1vw, 1.2rem); /* Uso di clamp per scalare il font */
     }
   }
 `;

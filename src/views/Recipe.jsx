@@ -90,7 +90,6 @@ const FlexContainer = styled.div`
   flex: 1;
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
   width: 100%;
   position: relative;
   flex-wrap: wrap;
@@ -102,6 +101,10 @@ const FlexContainer = styled.div`
     flex-direction: column;
     align-items: center;
   }
+
+  @media (max-width: 480px) { 
+    padding: 10px;
+   }
 `;
 
 
@@ -111,14 +114,20 @@ const RapidInfo = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   @media screen and (max-width: 768px) {
     height: fit-content;
   }
+  @media (max-width: 480px) { 
+    flex-direction: column;
+   }
+
 `;
 
 const ImgWrapper = styled.div`
-  width: 250px;
-  height: 250px;
+  width: clamp(200px, 80%, 250px);
+  height: clamp(200px, 80%, 250px);
+  aspect-ratio: 1 / 1;
   border-radius: 100%;
   overflow: hidden;
   z-index: 1;
@@ -133,8 +142,9 @@ const ImgWrapper = styled.div`
   }
 
   .heart-button {
-    left: 100px !important;
-    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
   }
 `;
 
@@ -145,6 +155,12 @@ const Stats = styled.div`
   justify-content: center;
   gap: 15px;
   height: 250px;
+
+  @media (max-width: 480px) {
+    flex-direction: row;
+    height: 100px;
+  }
+
 `;
 
 const Tabs = styled.div`

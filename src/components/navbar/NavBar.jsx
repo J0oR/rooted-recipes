@@ -49,8 +49,7 @@ const NavBarContainer = styled.nav`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  height: 100px;
-  padding: 33px;
+  padding: 60px;
 
   @media (max-width: 768px) {
     flex-direction: column; /* Forza i figli a stare uno sopra l'altro */
@@ -73,13 +72,12 @@ const LinksContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   right: 20px;
-  top: 37px;
+  top: 28px;
   width: clamp(300px, 80%, 400px);
-  padding: ${({ $showmodal }) => ($showmodal ? "30px" : "10px 30px")};
-  padding-top: 6px;
-  height: ${({ $showmodal }) => ($showmodal ? "fit-content" : "48px")};
+  padding: 30px;
+  height: ${({ $showmodal }) => ($showmodal ? "fit-content" : "58px")};
   background-color: ${({ $showmodal }) => ($showmodal ? "#f3f3f3" : "transparent")};
   border-radius: 25px;
   transition: height 0.1s ease-in, background-color 0.1s ease-in, padding 0.1s ease-in;
@@ -95,4 +93,5 @@ const LinksWrapper = styled.div`
   display: flex;
   align-items: space-between;
   gap: 20px;
+  width: clamp(300px, 80%, 400px);
 `;

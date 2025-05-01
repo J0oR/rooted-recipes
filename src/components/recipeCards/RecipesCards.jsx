@@ -15,12 +15,14 @@ export default function RecipesCards({ recipes }) {
 const CardsContainer = styled.div`
   width: 100%;
   margin: auto;
-  padding: 50px;
   margin-top: 100px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-  grid-gap: 50px 0px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 450px));
+  grid-gap: 50px 120px;
+  justify-content: center;
   justify-items: center;
+
+ 
 
   @media screen and (max-width: 768px) {
     padding: 0px;

@@ -31,15 +31,15 @@ export default function LogoutModal({ showModal, setShowModal }) {
 
       <Field>
         <span className="fieldLabel">User</span>
-        <span>{user && user.displayName}</span>
+        <span className="fieldValue">{user && user.displayName}</span>
       </Field>
       <Field>
         <span className="fieldLabel">Email</span>
-        <span>{user && user.email} </span>
+        <span className="fieldValue">{user && user.email} </span>
       </Field>
       <Field>
         <span className="fieldLabel">Saved Recipes</span>
-        <span>{recipes?.length}</span>
+        <span className="fieldValue">{recipes?.length}</span>
       </Field>
       {user && (
         <LogoutButton onClick={logOut}>
@@ -86,6 +86,7 @@ const Field = styled.div`
     font-weight: 600;
     font-size: 1rem;
   }
+
 `;
 
 const LogoutButton = styled(Button)`
@@ -102,6 +103,7 @@ const LogoutButton = styled(Button)`
   font-size: 1rem;
   outline: 2px solid #f04b53;
   transition: all 0.3s ease-in-out;
+  align-self: center;
 
   &:hover {
     background-color: #f04b53;

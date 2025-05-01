@@ -22,6 +22,7 @@ export default function Home() {
   const favourites = useSelector((state) => state.favourites.recipes);
   const loadMoreButtonRef = useRef();
   const [scrollTarget, setScrollTarget] = useState(null);
+  const [showUpButton, setShowUpButton] = useState(false);
 
   /*
    * STARTUP TASKS:
@@ -69,6 +70,15 @@ export default function Home() {
     }
   }, [data.length]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowUpButton(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <HomeContainer>
       <FilteringContainer>
@@ -82,9 +92,11 @@ export default function Home() {
           Load more...
         </LoadMore>
       )}
-      <UpButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-        <FaChevronUp />
-      </UpButton>
+      {showUpButton && (
+        <UpButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+          <FaChevronUp />
+        </UpButton>
+      )}
     </HomeContainer>
   );
 }
@@ -117,7 +129,7 @@ const EmptyContainer = styled.div`
   padding-bottom: 0;
   margin-top: 100px;
   font-size: 1.2rem;
-  color: #254A5D;
+  color: #254a5d;
 `;
 
 const LoadMore = styled.button`
@@ -170,7 +182,7 @@ const UpButton = styled(Button)`
 
   &:hover {
     background-color: #337179;
-    color:  #f3f3f3;
+    color: #f3f3f3;
     transform: scale(1.1);
   }
 `;

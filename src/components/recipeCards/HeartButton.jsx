@@ -68,7 +68,8 @@ const StyledButton = styled(Button)`
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
   position: absolute;
-  left: 40px;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 10px;
   background: #f3f3f3;
   border: none;
