@@ -53,8 +53,6 @@ This project demonstrates proficiency in React through the development of a vege
   style="height:40px; border-radius: 15px"/>
 </p>
 
-<br>
-
 ##### ⚛️ Frameworks & Libraries  
 <p style="margin-bottom: 10px;">
   <img src="https://img.shields.io/badge/React-F7DF1E?style=for-the-badge&logo=react&logoColor=000"
@@ -64,8 +62,6 @@ This project demonstrates proficiency in React through the development of a vege
   <img src="https://img.shields.io/badge/styled--components-BF4F74?style=for-the-badge&logo=styled-components&logoColor=white"
   style="height:40px; border-radius: 15px"/>
 </p>
-
-<br>
 
 ##### ⚙️ Build Tools & Runtime  
 <p style="margin-bottom: 10px;">
