@@ -9,8 +9,6 @@
 
 
 <!-- TABLE OF CONTENTS -->
----
-
 ## 📑 Table of Contents
 
 - [About The Project](#about-the-project)
@@ -22,13 +20,10 @@
 - [Contact](#contact)
 - [Acknowledgments](#acknowledgments)
 
----
-
 
 <!-- ABOUT THE PROJECT -->
 <a id="about-the-project"></a>
 ## 📌 About The Project
- 
 
 ######
 This project demonstrates proficiency in React through the development of a vegetarian recipes web app.
@@ -44,42 +39,44 @@ This project demonstrates proficiency in React through the development of a vege
 
 <p align="right" style="margin-top:50px"><a href="#readme-top">⬆️ back to top</a></p>
 
----
-
-
-
 
 <a id="built-with"></a>
 ### 🛠️ Built With
 ##
 
 ##### 🔤 Languages & Preprocessors  
-<p style="margin-bottom: 10px;">
-  <img src="https://img.shields.io/badge/HTML-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white"/> 
-  <img src="https://img.shields.io/badge/Sass-C69?style=for-the-badge&logo=sass&logoColor=fff"/>
+<p style="margin-bottom: 10px">
+  <img src="https://img.shields.io/badge/HTML-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" style="height:40px; border-radius: 15px"/> 
+  <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"
+  style="height:40px; border-radius: 15px"/> 
+  <img src="https://img.shields.io/badge/Sass-C69?style=for-the-badge&logo=sass&logoColor=fff"
+  style="height:40px; border-radius: 15px"/>
 </p>
 
 ##
 
 ##### ⚛️ Frameworks & Libraries  
 <p style="margin-bottom: 10px;">
-  <img src="https://img.shields.io/badge/React-F7DF1E?style=for-the-badge&logo=react&logoColor=000"/> 
-  <img src="https://img.shields.io/badge/Redux-black?style=for-the-badge&logo=redux"/> 
-  <img src="https://img.shields.io/badge/styled--components-BF4F74?style=for-the-badge&logo=styled-components&logoColor=white"/>
+  <img src="https://img.shields.io/badge/React-F7DF1E?style=for-the-badge&logo=react&logoColor=000"
+  style="height:40px; border-radius: 15px"/> 
+  <img src="https://img.shields.io/badge/Redux-black?style=for-the-badge&logo=redux"
+  style="height:40px; border-radius: 15px"/> 
+  <img src="https://img.shields.io/badge/styled--components-BF4F74?style=for-the-badge&logo=styled-components&logoColor=white"
+  style="height:40px; border-radius: 15px"/>
 </p>
 
 ##
 
 ##### ⚙️ Build Tools & Runtime  
 <p style="margin-bottom: 10px;">
-  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white"/> 
-  <img src="https://img.shields.io/badge/Node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white"
+  style="height:40px; border-radius: 15px"/> 
+  <img src="https://img.shields.io/badge/Node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white"
+  style="height:40px; border-radius: 15px"/>
 </p>
 
 
 <p align="right" style="margin-top:50px"><a href="#readme-top">⬆️ back to top</a></p>
-
----
 
 
 <!-- Try it --->
@@ -92,8 +89,6 @@ Try the Firebase-hosted version of the app:
 
 
 <p align="right" style="margin-top:50px"><a href="#readme-top">⬆️ back to top</a></p>
-
----
 
 <!-- GETTING STARTED -->
 <a id="getting-started"></a>
@@ -159,8 +154,6 @@ Follow the steps below to get your local copy of this app up and running. These 
 
 <p align="right" style="margin-top:50px"><a href="#readme-top">⬆️ back to top</a></p>
 
----
-
 
 <!-- CONTACT -->
 <a id="contact"></a>
@@ -174,8 +167,6 @@ Follow the steps below to get your local copy of this app up and running. These 
 [![CodePen](https://img.shields.io/badge/CodePen-lightgray?style=for-the-badge&logo=codepen&logoColor=black)](https://codepen.io/jrvn/)
 
 <p align="right" style="margin-top:50px"><a href="#readme-top">⬆️ back to top</a></p>
-
----
 
 <!-- ACKNOWLEDGMENTS -->
 <a id="acknowledgments"></a>
