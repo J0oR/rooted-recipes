@@ -7,14 +7,16 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDS4VaaSXZ6MHYffqkRsPkpN43z4pUh2BU",
-  authDomain: "rooted-recipes.firebaseapp.com",
-  projectId: "rooted-recipes",
-  storageBucket: "rooted-recipes.firebasestorage.app",
-  messagingSenderId: "323244172450",
-  appId: "1:323244172450:web:d3c091644ea56403d063fb"
+  apiKey: import.meta.env.VITE_API_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_API_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_API_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_API_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_API_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_API_FIREBASE_APP_ID
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
