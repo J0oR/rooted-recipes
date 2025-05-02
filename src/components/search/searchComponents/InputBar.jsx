@@ -25,21 +25,17 @@ export default function InputBar({ displayTerm, setDisplayTerm, setAnimateLens, 
     }
   }, [displayTerm, dispatch]);
 
- /*  useEffect(() => {
-    dispatch(setSearchTerm(""));
-    dispatch(fetchRecipes());
-  }, [dispatch]); */
 
   return (
     <StyledInput
       type="text"
-      placeholder={dishesModalState.visible ? "Dish Types" : `Search for recipes or ingredient`}
+      placeholder={dishesModalState.visible ? "Dish Types" : `Search recipes`}
       value={displayTerm}
       onChange={handleInputChange}
       onFocus={() => setInputFocused(true)} // Set input as focused
       onBlur={() => setInputFocused(false)} // Unset input as focused
       disabled={dishesModalState.visible}
-      $placeValue={dishesModalState.visible ? "Dish Types" : `Search for recipes or ingredient`}
+      $placeValue={dishesModalState.visible ? "Dish Types" : `Search recipes`}
     />
   );
 }

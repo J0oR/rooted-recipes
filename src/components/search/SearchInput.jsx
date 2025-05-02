@@ -78,7 +78,7 @@ const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   transition: max-height 0.3s ease-in-out, background-color 0.1s ease-in-out;
-  max-height: ${({ $modalVisible }) => ($modalVisible ? "530px" : "58px")};
+  max-height: ${({ $modalVisible }) => ($modalVisible ? "530px" : "64px")};
   overflow: hidden;
   padding: 10px;
   

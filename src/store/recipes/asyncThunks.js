@@ -28,7 +28,6 @@ const buildQuery = async ({ searchTerm, searchMode, lastDocId, dishType }) => {
     constraints.push(where(searchMode === "title" ? "titleSplitted" : "ingredientsNames", "array-contains", searchTerm.toLowerCase()));
   }
   if (dishType && dishType !== "all") {
-    console.log(`dishTypes.${dishType}`, dishType);
     constraints.push(
       where(`dishTypes.${dishType}`, "==", true)
     );

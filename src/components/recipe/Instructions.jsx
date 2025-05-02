@@ -69,7 +69,7 @@ const Step = styled.div`
   padding: 20px;
   border-radius: 15px;
   background-color: #e9edef;
-  border-radius: 32px;
+  border-radius: 25px;
   padding: 20px;
 `;
 

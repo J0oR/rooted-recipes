@@ -48,14 +48,14 @@ const List = styled.div`
   color: rgb(37, 74, 93);
   border-radius: 32px;
   font-size: 1rem;
-  padding: 20px;
   width: 100%;
   margin: auto;
   display: flex;
   flex-direction: column;
   list-style: none;
-  gap: 20px;
+  gap: 15px;
   border-radius: 15px;
+  padding: 20px;
 `;
 
 const IngredientRow = styled.li`
@@ -65,7 +65,6 @@ const IngredientRow = styled.li`
   width: 100%;
   gap: 20px;
   border-bottom: 1px solid #ecf0f1;
-  width: 90%;
   margin: auto;
   padding: 10px 0;
 

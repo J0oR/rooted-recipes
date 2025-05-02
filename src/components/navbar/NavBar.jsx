@@ -16,7 +16,8 @@ export default function Navbar() {
 
   return (
     <NavBarContainer>
-      <span className="Logo">Rooted Recipes</span>
+      <NavLinkStyled to="/" text="Rooted Recipes" className="Logo" showModal={showModal} />
+      
 
       <Overlay $isActive={showModal} onClick={() => exit()} />
       <LinksContainer $showmodal={showModal}>
