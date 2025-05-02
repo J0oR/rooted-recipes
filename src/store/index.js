@@ -1,4 +1,3 @@
-// src/store/index.js
 import { configureStore } from "@reduxjs/toolkit";
 import ingredientsReducer from "./ingredientsSlice";
 import recipesReducer from "./recipes/recipesSlice";

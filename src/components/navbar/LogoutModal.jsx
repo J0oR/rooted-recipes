@@ -87,6 +87,18 @@ const Field = styled.div`
     font-size: 1rem;
   }
 
+  .fieldValue{
+    display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2em;
+  max-width: 200px;
+  max-height: 2.4em; /* exactly 2 lines */
+  word-break: break-word; /* optional: to avoid long words spilling */
+  }
+
 `;
 
 const LogoutButton = styled(Button)`
