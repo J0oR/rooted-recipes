@@ -53,7 +53,7 @@ This project demonstrates proficiency in React through the development of a vege
   style="height:40px; border-radius: 15px"/>
 </p>
 
-##
+<br>
 
 ##### ⚛️ Frameworks & Libraries  
 <p style="margin-bottom: 10px;">
@@ -65,7 +65,7 @@ This project demonstrates proficiency in React through the development of a vege
   style="height:40px; border-radius: 15px"/>
 </p>
 
-##
+<br>
 
 ##### ⚙️ Build Tools & Runtime  
 <p style="margin-bottom: 10px;">
