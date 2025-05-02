@@ -92,13 +92,9 @@ Try the Firebase-hosted version of the app:
 
 This is how you may set up the project locally.
 
-##
 <a id="prerequisites"></a>
 #### Prerequisites
 
-###
-
-##
 ###### 🔥 Firebase Setup
 Please follow the instructions to set up Firebase for your project:
 - Go to [Firebase Console](https://console.firebase.google.com/)
@@ -106,7 +102,6 @@ Please follow the instructions to set up Firebase for your project:
 - Set up Firebase Authentication (Google login) and Firestore
 - Set up 3 collections: recipes ingredients and heartedRecipes
 
-##
 ###### ⚙️ Environment Setup
 Add spoonacular API and Firebase config to your `.env` file, in the root folder:
 
@@ -122,7 +117,6 @@ REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
 REACT_APP_FIREBASE_APP_ID=your-app-id
 ```
 
-##
 ###### 📦 npm
   ```sh
   npm install npm@latest -g
