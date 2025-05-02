@@ -44,7 +44,6 @@ export default function RecipeCard({ recipe, $index }) {
           </span>
         </div>
       </div>
-      
     </Card>
   );
 }
@@ -102,12 +101,12 @@ const Card = styled.div`
     }
   }
 
-
   .details {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
+    height: 80%;
     gap: 10px;
     width: clamp(150px, 80%, 280px);
 
@@ -129,17 +128,22 @@ const Card = styled.div`
       font-style: normal;
     }
 
-    .detail-row {
+    .details-row {
       display: flex;
-      align-items: center;
-      justify-content: space;
-      gap: 10px;
-      font-size: 0.9rem;
-      font-size: clamp(0.8rem, 1vw, 0.9rem); /* Uso di clamp per scalare il font */
-    }
+      flex-direction: column;
+      gap: 5px;
 
-    .icon {
-      font-size: clamp(0.9rem, 1vw, 1.2rem); /* Uso di clamp per scalare il font */
+      .detail-row {
+        display: flex;
+        align-items: center;
+        justify-content: space;
+        gap: 10px;
+        font-size: 0.9rem;
+        font-size: clamp(0.8rem, 1vw, 0.9rem); /* Uso di clamp per scalare il font */
+        .icon {
+          font-size: clamp(0.9rem, 1vw, 1.2rem); /* Uso di clamp per scalare il font */
+        }
+      }
     }
   }
 `;

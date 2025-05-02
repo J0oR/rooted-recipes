@@ -14,12 +14,18 @@ const apiFetchDbSave = async () => {
        const recipes = response.data.results; 
        await saveRecipesToFirebase(recipes);
        await saveIngredientsToFirebase(recipes);
-       console.log("Data fetched from API and saved to Firebase.");
-       console.log(recipes);
+       console.log("Data fetched from API and saved to Firestore Database.");
      }
-
+     else {
+      // Log a warning instead of an error when the API request fails due to payment issue
+      console.warn(`API fetch failed with status: ${response.status}`);
+    }
     } catch (error) {
-      console.log("Error fetching data from API:", error);
+      if (error.response && error.response.status === 402) {
+        console.warn("Payment required for API request.");
+      } else {
+        console.error("Error fetching data from API:", error.message);
+      }
     }
   };
 

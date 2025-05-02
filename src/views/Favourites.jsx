@@ -72,11 +72,15 @@ const TagsContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 50px auto -46px auto;
+  margin: 0px auto 0 auto;
   width: clamp(300px, 80%, 800px);
   color: #337179;
-  font-size: 1rem;
+  font-size: clamp(0.8rem, 2vw, 1rem);
   text-transform: uppercase;
+
+  @media screen and (max-width: 768px) {
+    margin: 60px auto -40px auto;    
+  }
 `;
 
 const AnimatedTag = styled.div`
@@ -84,10 +88,10 @@ const AnimatedTag = styled.div`
   opacity: 0;
   animation: ${({ $animate }) => ($animate ? "fadeIn 0.3s ease forwards" : "none")};
   animation-delay: ${({ $animate, $index }) => ($animate ? `${0.05 * $index}s` : "0s")};
-
-  padding: 10px 15px;
+  border-radius: 25px;
+  padding: 6px 12px;
   margin: 5px;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out  ;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 
   @keyframes fadeIn {
     to {
@@ -98,13 +102,20 @@ const AnimatedTag = styled.div`
 
   &:hover {
     cursor: pointer;
-    transform: scale(1.1);
+    color: #337179;
   }
 
   &.selected {
-    outline: none;
-    color: #43927c;
+    
     font-weight: 700;
-    border-bottom: 4px solid;
+    
+    background-color: #337179;
+    color: #f3f3f3;
+    
+  }
+
+  &:active:hover {
+    outline: none;
+    border: none;
   }
 `;

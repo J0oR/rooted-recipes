@@ -66,10 +66,9 @@ const StyledButton = styled(Button)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out;
   position: absolute;
-  left: 50%;
   transform: translateX(-50%);
+  left: 50%;
   bottom: 10px;
   background: #f3f3f3;
   border: none;
@@ -78,7 +77,6 @@ const StyledButton = styled(Button)`
   border-radius: 25px;
 
   &:hover {
-    transform: scale(1.1);
 
     .icon {
       color: #DA604E;
@@ -89,5 +87,9 @@ const StyledButton = styled(Button)`
     border-radius: 100%;
     font-weight: 800px;
     color: ${({ $isSaved }) => ($isSaved ? "#DA604E" : "#337179")};
+  }
+
+  &.animating {
+    animation: none; /* Disable animation when clicked */
   }
 `;

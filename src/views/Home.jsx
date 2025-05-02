@@ -31,8 +31,7 @@ export default function Home() {
    * - clear database, if needed
    */
   useEffect(() => {
-    //apiFetchDbSave();
-    //clearDB();
+    apiFetchDbSave();
 
     if (!ingredients.length) {
       dispatch(fetchIngredients());

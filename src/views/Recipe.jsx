@@ -37,7 +37,6 @@ export default function Recipe() {
   };
 
   useEffect(() => {
-    console.log(id);
     fetchFirebaseData();
   }, []);
 

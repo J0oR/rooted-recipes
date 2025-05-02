@@ -16,7 +16,7 @@ export default function Ingredients({ ingredients }) {
           {ingredients?.map((ingredient, index) => (
             <IngredientRow key={index}>
               <span>
-                {ingredient.amount} {formatUnit(ingredient.unit)}
+                {ingredient.amount.toFixed(2)} {formatUnit(ingredient.unit)}
               </span>
               <span className="name">{ingredient.nameClean}</span>
             </IngredientRow>
@@ -63,7 +63,7 @@ const IngredientRow = styled.li`
   justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 50px;
+  gap: 20px;
   border-bottom: 1px solid #ecf0f1;
   width: 90%;
   margin: auto;

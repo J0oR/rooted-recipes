@@ -54,8 +54,9 @@ const NavBarContainer = styled.nav`
   @media (max-width: 768px) {
     flex-direction: column; /* Forza i figli a stare uno sopra l'altro */
     align-items: center; /* Centra i figli */
-    margin-bottom: 150px;
+    margin-bottom: 50px;
   }
+
 
   .Logo {
     font-size: 2rem;

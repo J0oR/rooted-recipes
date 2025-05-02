@@ -23,8 +23,6 @@ export default function AuthButton({ showModal, setShowModal }) {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log("User logged in: ", result);
-      // Additional logic to handle the authenticated user
     } catch (error) {
       console.error("Login error:", error.message);
     }
@@ -125,6 +123,7 @@ const UsrButton = styled(Button)`
 `;
 
 const AuthStateButton = styled(Button)`
+  margin-left: 43%;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -135,6 +134,11 @@ const AuthStateButton = styled(Button)`
   height: 30px;
   background-color: #ECF0F1;
   color: #1E3B4A;
+
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+    transform: translateX(50%);
+  }
 `;
 
 const GoogleIcon = styled(FcGoogle)`
