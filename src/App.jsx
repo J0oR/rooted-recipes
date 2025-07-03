@@ -3,6 +3,7 @@ import Home from "./views/Home";
 import Favourites from "./views/Favourites";
 import Navbar from "./components/navbar/NavBar";
 import Recipe from "./views/Recipe";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/recipe/:id" element={<Recipe />} />
         <Route path="/favourites" element={<Favourites />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
